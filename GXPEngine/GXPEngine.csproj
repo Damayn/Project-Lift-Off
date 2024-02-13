@@ -90,6 +90,7 @@
     <Compile Include="Scripts\Menus\MainMenu.cs" />
     <Compile Include="Scripts\Menus\MenuManager.cs" />
     <Compile Include="Scripts\Menus\OptionsMenu.cs" />
+    <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\Pot.cs" />
   </ItemGroup>
   <ItemGroup>
