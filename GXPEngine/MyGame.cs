@@ -13,6 +13,7 @@ public class MyGame : Game {
 
 	private void SetUp () 
 	{
+
         settings = new GameSettings();
 
         menuManager = new MenuManager(settings);
@@ -20,6 +21,7 @@ public class MyGame : Game {
 
 		mainMenu = new MainMenu (menuManager, settings);
 		AddChild (mainMenu);
+
     }
 
 	void Update() 

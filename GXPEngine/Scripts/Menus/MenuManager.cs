@@ -54,7 +54,7 @@ public class MenuManager : GameObject
             }
         }
     }
-
+    //GameOver
     public void SetGameOverMenu()
     {
         // If the game is over
