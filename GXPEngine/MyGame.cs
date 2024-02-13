@@ -24,12 +24,16 @@ public class MyGame : Game {
 
 	void Update() 
 	{
+		// If the play button has been pressed
 		if (settings.hasGameStarted) 
 		{
+			// Go through every child that the game has
 			foreach (GameObject child in this.GetChildren ()) 
 			{
+				// If that cild is the main menu
 				if (child is MainMenu)
 				{
+					// Delete it
 					child.LateDestroy();
 				}
 			}	
