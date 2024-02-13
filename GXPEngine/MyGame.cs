@@ -1,20 +1,33 @@
-using System;                   // System contains a lot of default C# libraries 
-using GXPEngine;                // GXPEngine contains the engine
+using System;                   
+using GXPEngine;                
 
 public class MyGame : Game {
-	public MyGame() : base(800, 600, false)
+	GameSettings settings;
+	MenuManager menuManager;
+	MainMenu mainMenu;
+
+	public MyGame() : base(1366, 768, false)
+	{
+		SetUp();
+	}
+
+	private void SetUp () 
+	{
+        settings = new GameSettings();
+
+        menuManager = new MenuManager(settings);
+		AddChild (menuManager);
+
+		mainMenu = new MainMenu (menuManager, settings);
+		AddChild (mainMenu);
+    }
+
+	void Update() 
 	{
 		
 	}
 
-	void Update() 
-	{
-		Console.WriteLine("print");
-	}
-
-	// Main is the first method that's called when the program is run
 	static void Main() {
-		// Create a "MyGame" and start it:
 		new MyGame().Start();
 	}
 }
