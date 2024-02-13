@@ -18,13 +18,22 @@ public class MyGame : Game {
         menuManager = new MenuManager(settings);
 		AddChild (menuManager);
 
-		mainMenu = new MainMenu (menuManager, settings);
-		AddChild (mainMenu);
-    }
+		mainMenu = new MainMenu(menuManager, settings);
+		AddChild(mainMenu);
+	}
 
 	void Update() 
 	{
-		
+		if (settings.hasGameStarted) 
+		{
+			foreach (GameObject child in this.GetChildren ()) 
+			{
+				if (child is MainMenu)
+				{
+					child.LateDestroy();
+				}
+			}	
+		}
 	}
 
 	static void Main() {
