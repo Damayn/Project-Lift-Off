@@ -1,9 +1,18 @@
-﻿public class GameSettings
+﻿using GXPEngine;
+using System;
+
+public class GameSettings
 {
     public bool hasGameStarted = false;
     public bool isGameOver = false;
-    public GameSettings() 
+    public bool inSelectionMode = false;
+    public GameSettings()
     {
     
+    }
+
+    void Update () 
+    {
+        
     }
 }

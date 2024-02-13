@@ -30,5 +30,14 @@ public class MainMenu : GameObject
         exitButton.SetXY (game.width /2, game.height /2 + exitButton.width /2);
         AddChild (exitButton);
     }
+
+    private void Update()
+    {
+
+        if (startButton.hasBeenPressed)
+        {
+            this.LateDestroy();
+        }
+    }
 }
 
