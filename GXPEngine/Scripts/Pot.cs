@@ -8,8 +8,8 @@ public class Pot : AnimationSprite
 
     public int potIndex;
 
-    public bool isPotHovered;
-    public bool isPotChosen;
+    public bool isHovered;
+    public bool isChosen;
 
     // Constructor with parameters for position
     public Pot(float x, float y, int potIndex, int cols, int rows) : base("pot.png", cols, rows)
@@ -34,7 +34,7 @@ public class Pot : AnimationSprite
 
     public void IsPotHovered ()
     {
-        if (isPotHovered)
+        if (isHovered)
         {
             SetCycle(1, 1);
         }
