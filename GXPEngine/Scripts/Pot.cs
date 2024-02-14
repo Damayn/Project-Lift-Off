@@ -6,7 +6,8 @@ public class Pot : AnimationSprite
     // Boolean variable to track if a plant has been planted in the pot
     private bool plantPlanted;
 
-    int potIndex;
+    public int potIndex;
+
     public bool isPotHovered;
     public bool isPotChosen;
 
@@ -18,7 +19,7 @@ public class Pot : AnimationSprite
         // Set the position of the pot
         SetXY(x, y);
         // Set the scale of the pot
-        SetScaleXY(0.2f, 0.2f);
+        SetScaleXY(0.1f, 0.1f);
 
         // By default, when the pot is initialized, no plant is planted
         plantPlanted = false;
