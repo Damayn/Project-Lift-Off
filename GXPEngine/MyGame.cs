@@ -29,13 +29,12 @@ public class MyGame : Game {
         menuManager = new MenuManager(settings);
 		menuManager.SetMainMenu();
 		AddChild (menuManager);
-        /*
-        Customers customers = new Customers();
+        
+        Customers customers = new Customers(settings);
         AddChild(customers);
-        */
     }
 
-	void Update() 
+    void Update() 
 	{
         this.targetFps = 60;
 

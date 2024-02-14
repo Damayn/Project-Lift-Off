@@ -10,26 +10,21 @@ public class Customers : AnimationSprite
     float lastChangeOfFace;
     float timer = 1000;
 
-    Sprite faces;
+    Random random = new Random();
 
-    Random random;
+    
+    GameSettings settings;
 
-    EasyDraw customerCanvas;
-
-    string[] people = {"Faces.png", "Rolling.png", "Rolling.png", "Faces.png", "Faces.png"};
-    string filename;
-
-    public Customers(string filename) : base(filename, 5, 2)
+    public Customers(GameSettings settings) : base(settings.people[new Random().Next (1, 5)], 5, 2)
     {
-        // If you use the method in update I told you about, here you should put
         lastChangeOfFace = Time.time;
 
-        this.filename = filename;
+        this.settings = settings;
 
         random = new Random();
 
-        SetRandomImageFilename();
-        Console.WriteLine(filename);
+        //SetRandomImageFilename();
+        
     }
 
     void Update()
@@ -46,10 +41,10 @@ public class Customers : AnimationSprite
 
     }
 
-    void SetRandomImageFilename()
-    {
-        int stringIndex = random.Next(0, people.Length);
-        filename = people[stringIndex];
-    }
+    //void SetRandomImageFilename()
+    //{
+    //    int stringIndex = random.Next(0, settings.people.Length);
+    //    filename = people[stringIndex];
+    //}
 
 }
