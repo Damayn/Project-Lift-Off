@@ -1,5 +1,6 @@
 ﻿using GXPEngine;
 using System;
+using System.Drawing;
 
 public class Customers : AnimationSprite
 {
@@ -7,12 +8,28 @@ public class Customers : AnimationSprite
     int frame;
 
     float lastChangeOfFace;
-    float timer = 5000;
+    float timer = 1000;
 
-    public Customers() : base("Faces.png", 5, 2)
+    Sprite faces;
+
+    Random random;
+
+    EasyDraw customerCanvas;
+
+    string[] people = {"Faces.png", "Rolling.png", "Rolling.png", "Faces.png", "Faces.png"};
+    string filename;
+
+    public Customers(string filename) : base(filename, 5, 2)
     {
         // If you use the method in update I told you about, here you should put
         lastChangeOfFace = Time.time;
+
+        this.filename = filename;
+
+        random = new Random();
+
+        SetRandomImageFilename();
+        Console.WriteLine(filename);
     }
 
     void Update()
@@ -26,8 +43,13 @@ public class Customers : AnimationSprite
             SetCycle(frame, 1); // Or SetFrame (frame)
 
         }
-      
 
+    }
+
+    void SetRandomImageFilename()
+    {
+        int stringIndex = random.Next(0, people.Length);
+        filename = people[stringIndex];
     }
 
 }

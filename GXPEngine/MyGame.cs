@@ -30,10 +30,10 @@ public class MyGame : Game {
         menuManager = new MenuManager(settings);
 		menuManager.SetMainMenu();
 		AddChild (menuManager);
-        /*
-        Customers customers = new Customers();
+        
+        Customers customers = new Customers("Faces.png");
         AddChild(customers);
-        */
+        
     }
 
 	void Update() 
