@@ -11,7 +11,8 @@ public class ScreenShake:GameObject{
     private float shakeAmount = 20.0f; // intensity
 
     private float shakeDuration = 100f; // duration of shake
-    private float shakeTimer = 300.0f; // start of timer has to be > 0
+    private float shakeTimer = 0.0f; // start of timer has to be > 0
+    private float shakeSpeed = 1.0f;
 
     public ScreenShake() : base()
     {
@@ -26,13 +27,13 @@ public class ScreenShake:GameObject{
         if (shakeTimer > 0 && Input.GetKeyDown(Key.LEFT_SHIFT))
         {
 
-            float shakeX = (float)random.NextDouble() * shakeAmount * 2 - shakeAmount;
-            float shakeY = (float)random.NextDouble() * shakeAmount * 2 - shakeAmount;
+            float shakeX = ((float)random.NextDouble() * 2 - 1) * GetRandomShakeAmount();
+            float shakeY = ((float)random.NextDouble() * 2 - 1) * GetRandomShakeAmount();
 
             game.x = originalPosition.x + shakeX;
             game.y = originalPosition.y + shakeY;
 
-            shakeTimer -= Time.deltaTime;
+            shakeTimer -= Time.deltaTime * 1000;
 
         }
         else
@@ -44,11 +45,21 @@ public class ScreenShake:GameObject{
         }
     }
 
-    public void ShakeScreen(float duration)
+    public void ShakeScreen(float duration, float speed)
     {
 
         shakeDuration = duration;
         shakeTimer = shakeDuration;
+        shakeSpeed = speed;
+
+    }
+
+    private float GetRandomShakeAmount()
+    {
+
+        // Generate a random shake amount within a range around the base shake amount
+        float range = shakeAmount * 20f; // Adjust this multiplier to change the range
+        return shakeAmount + ((float)random.NextDouble() * 2 - 1) * range;
 
     }
 
