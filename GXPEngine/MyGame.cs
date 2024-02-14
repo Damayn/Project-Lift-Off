@@ -20,6 +20,7 @@ public class MyGame : Game {
 	public MyGame() : base(1366, 768, false, false, -1, -1, false)
 	{
 		SetUp();
+
 	}
 
 	private void SetUp () 
@@ -29,7 +30,11 @@ public class MyGame : Game {
         menuManager = new MenuManager(settings);
 		menuManager.SetMainMenu();
 		AddChild (menuManager);
-	}
+        /*
+        Customers customers = new Customers();
+        AddChild(customers);
+        */
+    }
 
 	void Update() 
 	{
@@ -45,6 +50,8 @@ public class MyGame : Game {
         }
 
         SelectionMechanic();
+
+        
     }
 
     void CreatePots()
