@@ -8,6 +8,8 @@ public class MyGame : Game {
     Pot pot;
     Seed seedBag;
 
+    Sprite background;
+
     private List<Pot> pots = new List<Pot>();
     private List<Seed> seedBags = new List<Seed>();
 
@@ -29,7 +31,16 @@ public class MyGame : Game {
         menuManager = new MenuManager(settings);
 		menuManager.SetMainMenu();
 		AddChild (menuManager);
-        
+        //hardcoding of background image testing (change it if you want)
+        background = new Sprite("white.png");
+
+        background.x = 1150;
+        background.y = 0;
+        background.width = 200;
+        background.height = 300;
+
+        AddChild (background);
+
         Customers customers = new Customers(settings);
         AddChild(customers);
     }

@@ -19,6 +19,11 @@ public class Customers : AnimationSprite
         lastChangeOfFace = Time.time;
 
         this.settings = settings;
+
+        random = new Random();
+
+        //SetRandomImageFilename();
+        
     }
 
     void Update()
