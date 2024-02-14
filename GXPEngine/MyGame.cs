@@ -44,8 +44,6 @@ public class MyGame : Game {
         Customers customers = new Customers(settings);
         AddChild(customers);
 
-        ScreenShake screenShake = new ScreenShake();
-        AddChild(screenShake);
 
     }
 
@@ -273,9 +271,29 @@ public class MyGame : Game {
 
     void PlantSeedInPot(Seed seed, Pot pot)
     {
-        Console.WriteLine("Seed bag " + seed.name + " has been planted in pot " + pot.potIndex);
+        // Extract the number from the seed bag's name
+        string seedBagName = seedBags[currentSeedBagIndex].name;
+        int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
+
+        // Create a new plant with the extracted seed number
+        Plant plant = new Plant("flower" + seedNumber + ".png");
+        plant.SetXY(pot.x, 0);
+        pot.AddChild(plant);
     }
 
+    void CheckIfPotHasPlant()
+    {
+        foreach (Pot pot in pots)
+        {
+            foreach (Plant plant in pot.GetChildren())
+            {
+                if (plant == null)
+                {
+                    pot.isChosen = false;
+                }
+            }
+        }
+    }
 
     static void Main() {
 		new MyGame().Start();

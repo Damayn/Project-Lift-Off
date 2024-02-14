@@ -3,18 +3,29 @@ using System;
 
 class Plant : AnimationSprite
 {
+    Sprite waterDrop;
+
     int timerStart;
     int timeToGrow;
 
     bool isWatered = false;
     bool isGrown = false;
+    bool isWithering = false;
 
     Random random = new Random();
 
     public Plant(string fileName) : base(fileName, 2, 5)
     {
+        waterDrop = new Sprite("waterDrop.png");
+        waterDrop.SetScaleXY(0.02f, 0.02f);
+        waterDrop.SetXY(0, -20);
+
+        AddChild(waterDrop);
+
         timerStart = Time.time;
         timeToGrow = GetTimeToGrow(fileName);
+
+        this.SetScaleXY(50, 50);
     }
 
     int GetTimeToGrow(string fileName)
@@ -26,7 +37,7 @@ class Plant : AnimationSprite
         switch (flowerNumber)
         {
             case 1:
-                return random.Next(2000, 4000);
+                return random.Next(5000, 8000);
             case 2:
                 return random.Next(3000, 5000);
             case 3:
@@ -50,7 +61,7 @@ class Plant : AnimationSprite
             }
             else
             {
-
+                isWithering = true;
             }
         }
 
@@ -61,6 +72,20 @@ class Plant : AnimationSprite
         else
         {
             SetCycle(0, 1);
+        }
+
+        if (isWithering) 
+        {
+            
+        }
+
+        if (HitTestPoint(Input.mouseX, Input.mouseY))
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                waterDrop.LateDestroy();
+                isWatered = true;
+            }
         }
     }
 
