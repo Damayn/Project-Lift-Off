@@ -11,7 +11,6 @@ public class Customers : AnimationSprite
     float timer = 1000;
 
     Random random = new Random();
-
     
     GameSettings settings;
 
@@ -23,8 +22,14 @@ public class Customers : AnimationSprite
 
         random = new Random();
 
+        x = 1150;
+        y = 150;
+
+        width = 200;
+        height = 150;
+
         //SetRandomImageFilename();
-        
+
     }
 
     void Update()
