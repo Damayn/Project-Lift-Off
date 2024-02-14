@@ -43,6 +43,10 @@ public class MyGame : Game {
 
         Customers customers = new Customers(settings);
         AddChild(customers);
+
+        ScreenShake screenShake = new ScreenShake();
+        AddChild(screenShake);
+
     }
 
     void Update() 

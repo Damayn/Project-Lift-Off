@@ -93,6 +93,7 @@
     <Compile Include="Scripts\Customers.cs" />
     <Compile Include="Scripts\Plant.cs" />
     <Compile Include="Scripts\Pot.cs" />
+    <Compile Include="Scripts\ScreenShake.cs" />
     <Compile Include="Scripts\Seed.cs" />
   </ItemGroup>
   <ItemGroup>
