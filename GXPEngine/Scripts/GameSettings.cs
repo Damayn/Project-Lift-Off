@@ -10,6 +10,8 @@ public class GameSettings
     public bool inSeedBagSelection = false;
     public bool inPotSelection = false;
 
+    public bool isTimePaused = false;
+
     public string[] people = { "Faces.png", "Rolling.png", "Viking.png", "cat.png", "Bird.png" };
     public GameSettings()
     {
