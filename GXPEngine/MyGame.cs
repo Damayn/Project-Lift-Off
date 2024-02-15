@@ -73,24 +73,23 @@ public class MyGame : Game {
             }
             /// still work in progress
             /// 
-            if (Input.GetKey(Key.Q))
+           
+            if (isTimePaused && Input.GetKeyDown(Key.Q))
             {
+
+                  pause.Destroy();
 
                 TogglePauseTime();
 
             }
-            if (!isTimePaused)
-            {
-
-                    pause.Destroy();
-
-            }
-            else if (isTimePaused)
+            else if (!isTimePaused && Input.GetKeyDown(Key.Q))
             {
 
                 pause = new Pause(game.width, game.height, "white.png");
                 AddChild(pause);
-              
+
+                TogglePauseTime();
+
             }
 
         }
