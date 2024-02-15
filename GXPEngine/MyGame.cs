@@ -52,8 +52,12 @@ public class MyGame : Game {
         screenShake = new ScreenShake();
         screenShake.ShakeScreen(1000f, 2f);
         AddChild (screenShake);
-
+        //
         isTimePaused = false;
+
+        pause = new Pause(game.width, game.height, "black.png");
+        AddChild(pause);
+
     }
 
     void Update() 
@@ -68,22 +72,25 @@ public class MyGame : Game {
                 CreateSeedBags();
             }
             /// still work in progress
-            if (!isTimePaused)
+            /// 
+            if (Input.GetKey(Key.Q))
             {
-
-
-
-               TogglePauseTime();
-
-          }
-            else if (isTimePaused)
-            {
-
-                pause = new Pause(game.width, game.height, "black.png");
-                AddChild(pause);
 
                 TogglePauseTime();
 
+            }
+            if (!isTimePaused)
+            {
+
+                    pause.Destroy();
+
+            }
+            else if (isTimePaused)
+            {
+
+                pause = new Pause(game.width, game.height, "white.png");
+                AddChild(pause);
+              
             }
 
         }
