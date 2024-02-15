@@ -9,11 +9,11 @@ public class ScreenShake : GameObject
     private Vector2 originalPosition; // position to go back to
     private Random random = new Random();
 
-    private float shakeAmount = 50.0f; // intensity
+    private float shakeAmount = 20.0f; // intensity
 
     private float shakeDuration = 1000f; // duration of shake
-    private float shakeTimer = 100.0f; // start of timer has to be > 0
-    private float shakeSpeed = 200.0f;
+    private float shakeTimer = 0.0f; // start of timer has to be > 0
+    private float shakeSpeed = 5.0f;
 
     public ScreenShake() : base()
     {
@@ -24,8 +24,8 @@ public class ScreenShake : GameObject
 
     void Update()
     {
-
-        if (shakeTimer > 0 && Input.GetKeyDown(Key.LEFT_SHIFT))
+        
+        if (shakeTimer > 0)
         {
 
             float shakeAmountX = Mathf.Sin(shakeTimer * shakeSpeed) * shakeAmount;

@@ -48,7 +48,8 @@ public class MyGame : Game {
         AddChild(customers);
 
         screenShake = new ScreenShake();
-        screenShake.ShakeScreen(100, 10f);
+        screenShake.ShakeScreen(1000f, 2f);
+        AddChild (screenShake);
 
         isTimePaused = false;
     }
@@ -65,14 +66,14 @@ public class MyGame : Game {
                 CreateSeedBags();
             }
             /// still work in progress
-           // if (!isTimePaused)
-           // {
+            if (!isTimePaused)
+            {
 
 
 
-            //    TogglePauseTime();
+               TogglePauseTime();
 
-          //  }
+          }
 
         }
 
