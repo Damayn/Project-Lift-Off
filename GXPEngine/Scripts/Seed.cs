@@ -19,6 +19,7 @@ class Seed : AnimationSprite
         this.seedBagIndex = seedBagIndex;
 
         SetXY (xPos, yPos);
+        SetScaleXY (0.32f, 0.32f);
     }
 
     void Update () 

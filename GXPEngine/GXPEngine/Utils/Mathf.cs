@@ -206,6 +206,16 @@ namespace GXPEngine
 			return f < min ? min : (f > max ? max : f);
 		}
 
-	}
+        public static float Lerp(float a, float b, float t)
+        {
+            return a + (b - a) * t;
+        }
+
+        public static float Clamp01(float value)
+        {
+            return value < 0 ? 0 : (value > 1 ? 1 : value);
+        }
+
+    }
 }
 

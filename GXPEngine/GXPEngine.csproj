@@ -96,6 +96,7 @@
     <Compile Include="Scripts\Pot.cs" />
     <Compile Include="Scripts\ScreenShake.cs" />
     <Compile Include="Scripts\Seed.cs" />
+    <Compile Include="Scripts\Slider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
