@@ -3,16 +3,17 @@ using GXPEngine.Core;
 using System;
 using System.Security.Permissions;
 
-public class ScreenShake:GameObject{
+public class ScreenShake : GameObject
+{
 
     private Vector2 originalPosition; // position to go back to
     private Random random = new Random();
 
-    private float shakeAmount = 20.0f; // intensity
+    private float shakeAmount = 50.0f; // intensity
 
-    private float shakeDuration = 100f; // duration of shake
-    private float shakeTimer = 0.0f; // start of timer has to be > 0
-    private float shakeSpeed = 1.0f;
+    private float shakeDuration = 1000f; // duration of shake
+    private float shakeTimer = 100.0f; // start of timer has to be > 0
+    private float shakeSpeed = 200.0f;
 
     public ScreenShake() : base()
     {
@@ -27,13 +28,16 @@ public class ScreenShake:GameObject{
         if (shakeTimer > 0 && Input.GetKeyDown(Key.LEFT_SHIFT))
         {
 
-            float shakeX = ((float)random.NextDouble() * 2 - 1) * GetRandomShakeAmount();
-            float shakeY = ((float)random.NextDouble() * 2 - 1) * GetRandomShakeAmount();
+            float shakeAmountX = Mathf.Sin(shakeTimer * shakeSpeed) * shakeAmount;
+            float shakeAmountY = Mathf.Cos(shakeTimer * shakeSpeed) * shakeAmount;
+
+            float shakeX = ((float)random.NextDouble() * 2 - 1) * shakeAmountX;
+            float shakeY = ((float)random.NextDouble() * 2 - 1) * shakeAmountY;
 
             game.x = originalPosition.x + shakeX;
             game.y = originalPosition.y + shakeY;
 
-            shakeTimer -= Time.deltaTime * 1000;
+            shakeTimer -= Time.deltaTime;
 
         }
         else
@@ -64,4 +68,3 @@ public class ScreenShake:GameObject{
     }
 
 }
-

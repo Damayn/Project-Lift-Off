@@ -10,6 +10,8 @@ public class MyGame : Game {
 
     Sprite background;
 
+    ScreenShake screenShake;
+
     private List<Pot> pots = new List<Pot>();
     private List<Seed> seedBags = new List<Seed>();
 
@@ -18,8 +20,9 @@ public class MyGame : Game {
 
     private bool potHasPotBeenCreated = false;
 
+    bool isTimePaused;
 
-	public MyGame() : base(1366, 768, false, false, -1, -1, false)
+    public MyGame() : base(1366, 768, false, false, -1, -1, false)
 	{
 		SetUp();
 	}
@@ -44,7 +47,10 @@ public class MyGame : Game {
         Customers customers = new Customers(settings);
         AddChild(customers);
 
+        screenShake = new ScreenShake();
+        screenShake.ShakeScreen(100, 10f);
 
+        isTimePaused = false;
     }
 
     void Update() 
@@ -58,9 +64,24 @@ public class MyGame : Game {
                 CreatePots();
                 CreateSeedBags();
             }
+            /// still work in progress
+           // if (!isTimePaused)
+           // {
+
+
+
+            //    TogglePauseTime();
+
+          //  }
+
         }
 
         SelectionMechanic();
+    }
+
+    public void TogglePauseTime()
+    {
+        isTimePaused = !isTimePaused;
     }
 
     void CreatePots()
