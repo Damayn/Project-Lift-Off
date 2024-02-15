@@ -13,7 +13,7 @@ public class ScreenShake : GameObject
 
     private float shakeDuration = 1000f; // duration of shake
     private float shakeTimer = 0.0f; // start of timer has to be > 0
-    private float shakeSpeed = 5.0f;
+    private float shakeSpeed = 5.0f; // frequency of shake
 
     public ScreenShake() : base()
     {

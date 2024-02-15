@@ -12,6 +12,8 @@ public class MyGame : Game {
 
     ScreenShake screenShake;
 
+    Pause pause;
+
     private List<Pot> pots = new List<Pot>();
     private List<Seed> seedBags = new List<Seed>();
 
@@ -74,6 +76,15 @@ public class MyGame : Game {
                TogglePauseTime();
 
           }
+            else if (isTimePaused)
+            {
+
+                pause = new Pause(game.width, game.height, "black.png");
+                AddChild(pause);
+
+                TogglePauseTime();
+
+            }
 
         }
 

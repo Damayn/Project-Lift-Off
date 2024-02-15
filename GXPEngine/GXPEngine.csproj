@@ -91,6 +91,7 @@
     <Compile Include="Scripts\Menus\MenuManager.cs" />
     <Compile Include="Scripts\Menus\OptionsMenu.cs" />
     <Compile Include="Scripts\Customers.cs" />
+    <Compile Include="Scripts\Menus\Pause.cs" />
     <Compile Include="Scripts\Plant.cs" />
     <Compile Include="Scripts\Pot.cs" />
     <Compile Include="Scripts\ScreenShake.cs" />

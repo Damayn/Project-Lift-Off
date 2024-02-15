@@ -10,7 +10,7 @@ public class GameSettings
     public bool inSeedBagSelection = false;
     public bool inPotSelection = false;
 
-    public string[] people = { "Faces.png", "Rolling.png", "Rolling.png", "Faces.png", "Faces.png" };
+    public string[] people = { "Faces.png", "Rolling.png", "Viking.png", "cat.png", "Bird.png" };
     public GameSettings()
     {
     
