@@ -133,7 +133,7 @@ public class MyGame : Game {
             settings.hey = Gamestate.isTimeUnPaused;
 
         }
-        else if (settings.hey == Gamestate.isTimeUnPaused;)
+        else if (settings.hey == Gamestate.isTimeUnPaused)
         {
 
             settings.hey = Gamestate.isTimePaused;
