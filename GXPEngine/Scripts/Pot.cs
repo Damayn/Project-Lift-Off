@@ -9,7 +9,7 @@ public class Pot : AnimationSprite
     public int potIndex;
 
     public bool isHovered;
-    public bool isChosen;
+    public bool isSelected;
 
     // Constructor with parameters for position
     public Pot(float x, float y, int potIndex, int cols, int rows) : base("pot.png", cols, rows)

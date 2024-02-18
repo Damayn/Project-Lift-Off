@@ -8,9 +8,6 @@ public enum Gamestate
 {
     cumming,
     gooning
-    
-
-
 }
 
 

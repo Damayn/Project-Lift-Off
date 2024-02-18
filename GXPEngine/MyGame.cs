@@ -22,12 +22,16 @@ public class MyGame : Game {
 
     private bool potHasPotBeenCreated = false;
 
-    public MyGame() : base(1366, 768, false, false, -1, -1, false)
+    private Sprite seedBagSelectionMenu;
+
+    Slider slider;
+
+	public MyGame() : base(1366, 768, false, false, -1, -1, false)
 	{
 		SetUp();
 	}
 
-	private void SetUp () 
+	void SetUp () 
 	{
         settings = new GameSettings();
 
@@ -55,8 +59,8 @@ public class MyGame : Game {
 
         pause = new Pause(game.width, game.height, "black.png");
         AddChild(pause);
-
     }
+
 
     void Update() 
 	{
@@ -67,15 +71,17 @@ public class MyGame : Game {
             if (potHasPotBeenCreated == false)
             {
                 CreatePots();
-                CreateSeedBags();
+
+                slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 20, 50);
+                AddChild(slider);
             }
             /// still work in progress
             /// 
-           
+
             if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
 
-                  pause.Destroy();
+                pause.Destroy();
 
                 TogglePauseTime();
 
@@ -90,12 +96,35 @@ public class MyGame : Game {
 
             }
 
+
+            if (!settings.isTimePaused) 
+            {
+                UpdateProductionSlider();
+                IncreaseLevel();
+                SelectionMechanic();
+            }
+
+            Console.WriteLine(settings.currentLevel);
         }
 
-        SelectionMechanic();
     }
 
-    public void TogglePauseTime()
+    void UpdateProductionSlider () 
+    {
+        slider.currentValue = settings.currentProductionValue;
+    }
+
+    void IncreaseLevel ()
+    {
+        if (slider.currentValue == slider.maximumValue)
+        {
+            slider.maximumValue *= 2;
+            slider.currentValue = slider.maximumValue / 2;
+            settings.currentLevel++;
+        }
+    }
+
+    void TogglePauseTime()
     {
         settings.isTimePaused = !settings.isTimePaused;
     }
@@ -143,27 +172,26 @@ public class MyGame : Game {
         int seedBagIndex = 0;
 
         // Calculate the number of seed bags per row and spacing
-        int numSeedBagsPerRow = 2;
-        float seedBagSpacingX = 200f;
-        float seedBagSpacingY = 200f;
+        int numSeedBagsPerRow = 5;
+        float seedBagSpacing = (seedBagSelectionMenu.width / 5);
 
         // Calculate the total width of the seed bags
-        float totalSeedBagsWidth = (numSeedBagsPerRow - 1) * seedBagSpacingX;
+        float totalSeedBagsWidth = (numSeedBagsPerRow - 1) * seedBagSpacing;
 
         // Calculate the starting x position for the first seed bag
-        float startX = 100; // Adjust this as needed
+        float startX = seedBagSelectionMenu.x - seedBagSelectionMenu.width / 2 + 5;
 
         // Calculate the starting y position for the first seed bag
-        float startY = (height - (2 * seedBagSpacingY)) / 2; // Adjust this as needed
+        float startY = seedBagSelectionMenu.y - seedBagSelectionMenu.height / 2 + seedBagSelectionMenu.height / 4;
 
         // Create seed bags using a for loop
         for (int i = 0; i < 5; i++)
         {
             // Calculate the x position for the current seed bag
-            float x = startX + (i % numSeedBagsPerRow) * seedBagSpacingX;
+            float x = startX + (i % numSeedBagsPerRow) * seedBagSpacing;
 
             // Calculate the y position for the current seed bag
-            float y = startY + (i / numSeedBagsPerRow) * seedBagSpacingY;
+            float y = startY + (i / numSeedBagsPerRow) * seedBagSpacing;
 
             seedBagIndex++;
 
@@ -174,42 +202,62 @@ public class MyGame : Game {
         }
     }
 
+    void DeleteSeedBags () 
+    {
+        foreach (Seed seed in seedBags)
+        {
+            seed.LateDestroy();
+        }
+
+        seedBags.Clear();
+    }
+
     void SelectionMechanic()
+    {
+        ToggleSelectionMode();
+
+        HandleSelectionInput();
+
+        UpdateSelectionHoverState();
+
+        HandleMouseInput();
+    }
+
+    void ToggleSelectionMode()
     {
         if (Input.GetKeyDown(Key.SPACE))
         {
-
-            //settings.inSelectionMode = !settings.inSelectionMode;
-            if (settings.inSeedBagSelection == false && settings.inPotSelection == false)
+            if (settings.inPotSelection == false && !settings.inSeedBagSelection) // If the pot selection is off
             {
-                settings.inSeedBagSelection = true;
-            } else if (settings.inSeedBagSelection == true && settings.inPotSelection == false)
-            {
-                settings.inSeedBagSelection = false;
-                ClearSeedBagSelection ();
+                // Turn it on
+                settings.inPotSelection = true;
             }
-
-            if (settings.inPotSelection && settings.inSeedBagSelection == false)
+            else if (settings.inPotSelection == true) // If pot selection is on
             {
+                // Turn it off
                 settings.inPotSelection = false;
-                ClearPotSelection ();
+                // Clear all selected pots
+                ClearPotSelection();
+            }
+            else if (!settings.inPotSelection && settings.inSeedBagSelection) // If the seed bag selection is on and space is pressed
+            {
+                // Turn the selection off
+                settings.inSeedBagSelection = false;
+                // Clear all selected seed bags
+                ClearSeedBagSelection();
+                DeleteSeedBags();
+                seedBagSelectionMenu.LateDestroy();
             }
 
             // Reset pot and seed bag selection indices
             currentPotIndex = 0;
             currentSeedBagIndex = 0;
         }
+    }
 
-        if (settings.inSeedBagSelection)
-        {
-            if (Input.GetKeyDown(Key.LEFT))
-            {
-                MoveToPreviousSeedBag();
-            } else if (Input.GetKeyDown(Key.RIGHT)) 
-            {
-                MoveToNextSeedBag();
-            }
-        }  else if (settings.inPotSelection)
+    void HandleSelectionInput()
+    {
+        if (settings.inPotSelection) // If in pot selection mode
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
@@ -220,7 +268,20 @@ public class MyGame : Game {
                 MoveToNextPot();
             }
         }
-
+        else if (settings.inSeedBagSelection) // If in seed bag selection mode
+        {
+            if (Input.GetKeyDown(Key.LEFT))
+            {
+                MoveToPreviousSeedBag();
+            }
+            else if (Input.GetKeyDown(Key.RIGHT))
+            {
+                MoveToNextSeedBag();
+            }
+        }
+    }
+    void UpdateSelectionHoverState()
+    {
         if (settings.inSeedBagSelection)
         {
             // Set all seed bags to not hovered
@@ -238,33 +299,72 @@ public class MyGame : Game {
             // Set isPotHovered to true for the currently selected pot
             pots[currentPotIndex].isHovered = true;
         }
+    }
 
-        // Check for right mouse button click to select a seed bag
+    void HandleMouseInput()
+    {
+        // Check for left mouse button click
         if (Input.GetMouseButtonDown(0))
         {
-            if (settings.inSeedBagSelection)
+            if (settings.inPotSelection) // If in pot selection mode
             {
+                // Check if the current pot is not already selected
+                if (!pots[currentPotIndex].isSelected)
+                {
+                    // Display the seed bag selection menu above the current pot
+                    seedBagSelectionMenu = new Sprite("seedBagMenu.png");
+                    seedBagSelectionMenu.SetOrigin(seedBagSelectionMenu.width / 2, seedBagSelectionMenu.height / 2);
+                    this.AddChild(seedBagSelectionMenu);
+                    seedBagSelectionMenu.SetXY(pots[currentPotIndex].x, pots[currentPotIndex].y - pots[currentPotIndex].height / 2 - 50);
+
+                    // Create seed bags for selection
+                    CreateSeedBags();
+
+                    // Switch to seed bag selection mode
+                    settings.inPotSelection = false;
+                    settings.inSeedBagSelection = true;
+                }
+                else
+                {
+                    // Deselect the pot if already selected
+                    settings.inPotSelection = false;
+                }
+
+                // Clear all selected pots
+                ClearPotSelection();
+            }
+            else if (settings.inSeedBagSelection) // If in seed bag selection mode
+            {
+                // Destroy the seed bag selection menu
+                seedBagSelectionMenu.LateDestroy();
+
+                // Clear all seed bag selections
                 ClearSeedBagSelection();
 
-                seedBags[currentSeedBagIndex].isSelected = true;
+                if (!pots[currentPotIndex].isSelected)
+                {
+                    // Plant the selected seed bag in the current pot
+                    PlantSeedInPot(seedBags[currentSeedBagIndex], pots[currentPotIndex]);
+                    // Delete the seed bags after planting
+                    DeleteSeedBags();
+                    // Set the current pot as selected
+                    pots[currentPotIndex].isSelected = true;
+                }
+                else
+                {
+                    // Deselect the pot if already selected
+                    pots[currentPotIndex].isSelected = false;
+                }
 
-                settings.inSeedBagSelection = false;
-                settings.inPotSelection = true;
-            }else if (settings.inPotSelection)
-            {
-                // Plant the selected seed bag in the current pot
-                PlantSeedInPot(seedBags[currentSeedBagIndex], pots[currentPotIndex]);
-
-                ClearPotSelection();
-
-                pots[currentPotIndex].isChosen = true;
-
+                // Switch back to pot selection mode
                 settings.inPotSelection = false;
+                // Turn off seed bag selection mode
+                settings.inSeedBagSelection = false;
             }
-               
         }
-
     }
+
+
 
     void MoveToPreviousSeedBag()
     {
@@ -312,24 +412,9 @@ public class MyGame : Game {
         string seedBagName = seedBags[currentSeedBagIndex].name;
         int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
 
-        // Create a new plant with the extracted seed number
-        Plant plant = new Plant("flower" + seedNumber + ".png");
-        plant.SetXY(pot.x, 0);
-        pot.AddChild(plant);
-    }
-
-    void CheckIfPotHasPlant()
-    {
-        foreach (Pot pot in pots)
-        {
-            foreach (Plant plant in pot.GetChildren())
-            {
-                if (plant == null)
-                {
-                    pot.isChosen = false;
-                }
-            }
-        }
+        // Create a new plant with the same number as the seed bag
+        Plant plant = new Plant("flower" + seedNumber + ".png", pot.x, pot.y - pot.height /2 - 20, pot, settings);
+        AddChild(plant);
     }
 
     static void Main() {
