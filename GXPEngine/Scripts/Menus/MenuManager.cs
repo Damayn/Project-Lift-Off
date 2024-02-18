@@ -58,7 +58,7 @@ public class MenuManager : GameObject
     public void SetGameOverMenu()
     {
         // If the game is over
-        if (settings.isGameOver)
+        if (settings.hey == Gamestate.isGameOver)
         {
             // Add the game over text
             if (animationStarted == false)

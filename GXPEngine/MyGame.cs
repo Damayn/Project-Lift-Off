@@ -55,7 +55,7 @@ public class MyGame : Game {
         screenShake.ShakeScreen(1000f, 2f);
         AddChild (screenShake);
         //
-        settings.isTimePaused = false;
+        settings.hey = Gamestate.isTimeUnPaused;
 
         pause = new Pause(game.width, game.height, "black.png");
         AddChild(pause);
@@ -66,7 +66,7 @@ public class MyGame : Game {
 	{
         this.targetFps = 60;
 
-		if (settings.hasGameStarted)
+		if (settings.hey == Gamestate.hasGameStarted)
         {
             if (potHasPotBeenCreated == false)
             {
@@ -78,7 +78,7 @@ public class MyGame : Game {
             /// still work in progress
             /// 
 
-            if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
+            if (settings.hey == Gamestate.isTimePaused && Input.GetKeyDown(Key.Q))
             {
 
                 pause.Destroy();
@@ -86,7 +86,7 @@ public class MyGame : Game {
                 TogglePauseTime();
 
             }
-            else if (!settings.isTimePaused && Input.GetKeyDown(Key.Q))
+            else if (settings.hey == Gamestate.isTimeUnPaused && Input.GetKeyDown(Key.Q))
             {
 
                 pause = new Pause(game.width, game.height, "white.png");
@@ -97,7 +97,7 @@ public class MyGame : Game {
             }
 
 
-            if (!settings.isTimePaused) 
+            if (settings.hey == Gamestate.isTimeUnPaused) 
             {
                 UpdateProductionSlider();
                 IncreaseLevel();
@@ -126,7 +126,20 @@ public class MyGame : Game {
 
     void TogglePauseTime()
     {
-        settings.isTimePaused = !settings.isTimePaused;
+
+        if (settings.hey == Gamestate.isTimePaused)
+        {
+
+            settings.hey = Gamestate.isTimeUnPaused;
+
+        }
+        else if (settings.hey == Gamestate.isTimeUnPaused;)
+        {
+
+            settings.hey = Gamestate.isTimePaused;
+
+        } 
+
     }
 
     void CreatePots()
@@ -227,22 +240,22 @@ public class MyGame : Game {
     {
         if (Input.GetKeyDown(Key.SPACE))
         {
-            if (settings.inPotSelection == false && !settings.inSeedBagSelection) // If the pot selection is off
+            if (settings.hey == Gamestate.inSeedBagSelection) // If the pot selection is off
             {
                 // Turn it on
-                settings.inPotSelection = true;
+                settings.hey = Gamestate.inPotSelection;
             }
-            else if (settings.inPotSelection == true) // If pot selection is on
+            else if (settings.hey == Gamestate.inPotSelection) // If pot selection is on
             {
                 // Turn it off
-                settings.inPotSelection = false;
+                
                 // Clear all selected pots
                 ClearPotSelection();
             }
-            else if (!settings.inPotSelection && settings.inSeedBagSelection) // If the seed bag selection is on and space is pressed
+            else if (settings.hey == Gamestate.inSeedBagSelection) // If the seed bag selection is on and space is pressed
             {
                 // Turn the selection off
-                settings.inSeedBagSelection = false;
+               
                 // Clear all selected seed bags
                 ClearSeedBagSelection();
                 DeleteSeedBags();
@@ -257,7 +270,7 @@ public class MyGame : Game {
 
     void HandleSelectionInput()
     {
-        if (settings.inPotSelection) // If in pot selection mode
+        if (settings.hey == Gamestate.inPotSelection) // If in pot selection mode
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
@@ -268,7 +281,7 @@ public class MyGame : Game {
                 MoveToNextPot();
             }
         }
-        else if (settings.inSeedBagSelection) // If in seed bag selection mode
+        else if (settings.hey == Gamestate.inSeedBagSelection) // If in seed bag selection mode
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
@@ -282,7 +295,7 @@ public class MyGame : Game {
     }
     void UpdateSelectionHoverState()
     {
-        if (settings.inSeedBagSelection)
+        if (settings.hey == Gamestate.inSeedBagSelection)
         {
             // Set all seed bags to not hovered
             ClearSeedBagSelection();
@@ -291,7 +304,7 @@ public class MyGame : Game {
             seedBags[currentSeedBagIndex].isHovered = true;
         }
 
-        if (settings.inPotSelection)
+        if (settings.hey == Gamestate.inPotSelection)
         {
             // Set all pots to not hovered
             ClearPotSelection();
@@ -306,7 +319,7 @@ public class MyGame : Game {
         // Check for left mouse button click
         if (Input.GetMouseButtonDown(0))
         {
-            if (settings.inPotSelection) // If in pot selection mode
+            if (settings.hey == Gamestate.inPotSelection) // If in pot selection mode
             {
                 // Check if the current pot is not already selected
                 if (!pots[currentPotIndex].isSelected)
@@ -321,19 +334,20 @@ public class MyGame : Game {
                     CreateSeedBags();
 
                     // Switch to seed bag selection mode
-                    settings.inPotSelection = false;
-                    settings.inSeedBagSelection = true;
+                    
+                    settings.hey = Gamestate.inSeedBagSelection;
+
                 }
                 else
                 {
                     // Deselect the pot if already selected
-                    settings.inPotSelection = false;
+                    
                 }
 
                 // Clear all selected pots
                 ClearPotSelection();
             }
-            else if (settings.inSeedBagSelection) // If in seed bag selection mode
+            else if (settings.hey == Gamestate.inSeedBagSelection) // If in seed bag selection mode
             {
                 // Destroy the seed bag selection menu
                 seedBagSelectionMenu.LateDestroy();
@@ -357,9 +371,9 @@ public class MyGame : Game {
                 }
 
                 // Switch back to pot selection mode
-                settings.inPotSelection = false;
+                
                 // Turn off seed bag selection mode
-                settings.inSeedBagSelection = false;
+                
             }
         }
     }

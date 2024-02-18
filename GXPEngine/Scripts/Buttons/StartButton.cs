@@ -14,8 +14,9 @@ public class StartButton : Button
     {
         if (hasBeenPressed)
         {
-            settings.hasGameStarted = true;
-            settings.isGameOver = false;
+
+            settings.hey = Gamestate.hasGameStarted;
+            
         }
 
         base.Update();

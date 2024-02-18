@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public enum Gamestate
+public enum Gamestates
 {
     cumming,
     gooning
@@ -14,7 +14,7 @@ public enum Gamestate
 class example_enum
 {
 
-    public Gamestate currentgamestate;
+    public Gamestates currentgamestate;
 
     void Start()
     {
@@ -24,7 +24,7 @@ class example_enum
     }
     void Update()
     {
-        if (currentgamestate == Gamestate.gooning)
+        if (currentgamestate == Gamestates.gooning)
         {
 
 
