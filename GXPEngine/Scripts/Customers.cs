@@ -14,6 +14,8 @@ public class Customers : AnimationSprite
 
     GameSettings settings;
 
+    ScreenShake screenShake;
+
     public Customers(GameSettings settings) : base(settings.people[new Random().Next(1, 5)], 5, 2)
     {
         lastChangeOfFace = Time.time;
@@ -21,8 +23,6 @@ public class Customers : AnimationSprite
         this.settings = settings;
 
         random = new Random();
-
-        //SetRandomImageFilename();
         
     }
 
@@ -34,6 +34,14 @@ public class Customers : AnimationSprite
             lastChangeOfFace = Time.time;
             frame++;
             SetCycle(frame, 1);
+
+        }
+        if(frame == 10)
+        {
+
+            screenShake = new ScreenShake();
+            screenShake.ShakeScreen(1000f, 2f);
+            AddChild(screenShake);
 
         }
 

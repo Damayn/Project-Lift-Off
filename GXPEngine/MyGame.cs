@@ -10,7 +10,7 @@ public class MyGame : Game {
 
     Sprite background;
 
-    ScreenShake screenShake;
+    //ScreenShake screenShake;
 
     Pause pause;
 
@@ -50,10 +50,11 @@ public class MyGame : Game {
 
         Customers customers = new Customers(settings);
         AddChild(customers);
-
+        /*
         screenShake = new ScreenShake();
         screenShake.ShakeScreen(1000f, 2f);
         AddChild (screenShake);
+        */
         //
         settings.isTimePaused = false;
 
