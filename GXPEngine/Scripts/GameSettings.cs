@@ -4,17 +4,24 @@ using System;
 public enum Gamestate
 {
 
-    hasGameStarted,
-    isGameOver,
+    //hasGameStarted,
+    //isGameOver,
     inSelectionMode,
     inSeedBagSelection,
     inPotSelection,
-    isTimePaused,
-    isTimeUnPaused
+    //isTimePaused,
+    //isTimeUnPaused
 
 }
+
 public class GameSettings
 {
+
+    public bool isTimePaused = false;
+
+    public bool hasGameStarted = false;
+
+    public bool isGameOver = false;
 
     public Gamestate hey;
 

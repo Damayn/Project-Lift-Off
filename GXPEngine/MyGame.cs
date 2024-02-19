@@ -55,7 +55,7 @@ public class MyGame : Game {
         screenShake.ShakeScreen(1000f, 2f);
         AddChild (screenShake);
         //
-        settings.hey = Gamestate.isTimeUnPaused;
+        settings.isTimePaused = false;
 
         pause = new Pause(game.width, game.height, "black.png");
         AddChild(pause);
@@ -66,7 +66,7 @@ public class MyGame : Game {
 	{
         this.targetFps = 60;
 
-		if (settings.hey == Gamestate.hasGameStarted)
+		if (settings.hasGameStarted)
         {
             if (potHasPotBeenCreated == false)
             {
@@ -78,7 +78,7 @@ public class MyGame : Game {
             /// still work in progress
             /// 
 
-            if (settings.hey == Gamestate.isTimePaused && Input.GetKeyDown(Key.Q))
+            if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
 
                 pause.Destroy();
@@ -86,7 +86,7 @@ public class MyGame : Game {
                 TogglePauseTime();
 
             }
-            else if (settings.hey == Gamestate.isTimeUnPaused && Input.GetKeyDown(Key.Q))
+            else if (!settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
 
                 pause = new Pause(game.width, game.height, "white.png");
@@ -97,7 +97,7 @@ public class MyGame : Game {
             }
 
 
-            if (settings.hey == Gamestate.isTimeUnPaused) 
+            if (!settings.isTimePaused) 
             {
                 UpdateProductionSlider();
                 IncreaseLevel();
@@ -127,18 +127,7 @@ public class MyGame : Game {
     void TogglePauseTime()
     {
 
-        if (settings.hey == Gamestate.isTimePaused)
-        {
-
-            settings.hey = Gamestate.isTimeUnPaused;
-
-        }
-        else if (settings.hey == Gamestate.isTimeUnPaused)
-        {
-
-            settings.hey = Gamestate.isTimePaused;
-
-        } 
+        settings.isTimePaused = !settings.isTimePaused;
 
     }
 

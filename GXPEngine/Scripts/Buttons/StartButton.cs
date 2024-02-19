@@ -15,7 +15,8 @@ public class StartButton : Button
         if (hasBeenPressed)
         {
 
-            settings.hey = Gamestate.hasGameStarted;
+            settings.hasGameStarted = true;
+            settings.isGameOver = false;
             
         }
 
