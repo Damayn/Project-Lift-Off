@@ -35,12 +35,19 @@ public class Customers : AnimationSprite
             frame++;
             SetCycle(frame, 1);
 
+            if(frame > 11)
+            {
+
+                LateDestroy();
+
+            }
+
         }
         if(frame == 10)
         {
 
             screenShake = new ScreenShake();
-            screenShake.ShakeScreen(1000f, 2f);
+            screenShake.ShakeScreen(100f, 2f);
             AddChild(screenShake);
 
         }

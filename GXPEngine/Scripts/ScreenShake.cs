@@ -9,7 +9,7 @@ public class ScreenShake : GameObject
     private Vector2 originalPosition; // position to go back to
     private Random random = new Random();
 
-    private float shakeAmount = 20.0f; // intensity
+    private float shakeAmount = 10.0f; // intensity
 
     private float shakeDuration = 1000f; // duration of shake
     private float shakeTimer = 0.0f; // start of timer has to be > 0
@@ -36,6 +36,8 @@ public class ScreenShake : GameObject
 
             game.x = originalPosition.x + shakeX;
             game.y = originalPosition.y + shakeY;
+
+            GetRandomShakeAmount();
 
             shakeTimer -= Time.deltaTime;
 

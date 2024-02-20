@@ -49,6 +49,12 @@ public class MyGame : Game {
         AddChild (background);
 
         Customers customers = new Customers(settings);
+
+        customers.x = 1150;
+        customers.y = 150;
+        customers.width = 200;
+        customers.height = 150;
+
         AddChild(customers);
         /*
         screenShake = new ScreenShake();
