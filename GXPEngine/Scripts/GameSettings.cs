@@ -1,5 +1,6 @@
 ﻿using GXPEngine;
 using System;
+using System.Collections.Generic;
 
 
 public class GameSettings
@@ -19,6 +20,9 @@ public class GameSettings
     public float currentProductionValue { get; set; }
 
     public int currentLevel = 2;
+
+    public List<string> collectedFlowers = new List<string>();
+    public List<Customers> customers = new List<Customers>();
     public GameSettings()
     {
     

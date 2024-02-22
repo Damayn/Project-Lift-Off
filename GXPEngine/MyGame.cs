@@ -48,8 +48,9 @@ public class MyGame : Game {
 
         AddChild (background);
 
-        Customers customers = new Customers(settings);
-        AddChild(customers);
+        Customers customer = new Customers(settings);
+        AddChild(customer);
+        settings.customers.Add(customer);
 
         screenShake = new ScreenShake();
         screenShake.ShakeScreen(1000f, 2f);
@@ -66,7 +67,7 @@ public class MyGame : Game {
 	{
         this.targetFps = 60;
 
-		if (settings.hasGameStarted)
+        if (settings.hasGameStarted)
         {
             if (potHasPotBeenCreated == false)
             {
@@ -103,8 +104,6 @@ public class MyGame : Game {
                 IncreaseLevel();
                 SelectionMechanic();
             }
-
-            Console.WriteLine(settings.currentLevel);
         }
 
     }

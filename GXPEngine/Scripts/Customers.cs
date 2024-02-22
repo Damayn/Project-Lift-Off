@@ -1,6 +1,7 @@
 ﻿using GXPEngine;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 public class Customers : AnimationSprite
@@ -12,17 +13,38 @@ public class Customers : AnimationSprite
     int frame = 0;
 
     Random random = new Random();
-
     GameSettings settings;
+    EasyDraw canvas;
 
-    List<string> flowersCollected = new List<string>(); // Array to store collected flowers
+    public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
     public Customers(GameSettings settings) : base(settings.people[new Random().Next(1, 5)], 5, 2)
     {
-        lastChangeOfFace = Time.time;
+        
         this.settings = settings;
+        
+        SetUp();
+    }
+
+    void SetUp ()
+    {
+        this.SetXY(1150, 150);
+        this.width = 200;
+        this.height = 150;
+
+        lastChangeOfFace = Time.time;
         random = new Random();
         SelectFlowers();
+
+        canvas = new EasyDraw(300, 300, false);
+        canvas.SetXY (this.x, this.y - 150);
+        game.AddChild(canvas);
+        DisplayFlowerCounts();
+
+        foreach (string flower in flowersCollected)
+        {
+            Console.WriteLine(flower);
+        }
     }
 
     void Update()
@@ -33,6 +55,8 @@ public class Customers : AnimationSprite
             frame++;
             SetCycle(frame, 1);
         }
+
+      
     }
 
     void SelectFlowers()
@@ -70,14 +94,10 @@ public class Customers : AnimationSprite
 
     void AddFlower(int flowerIndex)
     {
-        while (flowerIndex >= flowersCollected.Count)
-        {
-            flowersCollected.Add(null); // Extend the list to accommodate the new flower
-        }
-        flowersCollected[flowerIndex] = flowers[flowerIndex]; // Add the selected flower to the collected flowers array
-        Console.WriteLine(flowersCollected[flowerIndex]);
+        flowersCollected.Add(flowers[flowerIndex]);
     }
 
+    // Still has to be worked on. Right now for level 1 it is a guarantee that you will get the first flower and for level 2 trough level 10 there should be an increase in the chances but i have to add that
     float CalculateFlowerChance(int flowerIndex)
     {
         if (settings.currentLevel == 1)
@@ -147,5 +167,41 @@ public class Customers : AnimationSprite
 
 
         return 0; // No additional flowers for level 1
+    }
+
+    void DisplayFlowerCounts()
+    {
+        // Get unique flowers from the flowersCollected list
+        var uniqueFlowers = flowersCollected.Distinct();
+
+        // Define initial y position for drawing text
+        int x = 0;
+
+        // Iterate over each unique flower
+        foreach (var flowerName in uniqueFlowers)
+        {
+            // Count occurrences of the current flower in the flowersCollected list
+            int flowerCount = flowersCollected.Count(flower => flower == flowerName);
+
+            // Draw flower image
+            // Assuming you have a method to load and draw flower images
+            // Replace DrawFlowerImage method with your actual implementation
+            DrawFlowerImage(flowerName, x, 20); // Adjust position as needed
+
+            // Draw flower count next to the image
+            canvas.Fill(Color.White); // Set text color
+            canvas.TextFont("Arial", 14); // Set font and size
+            canvas.Text($"{flowerCount}", x, 20); // Adjust position as needed
+
+            // Increment y position for the next flower
+            x += 40; // Adjust spacing between flower counts
+        }
+    }
+
+    void DrawFlowerImage(string flowerName, float x, float y)
+    {
+        Sprite flowerImage = new Sprite(flowerName + ".png");
+        flowerImage.SetXY (x, y); 
+        canvas.AddChild (flowerImage);
     }
 }

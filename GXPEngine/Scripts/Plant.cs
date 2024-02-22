@@ -63,8 +63,6 @@ class Plant : AnimationSprite
         this.scale = 3;
 
         plantTimer = Time.time;
-
-        Console.WriteLine("plant planted");
     }
 
     int GetTimeToGrow(string fileName)
@@ -251,6 +249,26 @@ class Plant : AnimationSprite
 
                 if (isGrown)
                 {
+                    for (int i = 0; i < settings.customers.Count; i++)
+                    {
+                        // Iterate over collected flowers of each customer
+                        for (int j = settings.customers[i].flowersCollected.Count - 1; j >= 0; j--)
+                        {
+                            string flowerName = settings.customers[i].flowersCollected[j];
+                            // Remove the file extension from the plant name for comparison
+                            string plantNameWithoutExtension = this.name.Split('.')[0];
+                            // Check if the flower name matches (without extension)
+                            if (plantNameWithoutExtension == flowerName)
+                            {
+                                // Remove the flower name from the customer's list
+                                settings.customers[i].flowersCollected.RemoveAt(j);
+                                Console.WriteLine("Removed flower: " + flowerName);
+                            }
+                            Console.WriteLine(settings.customers[i].flowersCollected.Count);
+                            break;
+                        }
+                    }
+
                     this.LateDestroy();
                     pot.isSelected = false;
                     settings.currentProductionValue += this.productionAmoutGiven;
