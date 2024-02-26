@@ -69,7 +69,7 @@ public class Customers : AnimationSprite
             }
 
         }
-        /*
+
         if (frame == 10)
         {
 
@@ -78,11 +78,6 @@ public class Customers : AnimationSprite
             //AddChild(screenShake);
 
         }
-<<<<<<< Updated upstream
-        */
-      
-=======
-
         if (flowersCollected.Count <= 0)
         {
             productionSlider.currentValue += GetProductionAmount();
@@ -159,7 +154,6 @@ public class Customers : AnimationSprite
         int flowerValue = baseValue * flowerCount - (int)Math.Pow(0.5, flowerCount); // Adjust multiplier as needed
 
         return flowerValue;
->>>>>>> Stashed changes
     }
 
     void SelectFlowers()

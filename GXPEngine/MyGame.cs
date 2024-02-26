@@ -95,12 +95,7 @@ public class MyGame : Game {
             }
             else if (!settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
-<<<<<<< Updated upstream
-
                 pause = new Pause(game.width, game.height, "white.png",menuManager);
-=======
-                pause = new Pause(game.width, game.height, "white.png");
->>>>>>> Stashed changes
                 AddChild(pause);
 
                 TogglePauseTime();

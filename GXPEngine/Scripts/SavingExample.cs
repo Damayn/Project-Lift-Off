@@ -1,144 +1,143 @@
-﻿using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using GXPEngine;
-/*
- // 
-[Serializable]
-public class GameState
-{
-    // Define properties to represent the state of your game
-    public int playerScore;
-    // Add more properties as needed
-    public GameState()
-    {
-        // Initialize default values
-        playerScore = 0;
+﻿//using System;
+//using System.IO;
+//using System.Runtime.Serialization.Formatters.Binary;
+//using GXPEngine;
 
-    }
+//[Serializable]
+//public class GameState
+//{
+//    // Define properties to represent the state of your game
+//    public int playerScore;
+//    // Add more properties as needed
+//    public GameState()
+//    {
+//        // Initialize default values
+//        playerScore = 0;
 
-    public void IncreaseScore(int pointsToAdd)
-    {
+//    }
 
-        playerScore += pointsToAdd;
+//    public void IncreaseScore(int pointsToAdd)
+//    {
 
-        Console.WriteLine(playerScore);
+//        playerScore += pointsToAdd;
 
-    }
+//        Console.WriteLine(playerScore);
 
-}
+//    }
 
-public class SavingExample : Game
-{
-//naming save file
-    private GameState gameState;
-    private string saveFilePath = "savegame.dat";
+//}
 
-    public SavingExample() : base(800, 600, false, true, -1, -1, false)
-    {
-        // Load saved game state if available
-        if (File.Exists(saveFilePath))
-        {
-            LoadGameState();
-        }
-        else
-        {
-            // Initialize new game state if no save file exists
-            gameState = new GameState();
-        }
+//public class SavingExample : Game
+//{
+////naming save file
+//    private GameState gameState;
+//    private string saveFilePath = "savegame.dat";
 
-        // Your game initialization code goes here
-    }
+//    public SavingExample() : base(800, 600, false, true, -1, -1, false)
+//    {
+//        // Load saved game state if available
+//        if (File.Exists(saveFilePath))
+//        {
+//            LoadGameState();
+//        }
+//        else
+//        {
+//            // Initialize new game state if no save file exists
+//            gameState = new GameState();
+//        }
 
-    void Update()
-    {
-        // Your game update logic goes here
+//        // Your game initialization code goes here
+//    }
 
-        // Example: Save the game state when the player presses a key (e.g., "S" key)
-        if (Input.GetKeyDown(Key.S))
-        {
+//    void Update()
+//    {
+//        // Your game update logic goes here
 
-            SaveGameState();
+//        // Example: Save the game state when the player presses a key (e.g., "S" key)
+//        if (Input.GetKeyDown(Key.S))
+//        {
 
-        }
-// deletes saved files
-        if (Input.GetKeyDown(Key.D))
-        {
+//            SaveGameState();
 
-            DeleteSaveFile();
+//        }
+//// deletes saved files
+//        if (Input.GetKeyDown(Key.D))
+//        {
 
-        }
-//test subject of the saved data
-        if (Input.GetKeyDown(Key.A))
-        {
+//            DeleteSaveFile();
 
-            gameState.IncreaseScore(10); // Increase the player's score by 10 points
+//        }
+////test subject of the saved data
+//        if (Input.GetKeyDown(Key.A))
+//        {
 
+//            gameState.IncreaseScore(10); // Increase the player's score by 10 points
 
 
-        }
+
+//        }
 
 
-    }
+//    }
 
-    void SaveGameState()
-    {
-// creates the file
-        try
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream fileStream = File.Open(saveFilePath, FileMode.Create);
-            formatter.Serialize(fileStream, gameState);
-            fileStream.Close();
-            Console.WriteLine("Game state saved.");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Failed to save game state: " + e.Message);
-        }
-    }
+//    void SaveGameState()
+//    {
+//// creates the file
+//        try
+//        {
+//            BinaryFormatter formatter = new BinaryFormatter();
+//            FileStream fileStream = File.Open(saveFilePath, FileMode.Create);
+//            formatter.Serialize(fileStream, gameState);
+//            fileStream.Close();
+//            Console.WriteLine("Game state saved.");
+//        }
+//        catch (Exception e)
+//        {
+//            Console.WriteLine("Failed to save game state: " + e.Message);
+//        }
+//    }
 
-    void LoadGameState()
-    {
-//opens the file
-        try
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream fileStream = File.Open(saveFilePath, FileMode.Open);
-            gameState = (GameState)formatter.Deserialize(fileStream);
-            fileStream.Close();
-            Console.WriteLine("Game state loaded.");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Failed to load game state: " + e.Message);
-            gameState = new GameState(); // Initialize new game state
-        }
-    }
+//    void LoadGameState()
+//    {
+////opens the file
+//        try
+//        {
+//            BinaryFormatter formatter = new BinaryFormatter();
+//            FileStream fileStream = File.Open(saveFilePath, FileMode.Open);
+//            gameState = (GameState)formatter.Deserialize(fileStream);
+//            fileStream.Close();
+//            Console.WriteLine("Game state loaded.");
+//        }
+//        catch (Exception e)
+//        {
+//            Console.WriteLine("Failed to load game state: " + e.Message);
+//            gameState = new GameState(); // Initialize new game state
+//        }
+//    }
 
-    void DeleteSaveFile()
-    {
-        try
-        {
-            if (File.Exists(saveFilePath))
-            {
-                File.Delete(saveFilePath);
-                Console.WriteLine("Save file deleted.");
-            }
-            else
-            {
-                Console.WriteLine("No save file exists.");
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Failed to delete save file: " + e.Message);
-        }
-    }
+//    void DeleteSaveFile()
+//    {
+//        try
+//        {
+//            if (File.Exists(saveFilePath))
+//            {
+//                File.Delete(saveFilePath);
+//                Console.WriteLine("Save file deleted.");
+//            }
+//            else
+//            {
+//                Console.WriteLine("No save file exists.");
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            Console.WriteLine("Failed to delete save file: " + e.Message);
+//        }
+//    }
 
-    static void Main(string[] args)
-    {
-        new SavingExample().Start();
-    }
-}
-*/
+//    static void Main(string[] args)
+//    {
+//        new SavingExample().Start();
+//    }
+//}
+//*
