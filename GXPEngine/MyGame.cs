@@ -10,6 +10,8 @@ public class MyGame : Game {
 
     Sprite background;
 
+    ScreenShake screenShake;
+
     Pause pause;
 
     private List<Pot> pots = new List<Pot>();
@@ -50,13 +52,14 @@ public class MyGame : Game {
         AddChild(customer);
         settings.customers.Add(customer);
 
+        screenShake = new ScreenShake();
+        screenShake.ShakeScreen(1000f, 2f);
+        AddChild (screenShake);
+        //
         settings.isTimePaused = false;
 
         pause = new Pause(game.width, game.height, "black.png");
         AddChild(pause);
-
-        settings.change = SelectionMode.empty;
-
     }
 
 
@@ -223,23 +226,22 @@ public class MyGame : Game {
     {
         if (Input.GetKeyDown(Key.SPACE))
         {
-            if (settings.change == SelectionMode.empty) // If the pot selection is off
+            if (settings.inPotSelection == false && !settings.inSeedBagSelection) // If the pot selection is off
             {
                 // Turn it on
-                settings.change = SelectionMode.inPotSelection;
-
+                settings.inPotSelection = true;
             }
-            else if (settings.change == SelectionMode.inPotSelection) // If pot selection is on
+            else if (settings.inPotSelection == true) // If pot selection is on
             {
                 // Turn it off
-                settings.change = SelectionMode.empty;
+                settings.inPotSelection = false;
                 // Clear all selected pots
                 ClearPotSelection();
             }
-            else if (settings.change == SelectionMode.inSeedBagSelection) // If the seed bag selection is on and space is pressed
+            else if (!settings.inPotSelection && settings.inSeedBagSelection) // If the seed bag selection is on and space is pressed
             {
                 // Turn the selection off
-                settings.change = SelectionMode.inPotSelection;
+                settings.inSeedBagSelection = false;
                 // Clear all selected seed bags
                 ClearSeedBagSelection();
                 DeleteSeedBags();
@@ -254,7 +256,7 @@ public class MyGame : Game {
 
     void HandleSelectionInput()
     {
-        if (settings.change == SelectionMode.inPotSelection) // If in pot selection mode
+        if (settings.inPotSelection) // If in pot selection mode
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
@@ -265,7 +267,7 @@ public class MyGame : Game {
                 MoveToNextPot();
             }
         }
-        else if (settings.change == SelectionMode.inSeedBagSelection) // If in seed bag selection mode
+        else if (settings.inSeedBagSelection) // If in seed bag selection mode
         {
             if (Input.GetKeyDown(Key.LEFT))
             {
@@ -279,7 +281,7 @@ public class MyGame : Game {
     }
     void UpdateSelectionHoverState()
     {
-        if (settings.change == SelectionMode.inSeedBagSelection)
+        if (settings.inSeedBagSelection)
         {
             // Set all seed bags to not hovered
             ClearSeedBagSelection();
@@ -288,7 +290,7 @@ public class MyGame : Game {
             seedBags[currentSeedBagIndex].isHovered = true;
         }
 
-        if (settings.change == SelectionMode.inPotSelection)
+        if (settings.inPotSelection)
         {
             // Set all pots to not hovered
             ClearPotSelection();
@@ -303,7 +305,7 @@ public class MyGame : Game {
         // Check for left mouse button click
         if (Input.GetMouseButtonDown(0))
         {
-            if (settings.change == SelectionMode.inPotSelection) // If in pot selection mode
+            if (settings.inPotSelection) // If in pot selection mode
             {
                 // Check if the current pot is not already selected
                 if (!pots[currentPotIndex].isSelected)
@@ -318,49 +320,45 @@ public class MyGame : Game {
                     CreateSeedBags();
 
                     // Switch to seed bag selection mode
-                    settings.change = SelectionMode.inSeedBagSelection;
-
-                }
-                    /*}
-                    else
-                    {
-                        // Deselect the pot if already selected
-                        settings.inPotSelection = false;
-                    }
-                    */
-
-                    // Clear all selected pots
-                    ClearPotSelection();
-                }
-                else if (settings.change == SelectionMode.inSeedBagSelection) // If in seed bag selection mode
-                {
-                    // Destroy the seed bag selection menu
-                    seedBagSelectionMenu.LateDestroy();
-
-                    // Clear all seed bag selections
-                    ClearSeedBagSelection();
-
-                    if (!pots[currentPotIndex].isSelected)
-                    {
-                        // Plant the selected seed bag in the current pot
-                        PlantSeedInPot(seedBags[currentSeedBagIndex], pots[currentPotIndex]);
-                        // Delete the seed bags after planting
-                        DeleteSeedBags();
-                        // Set the current pot as selected
-                        pots[currentPotIndex].isSelected = true;
-                    }
-                    else
-                    {
-                        // Deselect the pot if already selected
-                        pots[currentPotIndex].isSelected = false;
-                    }
-                    /*
                     settings.inPotSelection = false;
-                    // Turn off seed bag selection mode
-                    settings.inSeedBagSelection = false;
-                    */
-                    settings.change = SelectionMode.inSeedBagSelection;
-                   
+                    settings.inSeedBagSelection = true;
+                }
+                else
+                {
+                    // Deselect the pot if already selected
+                    settings.inPotSelection = false;
+                }
+
+                // Clear all selected pots
+                ClearPotSelection();
+            }
+            else if (settings.inSeedBagSelection) // If in seed bag selection mode
+            {
+                // Destroy the seed bag selection menu
+                seedBagSelectionMenu.LateDestroy();
+
+                // Clear all seed bag selections
+                ClearSeedBagSelection();
+
+                if (!pots[currentPotIndex].isSelected)
+                {
+                    // Plant the selected seed bag in the current pot
+                    PlantSeedInPot(seedBags[currentSeedBagIndex], pots[currentPotIndex]);
+                    // Delete the seed bags after planting
+                    DeleteSeedBags();
+                    // Set the current pot as selected
+                    pots[currentPotIndex].isSelected = true;
+                }
+                else
+                {
+                    // Deselect the pot if already selected
+                    pots[currentPotIndex].isSelected = false;
+                }
+
+                // Switch back to pot selection mode
+                settings.inPotSelection = false;
+                // Turn off seed bag selection mode
+                settings.inSeedBagSelection = false;
             }
         }
     }

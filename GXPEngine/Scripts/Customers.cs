@@ -16,15 +16,13 @@ public class Customers : AnimationSprite
     GameSettings settings;
     EasyDraw canvas;
 
-    ScreenShake screenShake;
-
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
     public Customers(GameSettings settings) : base(settings.people[new Random().Next(1, 5)], 5, 2)
     {
         
         this.settings = settings;
-
+        
         SetUp();
     }
 
@@ -65,6 +63,7 @@ public class Customers : AnimationSprite
             }
 
         }
+<<<<<<< HEAD
 
         if (frame == 10)
         {
@@ -75,7 +74,10 @@ public class Customers : AnimationSprite
 
         }
 
+=======
+>>>>>>> parent of 773338d (enum and screenshakemerge)
 
+      
     }
 
     void SelectFlowers()
