@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using GXPEngine;
 /*
+ // 
 [Serializable]
 public class GameState
 {
@@ -29,6 +30,7 @@ public class GameState
 
 public class SavingExample : Game
 {
+//naming save file
     private GameState gameState;
     private string saveFilePath = "savegame.dat";
 
@@ -59,14 +61,14 @@ public class SavingExample : Game
             SaveGameState();
 
         }
-
+// deletes saved files
         if (Input.GetKeyDown(Key.D))
         {
 
             DeleteSaveFile();
 
         }
-
+//test subject of the saved data
         if (Input.GetKeyDown(Key.A))
         {
 
@@ -81,6 +83,7 @@ public class SavingExample : Game
 
     void SaveGameState()
     {
+// creates the file
         try
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -97,6 +100,7 @@ public class SavingExample : Game
 
     void LoadGameState()
     {
+//opens the file
         try
         {
             BinaryFormatter formatter = new BinaryFormatter();
