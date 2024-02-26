@@ -5,6 +5,7 @@ using System;
 public class StartButton : Button
 {
     GameSettings settings;
+
     public StartButton(GameSettings settings) : base("PlayButton.png", 2, 1)
     {
         this.settings = settings;

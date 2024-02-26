@@ -10,11 +10,15 @@ public class BackButton : Button
 
     protected override void Update()
     {
+
         if (hasBeenPressed)
         {
+
             menuManager.SetMainMenu();
+
         }
 
         base.Update();
+
     }
 }

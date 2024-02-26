@@ -61,6 +61,8 @@ public class MyGame : Game {
 
         pause = new Pause(game.width, game.height, "black.png");
         AddChild(pause);
+
+        
     }
 
 
@@ -70,6 +72,7 @@ public class MyGame : Game {
 
         if (settings.hasGameStarted)
         {
+
             if (potHasPotBeenCreated == false)
             {
                 CreatePots();
@@ -105,6 +108,12 @@ public class MyGame : Game {
                 IncreaseLevel();
                 SelectionMechanic();
             }
+        }
+        else if (settings.isGameOver)
+        {
+
+            menuManager.SetGameOverMenu();
+
         }
 
     }
@@ -420,4 +429,5 @@ public class MyGame : Game {
     static void Main() {
 		new MyGame().Start();
 	}
+
 }
