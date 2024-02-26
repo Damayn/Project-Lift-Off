@@ -67,7 +67,7 @@ public class Customers : AnimationSprite
             }
 
         }
-
+        /*
         if (frame == 10)
         {
 
@@ -76,7 +76,7 @@ public class Customers : AnimationSprite
             AddChild(screenShake);
 
         }
-
+        */
       
     }
 

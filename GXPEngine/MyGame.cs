@@ -59,9 +59,10 @@ public class MyGame : Game {
         */
         //
         settings.isTimePaused = false;
-
-        pause = new Pause(game.width, game.height, "black.png");
+        /*
+        pause = new Pause(game.width, game.height, "black.png",);
         AddChild(pause);
+        */
 
         
     }
@@ -95,7 +96,7 @@ public class MyGame : Game {
             else if (!settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
 
-                pause = new Pause(game.width, game.height, "white.png");
+                pause = new Pause(game.width, game.height, "white.png",menuManager);
                 AddChild(pause);
 
                 TogglePauseTime();
