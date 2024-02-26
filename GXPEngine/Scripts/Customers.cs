@@ -16,13 +16,15 @@ public class Customers : AnimationSprite
     GameSettings settings;
     EasyDraw canvas;
 
+    ScreenShake screenShake;
+
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
     public Customers(GameSettings settings) : base(settings.people[new Random().Next(1, 5)], 5, 2)
     {
         
         this.settings = settings;
-        
+
         SetUp();
     }
 
@@ -55,8 +57,16 @@ public class Customers : AnimationSprite
             frame++;
             SetCycle(frame, 1);
         }
+        if (frame == 10)
+        {
 
-      
+            screenShake = new ScreenShake();
+            screenShake.ShakeScreen(1000f, 2f);
+            AddChild(screenShake);
+
+        }
+
+
     }
 
     void SelectFlowers()

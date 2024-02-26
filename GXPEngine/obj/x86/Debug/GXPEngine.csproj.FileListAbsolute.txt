@@ -29,3 +29,6 @@ C:\Users\justd\OneDrive\Documents\GitHub\Project-Lift-Off\GXPEngine\obj\x86\Debu
 C:\Users\dpeyc\OneDrive\Desktop\Project-Lift-Off\GXPEngine\bin\Debug\System.IO.Ports.dll
 C:\Users\dpeyc\OneDrive\Desktop\Project-Lift-Off\GXPEngine\bin\Debug\System.IO.Ports.xml
 C:\Users\dpeyc\OneDrive\Desktop\Project-Lift-Off\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CopyComplete
+C:\Users\jtoma\Downloads\Project-Lift-Off\GXPEngine\bin\Debug\System.IO.Ports.dll
+C:\Users\jtoma\Downloads\Project-Lift-Off\GXPEngine\bin\Debug\System.IO.Ports.xml
+C:\Users\jtoma\Downloads\Project-Lift-Off\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CopyComplete
