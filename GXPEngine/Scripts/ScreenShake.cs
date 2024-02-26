@@ -24,7 +24,7 @@ public class ScreenShake : GameObject
 
     void Update()
     {
-        
+         
         if (shakeTimer > 0)
         {
 
@@ -39,7 +39,7 @@ public class ScreenShake : GameObject
 
             GetRandomShakeAmount();
 
-           shakeTimer -= Time.deltaTime;
+            shakeTimer -= Time.deltaTime;
 
         }
         else

@@ -15,17 +15,18 @@ public class Customers : AnimationSprite
     Random random = new Random();
     GameSettings settings;
     EasyDraw canvas;
-
     ScreenShake screenShake;
+    Slider productionSlider;
 
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
-    public Customers(GameSettings settings) : base(settings.people[new Random().Next(1, 5)], 5, 2)
+    public Customers(GameSettings settings, Slider productionSlider) : base(settings.people[new Random().Next(1, 5)], 5, 2)
     {
         
         this.settings = settings;
 
         ScreenShake screenShake = new ScreenShake();
+        this.productionSlider = productionSlider;
 
         SetUp();
     }
@@ -64,6 +65,7 @@ public class Customers : AnimationSprite
 
                 LateDestroy();
 
+                productionSlider.currentValue -= 20 * settings.currentLevel;
             }
 
         }
@@ -71,13 +73,93 @@ public class Customers : AnimationSprite
         if (frame == 10)
         {
 
-            screenShake = new ScreenShake();
-            screenShake.ShakeScreen(1000f, 2f);
-            AddChild(screenShake);
+            //screenShake = new ScreenShake();
+            //screenShake.ShakeScreen(1000f, 2f);
+            //AddChild(screenShake);
 
         }
+<<<<<<< Updated upstream
         */
       
+=======
+
+        if (flowersCollected.Count <= 0)
+        {
+            productionSlider.currentValue += GetProductionAmount();
+            this.Destroy();
+        }    
+    }
+
+    int GetProductionAmount()
+    {
+        int productionAmount = 0;
+
+        // Determine the base production amount based on the frame
+        switch (frame)
+        {
+            case 0: // Adjust based on your frame logic
+                productionAmount = 5; // Example value for frame 0
+                break;
+            case 1: // Adjust based on your frame logic
+                productionAmount = 10; // Example value for frame 1
+                break;
+            // Add more cases as needed for different frames
+            default:
+                // Default production amount
+                productionAmount = 0;
+                break;
+        }
+
+        // Iterate over each unique flower in the flowersCollected list
+        foreach (var uniqueFlower in flowersCollected.Distinct())
+        {
+            // Get the count of the current flower type in the flowersCollected list
+            int flowerCount = flowersCollected.Count(flower => flower == uniqueFlower);
+
+            // Determine the value for the current flower type based on its index and count
+            int flowerValue = CalculateFlowerValue(uniqueFlower, flowerCount);
+
+            // Add the value of the current flower type to the production amount
+            productionAmount += flowerValue;
+        }
+
+        return productionAmount;
+    }
+
+    // Method to calculate the value of each flower type based on its index and count
+    private int CalculateFlowerValue(string flowerType, int flowerCount)
+    {
+        int baseValue = 0;
+
+        // Determine the base value for each flower type
+        switch (flowerType)
+        {
+            case "flower1":
+                baseValue = 20;
+                break;
+            case "flower2":
+                baseValue = 30;
+                break;
+            case "flower3":
+                baseValue = 35;
+                break;
+            case "flower4":
+                baseValue = 45;
+                break;
+            case "flower5":
+                baseValue = 50;
+                break;
+            default:
+                // Default base value
+                baseValue = 0;
+                break;
+        }
+
+        // Calculate the value for each flower based on its count
+        int flowerValue = baseValue * flowerCount - (int)Math.Pow(0.5, flowerCount); // Adjust multiplier as needed
+
+        return flowerValue;
+>>>>>>> Stashed changes
     }
 
     void SelectFlowers()

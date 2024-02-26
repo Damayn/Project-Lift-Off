@@ -61,6 +61,18 @@ public class MenuManager : GameObject
 
     }
 
+    public void SetNameMenu () 
+    {
+        SetCurrentMenu(new NameMenu(settings));
+
+        foreach (GameObject child in game.GetChildren())
+        {
+            if (child is MainMenu)
+            {
+                child.LateDestroy();
+            }    
+        }
+    }
     public void SetGameOverMenu()
     {
         // If the game is over

@@ -17,6 +17,8 @@ public class MyGame : Game {
     private List<Pot> pots = new List<Pot>();
     private List<Seed> seedBags = new List<Seed>();
 
+    private List<Plant> plants = new List<Plant>();
+
     int currentPotIndex = 0;
     int currentSeedBagIndex = 0;
 
@@ -26,6 +28,8 @@ public class MyGame : Game {
 
     Slider slider;
 
+    private bool sliderSetToHalfItsValue;
+    float currentValue;
 	public MyGame() : base(1366, 768, false, false, -1, -1, false)
 	{
 		SetUp();
@@ -49,15 +53,10 @@ public class MyGame : Game {
 
         AddChild (background);
 
-        Customers customer = new Customers(settings);
+        Customers customer = new Customers(settings, slider);
         AddChild(customer);
         settings.customers.Add(customer);
-        /*
-        screenShake = new ScreenShake();
-        screenShake.ShakeScreen(1000f, 2f);
-        AddChild (screenShake);
-        */
-        //
+
         settings.isTimePaused = false;
         /*
         pause = new Pause(game.width, game.height, "black.png",);
@@ -72,43 +71,50 @@ public class MyGame : Game {
 	{
         this.targetFps = 60;
 
-        if (settings.hasGameStarted)
+        if (settings.hasGameStarted && settings.hasEnteredName)
         {
 
             if (potHasPotBeenCreated == false)
             {
                 CreatePots();
 
-                slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 20, 50);
+                slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 100, 50);
+
+                    float speed = 0.05f;
+
+                    slider.currentValue = Mathf.Lerp(slider.currentValue, slider.maximumValue / 2, speed);
+                
                 AddChild(slider);
             }
-            /// still work in progress
-            /// 
 
             if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
-
                 pause.Destroy();
 
                 TogglePauseTime();
-
             }
             else if (!settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
+<<<<<<< Updated upstream
 
                 pause = new Pause(game.width, game.height, "white.png",menuManager);
+=======
+                pause = new Pause(game.width, game.height, "white.png");
+>>>>>>> Stashed changes
                 AddChild(pause);
 
                 TogglePauseTime();
-
             }
 
 
             if (!settings.isTimePaused) 
             {
+
                 UpdateProductionSlider();
-                IncreaseLevel();
+
                 SelectionMechanic();
+
+                DecreaseProductionSlider ();
             }
         }
         else if (settings.isGameOver)
@@ -120,19 +126,29 @@ public class MyGame : Game {
 
     }
 
-    void UpdateProductionSlider () 
+    void UpdateProductionSlider()
     {
-        slider.currentValue = settings.currentProductionValue;
-    }
-
-    void IncreaseLevel ()
-    {
-        if (slider.currentValue == slider.maximumValue)
+        foreach (Plant plant in plants)
         {
+            if (plant.hasBeenClicked)
+            {
+                slider.currentValue += plant.productionAmoutGiven;
+                plant.hasBeenClicked = false;
+            }
+        }
+
+        if (slider.currentValue >= slider.maximumValue)
+        { 
             slider.maximumValue *= 2;
             slider.currentValue = slider.maximumValue / 2;
             settings.currentLevel++;
         }
+    }
+
+    void DecreaseProductionSlider ()
+    {
+        float speed = 0.0002f;
+        slider.currentValue = Mathf.Lerp (slider.currentValue, 0, speed);
     }
 
     void TogglePauseTime()
@@ -426,6 +442,7 @@ public class MyGame : Game {
         // Create a new plant with the same number as the seed bag
         Plant plant = new Plant("flower" + seedNumber + ".png", pot.x, pot.y - pot.height /2 - 20, pot, settings);
         AddChild(plant);
+        plants.Add(plant);
     }
 
     static void Main() {

@@ -8,6 +8,10 @@ public class GameSettings
     
     public bool hasGameStarted = false;
     public bool isGameOver = false;
+
+    public bool hasEnteredName = false;
+    public bool hasAName = false;
+
     public bool inSelectionMode = false;
 
     public bool inSeedBagSelection = false;
@@ -19,7 +23,9 @@ public class GameSettings
 
     public float currentProductionValue { get; set; }
 
-    public int currentLevel = 2;
+    public int currentLevel = 1;
+
+    public string playerName;
 
     public List<string> collectedFlowers = new List<string>();
     public List<Customers> customers = new List<Customers>();

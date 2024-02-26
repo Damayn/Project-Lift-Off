@@ -34,6 +34,7 @@ class Plant : AnimationSprite
 
     public int productionAmoutGiven;
 
+    public bool hasBeenClicked;
     public Plant(string fileName, float x, float y, Pot pot, GameSettings settings) : base(fileName, 2, 4)
     {
         Setup(fileName, x, y);
@@ -57,7 +58,6 @@ class Plant : AnimationSprite
         timeToGrow = GetTimeToGrow(fileName);
         wiltingTimer = GetWiltingCheckTime(fileName);
         wiltingChance = GetWiltingChance(fileName);
-        productionAmoutGiven = GetProductionAmout(fileName);
 
         this.SetXY(x, y);
         this.scale = 3;
@@ -130,29 +130,6 @@ class Plant : AnimationSprite
                 return random.Next(50, 55);
             default:
                 return 0;
-        }
-    }
-
-    int GetProductionAmout(string fileName)
-    {
-        // Extract the number from the file name
-        int flowerNumber = int.Parse(fileName.Substring(fileName.Length - 5, 1));
-
-        // Assign time to grow based on the flower number
-        switch (flowerNumber)
-        {
-            case 1:
-                return 20;
-            case 2:
-                return 25;
-            case 3:
-                return 30;
-            case 4:
-                return 35;
-            case 5:
-                return 40;
-            default:
-                return 50;
         }
     }
 
@@ -272,6 +249,8 @@ class Plant : AnimationSprite
                     this.LateDestroy();
                     pot.isSelected = false;
                     settings.currentProductionValue += this.productionAmoutGiven;
+
+                    this.hasBeenClicked = true;
                 }
             }
         }

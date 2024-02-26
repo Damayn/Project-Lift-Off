@@ -33,10 +33,10 @@ public class MainMenu : GameObject
 
     private void Update()
     {
-
         if (startButton.hasBeenPressed)
         {
             this.LateDestroy();
+            menuManager.SetNameMenu();
         }
     }
 }

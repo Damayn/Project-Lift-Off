@@ -93,12 +93,14 @@
     <Compile Include="Scripts\Buttons\BackButton.cs" />
     <Compile Include="Scripts\Buttons\Button.cs" />
     <Compile Include="Scripts\Buttons\ExitButton.cs" />
+    <Compile Include="Scripts\Buttons\Letter.cs" />
     <Compile Include="Scripts\Buttons\OptionsButton.cs" />
     <Compile Include="Scripts\Buttons\StartButton.cs" />
     <Compile Include="Scripts\GameSettings.cs" />
     <Compile Include="Scripts\Menus\GameOver.cs" />
     <Compile Include="Scripts\Menus\MainMenu.cs" />
     <Compile Include="Scripts\Menus\MenuManager.cs" />
+    <Compile Include="Scripts\Menus\NameMenu.cs" />
     <Compile Include="Scripts\Menus\OptionsMenu.cs" />
     <Compile Include="Scripts\Customers.cs" />
     <Compile Include="Scripts\Menus\Pause.cs" />
