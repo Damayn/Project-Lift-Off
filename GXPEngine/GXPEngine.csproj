@@ -104,6 +104,7 @@
     <Compile Include="Scripts\Menus\Pause.cs" />
     <Compile Include="Scripts\Plant.cs" />
     <Compile Include="Scripts\Pot.cs" />
+    <Compile Include="Scripts\SavingExample.cs" />
     <Compile Include="Scripts\ScreenShake.cs" />
     <Compile Include="Scripts\Seed.cs" />
     <Compile Include="Scripts\Serial\Serialport.cs" />
