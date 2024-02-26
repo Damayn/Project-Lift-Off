@@ -24,7 +24,9 @@ public class Customers : AnimationSprite
     {
         
         this.settings = settings;
-        
+
+        ScreenShake screenShake = new ScreenShake();
+
         SetUp();
     }
 
@@ -65,7 +67,6 @@ public class Customers : AnimationSprite
             }
 
         }
-<<<<<<< HEAD
 
         if (frame == 10)
         {
@@ -75,9 +76,6 @@ public class Customers : AnimationSprite
             AddChild(screenShake);
 
         }
-
-=======
->>>>>>> parent of 773338d (enum and screenshakemerge)
 
       
     }

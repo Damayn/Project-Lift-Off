@@ -37,7 +37,9 @@ public class ScreenShake : GameObject
             game.x = originalPosition.x + shakeX;
             game.y = originalPosition.y + shakeY;
 
-            shakeTimer -= Time.deltaTime;
+            GetRandomShakeAmount();
+
+           shakeTimer -= Time.deltaTime;
 
         }
         else
