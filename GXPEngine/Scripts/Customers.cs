@@ -56,7 +56,16 @@ public class Customers : AnimationSprite
             lastChangeOfFace = Time.time;
             frame++;
             SetCycle(frame, 1);
+
+            if(frame > 11)
+            {
+
+                LateDestroy();
+
+            }
+
         }
+
         if (frame == 10)
         {
 
