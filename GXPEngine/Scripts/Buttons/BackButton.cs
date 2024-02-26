@@ -15,6 +15,7 @@ public class BackButton : Button
         {
 
             menuManager.SetMainMenu();
+            LateDestroy();
 
         }
 

@@ -36,6 +36,7 @@ public class MyGame : Game {
         settings = new GameSettings();
 
         menuManager = new MenuManager(settings);
+        //kills the buttons?
 		menuManager.SetMainMenu();
 		AddChild (menuManager);
         //hardcoding of background image testing (change it if you want)
