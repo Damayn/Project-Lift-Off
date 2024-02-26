@@ -18,6 +18,8 @@ public class Pause : EasyDraw
         //position, image size, padding?, 
         graphics.DrawImage(image, new Rectangle(0, 0, 1366, 768), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
 
+
+
     }
 
 }

@@ -95,7 +95,6 @@
     <Compile Include="Scripts\Buttons\ExitButton.cs" />
     <Compile Include="Scripts\Buttons\OptionsButton.cs" />
     <Compile Include="Scripts\Buttons\StartButton.cs" />
-    <Compile Include="Scripts\example enum.cs" />
     <Compile Include="Scripts\GameSettings.cs" />
     <Compile Include="Scripts\Menus\GameOver.cs" />
     <Compile Include="Scripts\Menus\MainMenu.cs" />
