@@ -51,10 +51,11 @@ public class MyGame : Game {
         Customers customer = new Customers(settings);
         AddChild(customer);
         settings.customers.Add(customer);
-
+        /*
         screenShake = new ScreenShake();
         screenShake.ShakeScreen(1000f, 2f);
         AddChild (screenShake);
+        */
         //
         settings.isTimePaused = false;
 
