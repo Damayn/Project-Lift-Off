@@ -68,6 +68,7 @@ public class MyGame : Game {
 
         AddChild(slider);
 
+        Console.WriteLine(settings.customers.Count);
     }
 
 
@@ -77,15 +78,6 @@ public class MyGame : Game {
 
         if (settings.hasGameStarted && settings.hasEnteredName)
         {
-
-
-            if (potHasPotBeenCreated == false)
-            {
-                
-
-                
-            }
-
             if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
 

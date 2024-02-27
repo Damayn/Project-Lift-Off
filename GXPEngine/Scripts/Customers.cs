@@ -45,11 +45,12 @@ public class Customers : AnimationSprite
         canvas.SetXY (this.x, this.y - 150);
         game.AddChild(canvas);
         DisplayFlowerCounts();
-
-        foreach (string flower in flowersCollected)
-        {
-            Console.WriteLine(flower);
-        }
+        
+                foreach (string flower in flowersCollected)
+                {
+                    Console.WriteLine(flower);
+                }
+        
     }
 
     void Update()
@@ -292,6 +293,8 @@ public class Customers : AnimationSprite
 
             // Increment y position for the next flower
             x += 40; // Adjust spacing between flower counts
+
+            Console.WriteLine(flowerCount);
         }
     }
 

@@ -46,10 +46,7 @@ public class MenuManager : GameObject
 
                     gameObject.LateDestroy();
 
-                    if (gameObject is Customers) 
-                    {
-                        settings.customers.Remove((Customers)gameObject);
-                    }
+                        settings.customers.Clear();
                 }
 
             }
