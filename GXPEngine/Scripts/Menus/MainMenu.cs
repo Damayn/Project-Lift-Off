@@ -5,30 +5,34 @@ public class MainMenu : GameObject
     MenuManager menuManager;
     GameSettings settings;
 
+    MyGame gameRef;
+
     StartButton startButton;
     OptionsButton optionsButton;
     ExitButton exitButton;
 
-    public MainMenu (MenuManager menuManager, GameSettings settings) : base ()
+    public MainMenu (MenuManager menuManager, GameSettings settings, MyGame gameRef) : base()
     {
 
         this.menuManager = menuManager;
         this.settings = settings;
+        this.gameRef = gameRef;
 
         // Creating the start button
-        startButton = new StartButton (settings);
-        startButton.SetXY ( game.width /2, game.height /2 - startButton.width /2);
-        AddChild (startButton);
+        startButton = new StartButton(this.settings);
+        startButton.SetXY(game.width / 2, game.height / 2 - startButton.width / 2);
+        AddChild(startButton);
 
         // Creating the options button
-        optionsButton = new OptionsButton (menuManager);
-        optionsButton.SetXY(game.width /2, game.height /2);
+        optionsButton = new OptionsButton(menuManager);
+        optionsButton.SetXY(game.width / 2, game.height / 2);
         AddChild(optionsButton);
 
         // Creating the exit button
-        exitButton = new ExitButton ();
-        exitButton.SetXY (game.width /2, game.height /2 + exitButton.width /2);
-        AddChild (exitButton);
+        exitButton = new ExitButton();
+        exitButton.SetXY(game.width / 2, game.height / 2 + exitButton.width / 2);
+        AddChild(exitButton);
+       
     }
 
     private void Update()
@@ -36,7 +40,8 @@ public class MainMenu : GameObject
         if (startButton.hasBeenPressed)
         {
             this.LateDestroy();
-            menuManager.SetNameMenu();
+            //menuManager.SetNameMenu();
+            gameRef.SetUp();
         }
     }
 }

@@ -10,8 +10,6 @@ public class MyGame : Game {
 
     Sprite background;
 
-    ScreenShake screenShake;
-
     Pause pause;
 
     private List<Pot> pots = new List<Pot>();
@@ -30,19 +28,20 @@ public class MyGame : Game {
 
     private bool sliderSetToHalfItsValue;
     float currentValue;
-	public MyGame() : base(1366, 768, false, false, -1, -1, false)
-	{
-		SetUp();
-	}
 
-	void SetUp () 
+	public MyGame() : base(1366, 768, false, false, -1, -1, false)
 	{
         settings = new GameSettings();
 
-        menuManager = new MenuManager(settings);
+        menuManager = new MenuManager(settings, this);
         //kills the buttons?
-		menuManager.SetMainMenu();
-		AddChild (menuManager);
+        menuManager.SetMainMenu();
+        AddChild(menuManager);
+    }
+
+	public void SetUp () 
+	{
+        
         //hardcoding of background image testing (change it if you want)
         background = new Sprite("white.png");
 
@@ -58,12 +57,17 @@ public class MyGame : Game {
         settings.customers.Add(customer);
 
         settings.isTimePaused = false;
-        /*
-        pause = new Pause(game.width, game.height, "black.png",);
-        AddChild(pause);
-        */
 
-        
+        CreatePots();
+
+        slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 100, 50);
+
+        float speed = 0.05f;
+
+        slider.currentValue = Mathf.Lerp(slider.currentValue, slider.maximumValue / 2, speed);
+
+        AddChild(slider);
+
     }
 
 
@@ -74,48 +78,49 @@ public class MyGame : Game {
         if (settings.hasGameStarted && settings.hasEnteredName)
         {
 
+
             if (potHasPotBeenCreated == false)
             {
-                CreatePots();
-
-                slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 100, 50);
-
-                    float speed = 0.05f;
-
-                    slider.currentValue = Mathf.Lerp(slider.currentValue, slider.maximumValue / 2, speed);
                 
-                AddChild(slider);
+
+                
             }
 
             if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
+
                 pause.Destroy();
 
                 TogglePauseTime();
+
             }
-            else if (!settings.isTimePaused && Input.GetKeyDown(Key.Q))
-            {
-                pause = new Pause(game.width, game.height, "white.png",menuManager);
-                AddChild(pause);
-
-                TogglePauseTime();
-            }
-
-
-            if (!settings.isTimePaused) 
+            else if (!settings.isTimePaused )
             {
 
                 UpdateProductionSlider();
 
                 SelectionMechanic();
 
-                DecreaseProductionSlider ();
+                DecreaseProductionSlider();
+
+                if (Input.GetKeyDown(Key.Q))
+                {
+
+                    pause = new Pause(game.width, game.height, "white.png", menuManager);
+                    AddChild(pause);
+
+                    TogglePauseTime();
+
+                }
+               
             }
+
         }
         else if (settings.isGameOver)
         {
 
             menuManager.SetGameOverMenu();
+            deleteGamePlay();
 
         }
 
@@ -188,6 +193,12 @@ public class MyGame : Game {
 
         potHasPotBeenCreated = true;
     }
+    // supposedly deletes everychildren
+    public void deleteGamePlay()
+    {
+        
+
+    }
 
     void CreateSeedBags()
     {
@@ -228,7 +239,9 @@ public class MyGame : Game {
     {
         foreach (Seed seed in seedBags)
         {
+
             seed.LateDestroy();
+
         }
 
         seedBags.Clear();
@@ -247,6 +260,7 @@ public class MyGame : Game {
 
     void ToggleSelectionMode()
     {
+
         if (Input.GetKeyDown(Key.SPACE))
         {
             if (settings.inPotSelection == false && !settings.inSeedBagSelection) // If the pot selection is off
@@ -385,8 +399,6 @@ public class MyGame : Game {
             }
         }
     }
-
-
 
     void MoveToPreviousSeedBag()
     {

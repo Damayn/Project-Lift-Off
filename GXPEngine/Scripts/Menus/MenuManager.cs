@@ -6,11 +6,13 @@ public class MenuManager : GameObject
 {
     // Settings reference
     GameSettings settings;
+    MyGame gameRef;
 
-    public MenuManager(GameSettings settings) : base()
+    public MenuManager(GameSettings settings,MyGame gamRef) : base()
     {
 
         this.settings = settings;
+        this.gameRef = gamRef;
 
     }
 
@@ -24,7 +26,7 @@ public class MenuManager : GameObject
     public void SetMainMenu()
     {
         // Sets the current menu to the main menu
-        SetCurrentMenu(new MainMenu(this, settings));
+        SetCurrentMenu(new MainMenu(this, settings, gameRef));
 
         // Deletes the options menu
         foreach (GameObject child in game.GetChildren())
@@ -37,8 +39,22 @@ public class MenuManager : GameObject
 
             }
 
-        }
+            foreach (GameObject gameObject in game.GetChildren())
+            {
+                if (gameObject is Pot || gameObject is Slider || gameObject is Pause || gameObject is Customers || gameObject is Seed || gameObject is Sprite)
+                {
 
+                    gameObject.LateDestroy();
+
+                    if (gameObject is Customers) 
+                    {
+                        settings.customers.Remove((Customers)gameObject);
+                    }
+                }
+
+            }
+
+        }
     }
 
     public void SetOptionsMenu()

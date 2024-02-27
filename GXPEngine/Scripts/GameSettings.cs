@@ -9,7 +9,7 @@ public class GameSettings
     public bool hasGameStarted = false;
     public bool isGameOver = false;
 
-    public bool hasEnteredName = false;
+    public bool hasEnteredName = true;
     public bool hasAName = false;
 
     public bool inSelectionMode = false;
@@ -18,6 +18,8 @@ public class GameSettings
     public bool inPotSelection = false;
 
     public bool isTimePaused = false;
+
+    public String sceneName;
 
     public string[] people = { "Faces.png", "Rolling.png", "Viking.png", "cat.png", "Bird.png" };
 
@@ -38,4 +40,5 @@ public class GameSettings
     {
         
     }
+
 }

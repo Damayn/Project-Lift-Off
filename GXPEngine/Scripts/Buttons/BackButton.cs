@@ -1,7 +1,11 @@
 ﻿// Back button
+using GXPEngine;
+
 public class BackButton : Button
 {
     MenuManager menuManager;
+
+    public bool changeScene;
 
     public BackButton(MenuManager menuManager) : base("BackButton.png", 2, 1)
     {
@@ -16,6 +20,14 @@ public class BackButton : Button
 
             menuManager.SetMainMenu();
             LateDestroy();
+
+            foreach (GameObject child in game.GetChildren())
+            {
+                if (child is Pause)
+                {
+                    menuManager.SetMainMenu();
+                }
+            }
 
         }
 
