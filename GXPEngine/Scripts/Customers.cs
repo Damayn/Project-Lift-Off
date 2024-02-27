@@ -9,7 +9,7 @@ public class Customers : AnimationSprite
     string[] flowers = { "flower1", "flower2", "flower3", "flower4", "flower5" };
 
     float lastChangeOfFace;
-    float timer = 1000;
+    float timer = 15000;
     int frame = 0;
 
     Random random = new Random();
@@ -46,11 +46,10 @@ public class Customers : AnimationSprite
         game.AddChild(canvas);
         DisplayFlowerCounts();
         
-                foreach (string flower in flowersCollected)
-                {
-                    Console.WriteLine(flower);
-                }
-        
+        foreach (string flower in flowersCollected)
+        {
+            Console.WriteLine(flower);
+        }
     }
 
     void Update()
@@ -63,9 +62,7 @@ public class Customers : AnimationSprite
 
             if(frame > 11)
             {
-
                 LateDestroy();
-
                 productionSlider.currentValue -= 20 * settings.currentLevel;
             }
 
@@ -212,16 +209,33 @@ public class Customers : AnimationSprite
             switch (flowerIndex)
             {
                 case 0:
+                    return 60;
+                case 1:
+                    return 40 + 3 * settings.currentLevel;
+                case 2:
+                    return 40 + 3 * settings.currentLevel;
+                default:
+                    return 0;
+            }
+        }
+         else if (settings.currentLevel >= 11 && settings.currentLevel <= 20)
+        {
+            switch (flowerIndex)
+            {
+                case 0:
                     return 20;
                 case 1:
                     return 80;
                 case 2:
                     return 80;
+                case 3:
+                    return 50;
+                case 4:
+                    return 50;
                 default:
                     return 0;
             }
         }
-
         return 0;
     }
 
@@ -242,25 +256,29 @@ public class Customers : AnimationSprite
         else if (settings.currentLevel >= 2 && settings.currentLevel <= 10)
         {
             // Define base chances for each flower
-            float[] baseChances = { 50, 40, 30, 20, 10 }; // Adjust these values as needed
+            float[] baseChances = { 50, 40, 30, 20, 10 };
 
             // Get the base chance for the current flower
             float baseChance = baseChances[flowerIndex];
 
             // Increase the base chance based on the current level
-            baseChance += (settings.currentLevel - 1) * 5; // Adjust the increment value as needed
+            baseChance += (settings.currentLevel - 1) * 5;
 
             // Get the count of the current flower type that has already been collected
             int flowerTypeCount = flowersCollected.Count(flower => flower == flowers[flowerIndex]);
 
             // Decrease the chance by a certain amount for each additional flower of the same type
-            float decreaseAmount = 10 * flowerTypeCount; // Adjust the decrease amount based on the count of the same type
+            float decreaseAmount = 10 * flowerTypeCount;
 
             // Calculate the additional flower chance
             float additionalFlowerChance = baseChance - decreaseAmount;
 
             // Ensure the chance doesn't go below 0
             return Math.Max(additionalFlowerChance, 0);
+        }
+        else if (settings.currentLevel >= 11 && settings.currentLevel <= 20)
+        {
+
         }
 
 

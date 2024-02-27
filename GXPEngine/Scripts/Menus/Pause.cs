@@ -21,6 +21,7 @@ public class Pause : EasyDraw
         graphics.DrawImage(image, new Rectangle(0, 0, 1366, 768), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
 
         BackButton backButton = new BackButton(menuManager);
+        backButton.isHovered = true;
         backButton.SetXY(game.width / 2, game.height / 2 + backButton.width);
         AddChild(backButton);
 

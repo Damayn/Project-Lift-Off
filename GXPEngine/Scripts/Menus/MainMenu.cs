@@ -1,48 +1,61 @@
 ﻿using GXPEngine;
 
-public class MainMenu : GameObject
+class MainMenu : GameObject
 {
-    MenuManager menuManager;
     GameSettings settings;
-
-    MyGame gameRef;
+    MenuManager menuManager;
 
     StartButton startButton;
     OptionsButton optionsButton;
-    ExitButton exitButton;
+    BackButton backButton;
 
-    public MainMenu (MenuManager menuManager, GameSettings settings, MyGame gameRef) : base()
+    Button[] buttons;
+    int currentButtonIndex = 0;
+
+    public MainMenu(GameSettings settings, MenuManager menuManager) : base()
     {
-
-        this.menuManager = menuManager;
         this.settings = settings;
-        this.gameRef = gameRef;
+        this.menuManager = menuManager;
 
-        // Creating the start button
-        startButton = new StartButton(this.settings);
-        startButton.SetXY(game.width / 2, game.height / 2 - startButton.width / 2);
-        AddChild(startButton);
+        startButton = new StartButton(settings);
+        startButton.SetXY(game.width / 2, game.height / 2 - 100);
 
-        // Creating the options button
         optionsButton = new OptionsButton(menuManager);
         optionsButton.SetXY(game.width / 2, game.height / 2);
-        AddChild(optionsButton);
 
-        // Creating the exit button
-        exitButton = new ExitButton();
-        exitButton.SetXY(game.width / 2, game.height / 2 + exitButton.width / 2);
-        AddChild(exitButton);
-       
-    }
+        backButton = new BackButton(menuManager);
+        backButton.SetXY(game.width / 2, game.height / 2 + 100);
 
-    private void Update()
-    {
-        if (startButton.hasBeenPressed)
+        buttons = new Button[] { startButton, optionsButton, backButton };
+        buttons[currentButtonIndex].isHovered = true;
+
+        foreach (Button button in buttons)
         {
-            this.LateDestroy();
-            //menuManager.SetNameMenu();
-            gameRef.SetUp();
+            AddChild(button);
         }
     }
-}
 
+    void Update()
+    {
+        if (startButton.hasBeenPressed) 
+        {
+            menuManager.SetNameMenu();
+        }
+
+        if (Input.GetKeyDown(Key.UP))
+        {
+            ChangeSelection(-1);
+        }
+        else if (Input.GetKeyDown(Key.DOWN))
+        {
+            ChangeSelection(1);
+        }
+    }
+
+    private void ChangeSelection(int delta)
+    {
+        buttons[currentButtonIndex].isHovered = false;
+        currentButtonIndex = (currentButtonIndex + delta + buttons.Length) % buttons.Length;
+        buttons[currentButtonIndex].isHovered = true;
+    }
+}

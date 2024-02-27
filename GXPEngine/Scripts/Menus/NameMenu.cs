@@ -6,6 +6,10 @@ using System.Drawing;
 class NameMenu : GameObject
 {
     GameSettings settings;
+    MenuManager menuManager;
+    PlayButton playButton;
+    BackButton backButton;
+    MyGame gameRef;
 
     const int numRows = 9;
     const int lettersPerRow = 3;
@@ -17,9 +21,11 @@ class NameMenu : GameObject
     private string enteredText = ""; // Track the entered text
     private EasyDraw easyDraw;
 
-    public NameMenu(GameSettings settings) : base()
+    public NameMenu(GameSettings settings, MenuManager menuManager, MyGame gameRef) : base()
     {
         this.settings = settings;
+        this.menuManager = menuManager;
+        this.gameRef = gameRef;
 
         // Define starting positions
         int startX = 100;
@@ -72,10 +78,19 @@ class NameMenu : GameObject
 
         // Create an EasyDraw object for drawing the text box
         easyDraw = new EasyDraw(384, 64);
-        easyDraw.SetXY(textBox.x - textBox.width /2, textBox.y - textBox.height /2); // Position it below the letters
+        easyDraw.SetXY(textBox.x - textBox.width / 2, textBox.y - textBox.height / 2); // Position it below the letters
         this.AddChild(easyDraw);
 
+        playButton = new PlayButton(settings, gameRef);
+        playButton.SetXY(textBox.x, textBox.y + 150);
+        this.AddChild(playButton);
+
+        backButton = new BackButton(menuManager);
+        backButton.SetXY(playButton.x, playButton.y + 100);
+        this.AddChild(backButton);
+
         UpdateSelection(); // Highlight the initial selected letter
+        
     }
 
     private void UpdateSelection()
@@ -86,7 +101,7 @@ class NameMenu : GameObject
         }
 
         // Highlight the currently selected letter
-        letters[currentLetterIndex].isHovered = true; 
+        letters[currentLetterIndex].isHovered = true;
     }
 
     private void CycleThroughLetters(int deltaRow, int deltaCol)
@@ -99,10 +114,6 @@ class NameMenu : GameObject
         if (newRow < 0) // Moving up from the first row
         {
             newRow = numRows - 1; // Move to the last row
-        }
-        else if (newRow >= numRows) // Moving down from the last row
-        {
-            newRow = 0; // Move to the first row
         }
 
         // Handle looping from A to Z and vice versa when moving left and right
@@ -137,10 +148,10 @@ class NameMenu : GameObject
         }
 
         // Clear and redraw the text box with the updated entered text
-        easyDraw.TextFont("Arial", 36); // Set font
+        easyDraw.TextFont("Helvetica", 36); // Set font
         easyDraw.ClearTransparent(); // Clear the text box
         easyDraw.Fill(Color.Blue); // Set text color to black
-        easyDraw.Text(enteredText, 5, easyDraw.height /2 + 32); // Draw the entered text
+        easyDraw.Text(enteredText, 5, easyDraw.height / 2 + 32); // Draw the entered text
     }
 
     void Update()
@@ -148,22 +159,98 @@ class NameMenu : GameObject
         // Handle arrow key input to cycle through letters
         if (Input.GetKeyDown(Key.LEFT))
         {
-            CycleThroughLetters(0, -1); // Move left
+            if (currentLetterIndex == 21 && !playButton.isHovered)
+            {
+                playButton.isHovered = true;
+                letters[currentLetterIndex].isHovered = false;
+                
+            }
+            else if (playButton.isHovered)
+            {
+                playButton.isHovered = false;
+                currentLetterIndex = 20;
+                letters[currentLetterIndex].isHovered = true;
+            }
+            else if (backButton.isHovered)
+            {
+                currentLetterIndex = 26;
+                letters[currentLetterIndex].isHovered = true;
+                backButton.isHovered = false;
+            } else if (!backButton.isHovered) 
+            {
+                CycleThroughLetters(0, -1); // Move left
+            }
         }
         else if (Input.GetKeyDown(Key.RIGHT))
         {
-            CycleThroughLetters(0, 1); // Move right
+            if (currentLetterIndex == 20)
+            {
+                playButton.isHovered = true;
+                currentLetterIndex++;
+
+                foreach (var letter in letters)
+                {
+                    letter.isHovered = false;
+                }
+                return; // Exit the method to avoid further processing
+            }
+            else if (playButton.isHovered)
+            {
+                letters[currentLetterIndex].isHovered = true;
+                playButton.isHovered = false;
+            }
+            else if (currentLetterIndex == 26)
+            {
+                backButton.isHovered = true;
+
+                foreach (var letter in letters)
+                {
+                    letter.isHovered = false;
+                }
+            }
+            else
+            {
+                CycleThroughLetters(0, 1); // Move right
+            }
+
         }
         else if (Input.GetKeyDown(Key.UP))
         {
-            CycleThroughLetters(-1, 0); // Move up
+            if ((!playButton.isHovered && !backButton.isHovered))
+            {
+                CycleThroughLetters(-1, 0); // Move up
+            }
+            else if (playButton.isHovered)
+            {
+                playButton.isHovered = false;
+                backButton.isHovered = true;
+            }
+            else if (backButton.isHovered)
+            {
+                backButton.isHovered = false;
+                playButton.isHovered = true;
+            }
         }
         else if (Input.GetKeyDown(Key.DOWN))
         {
-            CycleThroughLetters(1, 0); // Move down
+            if ((!playButton.isHovered && !backButton.isHovered))
+            {
+                CycleThroughLetters(1, 0); // Move down
+            }
+            else if (playButton.isHovered)
+            {
+                playButton.isHovered = false;
+                backButton.isHovered = true;
+            }
+            else if (backButton.isHovered)
+            {
+                backButton.isHovered = false;
+                playButton.isHovered = true;
+            }
+
         }
 
-        if (enteredText.Length > 0) 
+        if (enteredText.Length > 0)
         {
             settings.hasAName = true;
         }
@@ -190,7 +277,7 @@ class NameMenu : GameObject
                         UpdateEnteredText(letterName);
                     }
                 }
-        
+
                 letter.isClicked = false; // Reset click status
             }
         }

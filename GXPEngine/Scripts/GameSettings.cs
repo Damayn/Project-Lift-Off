@@ -9,7 +9,7 @@ public class GameSettings
     public bool hasGameStarted = false;
     public bool isGameOver = false;
 
-    public bool hasEnteredName = true;
+    public bool hasEnteredName = false;
     public bool hasAName = false;
 
     public bool inSelectionMode = false;

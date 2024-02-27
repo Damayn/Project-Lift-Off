@@ -40,8 +40,7 @@ public class MyGame : Game {
     }
 
 	public void SetUp () 
-	{
-        
+	{   
         //hardcoding of background image testing (change it if you want)
         background = new Sprite("white.png");
 
@@ -52,15 +51,11 @@ public class MyGame : Game {
 
         AddChild (background);
 
-        Customers customer = new Customers(settings, slider);
-        AddChild(customer);
-        settings.customers.Add(customer);
+        slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 100, 50);
 
         settings.isTimePaused = false;
 
         CreatePots();
-
-        slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 100, 50);
 
         float speed = 0.05f;
 
@@ -71,7 +66,6 @@ public class MyGame : Game {
         Console.WriteLine(settings.customers.Count);
     }
 
-
     void Update() 
 	{
         this.targetFps = 60;
@@ -80,14 +74,12 @@ public class MyGame : Game {
         {
             if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
             {
-
                 pause.Destroy();
-
                 TogglePauseTime();
-
             }
             else if (!settings.isTimePaused )
             {
+                AddNewCustomer();
 
                 UpdateProductionSlider();
 
@@ -97,12 +89,10 @@ public class MyGame : Game {
 
                 if (Input.GetKeyDown(Key.Q))
                 {
-
                     pause = new Pause(game.width, game.height, "white.png", menuManager);
                     AddChild(pause);
 
                     TogglePauseTime();
-
                 }
                
             }
@@ -110,14 +100,21 @@ public class MyGame : Game {
         }
         else if (settings.isGameOver)
         {
-
             menuManager.SetGameOverMenu();
-            deleteGamePlay();
-
         }
 
     }
 
+    void AddNewCustomer ()
+    {
+        if (settings.customers.Count == 0) 
+        {
+            Customers customer = new Customers(settings, slider);
+            AddChild (customer);
+            settings.customers.Add(customer);
+        }
+    }
+    
     void UpdateProductionSlider()
     {
         foreach (Plant plant in plants)
@@ -185,13 +182,6 @@ public class MyGame : Game {
 
         potHasPotBeenCreated = true;
     }
-    // supposedly deletes everychildren
-    public void deleteGamePlay()
-    {
-        
-
-    }
-
     void CreateSeedBags()
     {
         int seedBagIndex = 0;
@@ -231,9 +221,7 @@ public class MyGame : Game {
     {
         foreach (Seed seed in seedBags)
         {
-
             seed.LateDestroy();
-
         }
 
         seedBags.Clear();

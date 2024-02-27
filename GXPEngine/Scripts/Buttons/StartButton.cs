@@ -9,7 +9,6 @@ public class StartButton : Button
     public StartButton(GameSettings settings) : base("PlayButton.png", 2, 1)
     {
         this.settings = settings;
-
     }
 
     protected override void Update()
@@ -18,8 +17,6 @@ public class StartButton : Button
         {
             settings.hasGameStarted = true;
             settings.isGameOver = false;
-
-
         }
 
         base.Update();
