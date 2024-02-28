@@ -6,7 +6,6 @@ public class OptionsButton : Button
     {
         this.menuManager = menuManager;
 
-
     }
 
     protected override void Update()

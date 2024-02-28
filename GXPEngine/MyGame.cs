@@ -34,7 +34,8 @@ public class MyGame : Game {
     {
         settings = new GameSettings();
 
-        background = new Sprite("background_menu.png");
+        background = new Sprite("gameplayBackground.png");
+        AddChild(background);
         menuManager = new MenuManager(settings, this);
         //kills the buttons?
         menuManager.SetMainMenu();
