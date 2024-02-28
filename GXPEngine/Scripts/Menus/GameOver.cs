@@ -31,7 +31,7 @@ public class GameOver : GameObject
         setting = settings;
         this.menuManager = menuManager;
 
-        background = new Sprite("background_menu");
+        background = new Sprite("background_menu.png");
 
         BackButton backButton = new BackButton(this.menuManager);
         backButton.SetXY(game.width / 2, game.height / 2);
