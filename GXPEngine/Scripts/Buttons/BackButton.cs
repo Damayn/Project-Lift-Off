@@ -7,14 +7,11 @@ public class BackButton : Button
 
     public bool changeScene;
 
-    string button;
-
-    public BackButton(MenuManager menuManager, string button) : base(button, 2, 1)
+    public BackButton(MenuManager menuManager) : base("back.png", 2, 1)
     {
 
         this.menuManager = menuManager;
-        this.button = button;
-
+   
     }
 
     protected override void Update()

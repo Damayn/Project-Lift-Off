@@ -7,17 +7,22 @@ class MainMenu : GameObject
 
     StartButton startButton;
     OptionsButton optionsButton;
-    BackButton backButton;
+    ExitButton backButton;
 
     Button[] buttons;
+
+    Sprite background;
+
     int currentButtonIndex = 0;
 
     int distance = 100;
 
-    public MainMenu(GameSettings settings, MenuManager menuManager, Sprite background) : base()
+    public MainMenu(GameSettings settings, MenuManager menuManager) : base()
     {
         this.settings = settings;
         this.menuManager = menuManager;
+
+        background = new Sprite("background_menu.png");
 
         startButton = new StartButton(settings);
         startButton.SetXY(game.width / 2, game.height / 2 - distance);
@@ -25,7 +30,7 @@ class MainMenu : GameObject
         optionsButton = new OptionsButton(menuManager);
         optionsButton.SetXY(game.width / 2, game.height / 2);
 
-        backButton = new BackButton(menuManager,"quit.png");
+        backButton = new ExitButton();
         backButton.SetXY(game.width / 2, game.height / 2 + distance);
 
         buttons = new Button[] { startButton, optionsButton, backButton };

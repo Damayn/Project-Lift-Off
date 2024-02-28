@@ -11,13 +11,17 @@ public class GameOver : GameObject
     MenuManager menuManager;
     GameSettings setting;
 
-    public GameOver(MenuManager menuManager, GameSettings settings, Sprite background): base()
+    Sprite background;
+
+    public GameOver(MenuManager menuManager, GameSettings settings): base()
     {
 
         setting = settings;
         this.menuManager = menuManager;
 
-        BackButton backButton = new BackButton(this.menuManager, "menu.png");
+        background = new Sprite("background_menu");
+
+        BackButton backButton = new BackButton(this.menuManager);
         backButton.SetXY(game.width / 2, game.height / 2);
         AddChild(backButton);
 

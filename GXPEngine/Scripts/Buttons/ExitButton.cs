@@ -1,7 +1,7 @@
 ﻿// Exit button
 public class ExitButton : Button
 {
-    public ExitButton() : base("ExitButton.png", 2, 1)
+    public ExitButton() : base("quit.png", 2, 1)
     {
 
     }

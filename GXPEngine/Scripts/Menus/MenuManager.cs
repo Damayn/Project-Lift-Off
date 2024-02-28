@@ -10,11 +10,11 @@ public class MenuManager : GameObject
 
     Sprite background;
 
-    public MenuManager(GameSettings settings,MyGame gamRef, Sprite background) : base()
+    public MenuManager(GameSettings settings,MyGame gamRef) : base()
     {
         this.settings = settings;
         this.gameRef = gamRef;
-        this.background = background;
+
     }
 
     public void SetCurrentMenu(GameObject menu)
@@ -26,8 +26,9 @@ public class MenuManager : GameObject
 
     public void SetMainMenu()
     {
+
         // Sets the current menu to the main menu
-        SetCurrentMenu(new MainMenu(settings, this, background));
+        SetCurrentMenu(new MainMenu(settings, this));
 
         // Deletes the options menu
         foreach (GameObject child in game.GetChildren())
@@ -42,7 +43,7 @@ public class MenuManager : GameObject
 
             foreach (GameObject gameObject in game.GetChildren())
             {
-                if (gameObject is Pot || gameObject is Slider || gameObject is Pause || gameObject is Customers || gameObject is Seed || gameObject is Sprite || gameObject is EasyDraw)
+                if (gameObject is Pot || gameObject is Slider || gameObject is Pause || gameObject is Customers || gameObject is Seed || gameObject is EasyDraw)
                 {
 
                     gameObject.LateDestroy();
@@ -58,7 +59,7 @@ public class MenuManager : GameObject
     public void SetOptionsMenu()
     {
         // Sets the current menu to options menu
-        SetCurrentMenu(new OptionsMenu(this, background));
+        SetCurrentMenu(new OptionsMenu(this));
 
         // Deletes the main menu
         foreach (GameObject child in game.GetChildren())
@@ -77,7 +78,7 @@ public class MenuManager : GameObject
 
     public void SetNameMenu () 
     {
-        SetCurrentMenu(new NameMenu(settings, this, gameRef, background));
+        SetCurrentMenu(new NameMenu(settings, this, gameRef));
 
         foreach (GameObject child in game.GetChildren())
         {
@@ -92,7 +93,7 @@ public class MenuManager : GameObject
         // If the game is over
         if (settings.isGameOver)
         { 
-            SetCurrentMenu(new GameOver(this, settings, background));
+            SetCurrentMenu(new GameOver(this, settings));
         }
     }
 }

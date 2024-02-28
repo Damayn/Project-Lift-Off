@@ -21,11 +21,15 @@ class NameMenu : GameObject
     private string enteredText = ""; // Track the entered text
     private EasyDraw easyDraw;
 
-    public NameMenu(GameSettings settings, MenuManager menuManager, MyGame gameRef, Sprite background) : base()
+    Sprite background;
+
+    public NameMenu(GameSettings settings, MenuManager menuManager, MyGame gameRef) : base()
     {
         this.settings = settings;
         this.menuManager = menuManager;
         this.gameRef = gameRef;
+
+        background = new Sprite("background_menu.png");
 
         background.width = game.width;
         background.height = game.height;
@@ -90,7 +94,7 @@ class NameMenu : GameObject
         playButton.SetXY(textBox.x, textBox.y + 150);
         this.AddChild(playButton);
 
-        backButton = new BackButton(menuManager, "back.png");
+        backButton = new BackButton(menuManager);
         backButton.SetXY(playButton.x, playButton.y + 100);
         this.AddChild(backButton);
 

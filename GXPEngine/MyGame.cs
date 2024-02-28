@@ -35,7 +35,7 @@ public class MyGame : Game {
         settings = new GameSettings();
 
         background = new Sprite("background_menu.png");
-        menuManager = new MenuManager(settings, this, background);
+        menuManager = new MenuManager(settings, this);
         //kills the buttons?
         menuManager.SetMainMenu();
         AddChild(menuManager);
@@ -93,7 +93,7 @@ public class MyGame : Game {
 
                 if (Input.GetKeyDown(Key.Q))
                 {
-                    pause = new Pause(game.width, game.height, "white.png", menuManager);
+                    pause = new Pause(game.width, game.height, "black.png", menuManager);
                     AddChild(pause);
 
                     TogglePauseTime();
