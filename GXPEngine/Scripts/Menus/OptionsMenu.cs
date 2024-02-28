@@ -25,7 +25,7 @@ public class OptionsMenu : GameObject
         backButton.SetXY(game.width / 2, game.height / 2 + backButton.width);
         AddChild(backButton);
 
-        Slider slider = new Slider("track.png", "slider.png", 500, 300, 0, 100, 100, "trackFront.png", "trackBack.png", "thumb.png", "HalfCircle.png");
+        Slider slider = new Slider("circle.png", "slider.png", 500, 300, 0, 100, 100, "trackFront.png", "progressBarOutline.png", "right.png", "right.png");
         this.AddChild(slider);
     }
 }
