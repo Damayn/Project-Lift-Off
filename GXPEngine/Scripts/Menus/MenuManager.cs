@@ -8,10 +8,13 @@ public class MenuManager : GameObject
     GameSettings settings;
     MyGame gameRef;
 
-    public MenuManager(GameSettings settings,MyGame gamRef) : base()
+    Sprite background;
+
+    public MenuManager(GameSettings settings,MyGame gamRef, Sprite background) : base()
     {
         this.settings = settings;
         this.gameRef = gamRef;
+        this.background = background;
     }
 
     public void SetCurrentMenu(GameObject menu)
@@ -24,7 +27,7 @@ public class MenuManager : GameObject
     public void SetMainMenu()
     {
         // Sets the current menu to the main menu
-        SetCurrentMenu(new MainMenu(settings, this));
+        SetCurrentMenu(new MainMenu(settings, this, background));
 
         // Deletes the options menu
         foreach (GameObject child in game.GetChildren())
@@ -55,7 +58,7 @@ public class MenuManager : GameObject
     public void SetOptionsMenu()
     {
         // Sets the current menu to options menu
-        SetCurrentMenu(new OptionsMenu(this));
+        SetCurrentMenu(new OptionsMenu(this, background));
 
         // Deletes the main menu
         foreach (GameObject child in game.GetChildren())
@@ -74,7 +77,7 @@ public class MenuManager : GameObject
 
     public void SetNameMenu () 
     {
-        SetCurrentMenu(new NameMenu(settings, this, gameRef));
+        SetCurrentMenu(new NameMenu(settings, this, gameRef, background));
 
         foreach (GameObject child in game.GetChildren())
         {
@@ -89,7 +92,7 @@ public class MenuManager : GameObject
         // If the game is over
         if (settings.isGameOver)
         { 
-            SetCurrentMenu(new GameOver(this, settings));
+            SetCurrentMenu(new GameOver(this, settings, background));
         }
     }
 }

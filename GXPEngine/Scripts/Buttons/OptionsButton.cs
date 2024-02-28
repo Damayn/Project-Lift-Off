@@ -2,9 +2,11 @@
 public class OptionsButton : Button
 {
     MenuManager menuManager;
-    public OptionsButton(MenuManager menuManager) : base("OptionsButton.png", 2, 1)
+    public OptionsButton(MenuManager menuManager) : base("setting.png", 2, 1)
     {
         this.menuManager = menuManager;
+
+
     }
 
     protected override void Update()

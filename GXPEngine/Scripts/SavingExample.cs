@@ -1,5 +1,4 @@
-﻿/*
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -126,7 +125,7 @@ public class SavingExample : GameObject
 
         DeleteFilesNotInTop3();
 
-        PresentMenu();
+        //PresentMenu();
 
     }
     void CreateNewUsername()
@@ -244,4 +243,3 @@ public class SavingExample : GameObject
     }
 
 }
-*/

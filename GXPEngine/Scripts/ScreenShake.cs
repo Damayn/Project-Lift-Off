@@ -45,8 +45,8 @@ public class ScreenShake : GameObject
         else
         {
 
-            game.x = originalPosition.x;
-            game.y = originalPosition.y;
+            game.x = 0;
+            game.y = 0;
 
         }
     }

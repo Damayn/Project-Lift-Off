@@ -4,9 +4,14 @@ public class OptionsMenu : GameObject
 {
     // Reference to the menu manager
     MenuManager menuManager;
-    public OptionsMenu(MenuManager menuManager) : base ()
+    public OptionsMenu(MenuManager menuManager, Sprite background) : base ()
     {
         this.menuManager = menuManager;
+
+        background.width = game.width;
+        background.height = game.height;
+
+        AddChild(background);
 
         SetUp();
     }
@@ -14,7 +19,7 @@ public class OptionsMenu : GameObject
     void SetUp () 
     {
         // creating a back button
-        BackButton backButton = new BackButton(menuManager);
+        BackButton backButton = new BackButton(menuManager, "back.png");
         backButton.SetXY(game.width / 2, game.height / 2 + backButton.width);
         AddChild(backButton);
 

@@ -8,6 +8,7 @@ public class MyGame : Game {
     Pot pot;
     Seed seedBag;
 
+    Sprite customerBackground;
     Sprite background;
 
     Pause pause;
@@ -33,7 +34,8 @@ public class MyGame : Game {
 	{
         settings = new GameSettings();
 
-        menuManager = new MenuManager(settings, this);
+        background = new Sprite("background_menu.png");
+        menuManager = new MenuManager(settings, this, background);
         //kills the buttons?
         menuManager.SetMainMenu();
         AddChild(menuManager);
@@ -42,14 +44,15 @@ public class MyGame : Game {
 	public void SetUp () 
 	{   
         //hardcoding of background image testing (change it if you want)
-        background = new Sprite("white.png");
+        customerBackground = new Sprite("white.png");
+        
 
-        background.x = 1150;
-        background.y = 0;
-        background.width = 200;
-        background.height = 300;
+        customerBackground.x = 1150;
+        customerBackground.y = 0;
+        customerBackground.width = 200;
+        customerBackground.height = 300;
 
-        AddChild (background);
+        AddChild (customerBackground);
 
         slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 100, 50);
 
@@ -79,6 +82,7 @@ public class MyGame : Game {
             }
             else if (!settings.isTimePaused )
             {
+
                 AddNewCustomer();
 
                 UpdateProductionSlider();

@@ -5,7 +5,7 @@ public class PlayButton : Button
     GameSettings settings;
     MyGame gameRef;
 
-    public PlayButton(GameSettings settings, MyGame gameRef) : base("Play.png", 2, 1)
+    public PlayButton(GameSettings settings, MyGame gameRef) : base("start.png", 2, 1)
     {
         this.settings = settings;
         this.gameRef = gameRef; 

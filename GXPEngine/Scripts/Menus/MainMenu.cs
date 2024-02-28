@@ -12,27 +12,34 @@ class MainMenu : GameObject
     Button[] buttons;
     int currentButtonIndex = 0;
 
-    public MainMenu(GameSettings settings, MenuManager menuManager) : base()
+    int distance = 100;
+
+    public MainMenu(GameSettings settings, MenuManager menuManager, Sprite background) : base()
     {
         this.settings = settings;
         this.menuManager = menuManager;
 
         startButton = new StartButton(settings);
-        startButton.SetXY(game.width / 2, game.height / 2 - 100);
+        startButton.SetXY(game.width / 2, game.height / 2 - distance);
 
         optionsButton = new OptionsButton(menuManager);
         optionsButton.SetXY(game.width / 2, game.height / 2);
 
-        backButton = new BackButton(menuManager);
-        backButton.SetXY(game.width / 2, game.height / 2 + 100);
+        backButton = new BackButton(menuManager,"quit.png");
+        backButton.SetXY(game.width / 2, game.height / 2 + distance);
 
         buttons = new Button[] { startButton, optionsButton, backButton };
         buttons[currentButtonIndex].isHovered = true;
+
+        AddChild(background);
 
         foreach (Button button in buttons)
         {
             AddChild(button);
         }
+
+        background.height = game.height;
+        background.width = game.width;
     }
 
     void Update()

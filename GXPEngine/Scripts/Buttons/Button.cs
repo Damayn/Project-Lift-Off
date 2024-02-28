@@ -11,8 +11,8 @@ public class Button : AnimationSprite
     // Have a string passed to the constructor, the number of column and rows the sprite has
     public Button(string image, int cols, int rows) : base (image, cols, rows) // Pass the image the columns and rows from the constructor to the base wich is the animated srpite object
     {
-        this.SetOrigin(width /2, height / 2);
-        this.scale = 1.5f;
+        this.SetOrigin(width /2, height / 2 - 200);
+        this.scale = 0.5f;
     }
 
     protected virtual void Update()
