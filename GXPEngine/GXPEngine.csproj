@@ -96,6 +96,7 @@
     <Compile Include="Scripts\Buttons\Letter.cs" />
     <Compile Include="Scripts\Buttons\OptionsButton.cs" />
     <Compile Include="Scripts\Buttons\PlayButton.cs" />
+    <Compile Include="Scripts\Buttons\ReadButton.cs" />
     <Compile Include="Scripts\Buttons\StartButton.cs" />
     <Compile Include="Scripts\GameSettings.cs" />
     <Compile Include="Scripts\Menus\GameOver.cs" />

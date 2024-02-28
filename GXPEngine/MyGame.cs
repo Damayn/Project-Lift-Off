@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using GXPEngine;                
 
 public class MyGame : Game {
@@ -7,11 +8,11 @@ public class MyGame : Game {
 	MenuManager menuManager;
     Pot pot;
     Seed seedBag;
-
-    Sprite customerBackground;
     Sprite background;
-
     Pause pause;
+    Slider slider;
+    SerialPortManager serialPort;
+    ReadButton readButton;
 
     private List<Pot> pots = new List<Pot>();
     private List<Seed> seedBags = new List<Seed>();
@@ -24,14 +25,13 @@ public class MyGame : Game {
     private bool potHasPotBeenCreated = false;
 
     private Sprite seedBagSelectionMenu;
-
-    Slider slider;
+    private Sprite customerBackground;
 
     private bool sliderSetToHalfItsValue;
     float currentValue;
 
-	public MyGame() : base(1366, 768, false, false, -1, -1, false)
-	{
+    public MyGame() : base(1366, 768, false, false, -1, -1, false)
+    {
         settings = new GameSettings();
 
         background = new Sprite("background_menu.png");
@@ -39,9 +39,13 @@ public class MyGame : Game {
         //kills the buttons?
         menuManager.SetMainMenu();
         AddChild(menuManager);
+
+        serialPort = new SerialPortManager ("COM3", 9600);
+        readButton = new ReadButton(serialPort);
+        this.AddChild(readButton);
     }
 
-	public void SetUp () 
+    public void SetUp () 
 	{   
         //hardcoding of background image testing (change it if you want)
         customerBackground = new Sprite("white.png");
@@ -73,15 +77,12 @@ public class MyGame : Game {
 	{
         this.targetFps = 60;
 
-        if (settings.hasGameStarted && settings.hasEnteredName)
-        {
-            if (settings.isTimePaused && Input.GetKeyDown(Key.Q))
+        if (settings.hasGameStarted && settings.hasEnteredName && !settings.isGameOver)
+        {  
+            if (!settings.isTimePaused)
             {
-                pause.Destroy();
-                TogglePauseTime();
-            }
-            else if (!settings.isTimePaused )
-            {
+                GameOver();
+                Pause();
 
                 AddNewCustomer();
 
@@ -91,16 +92,9 @@ public class MyGame : Game {
 
                 DecreaseProductionSlider();
 
-                if (Input.GetKeyDown(Key.Q))
-                {
-                    pause = new Pause(game.width, game.height, "black.png", menuManager);
-                    AddChild(pause);
-
-                    TogglePauseTime();
-                }
+                
                
             }
-
         }
         else if (settings.isGameOver)
         {
@@ -109,13 +103,37 @@ public class MyGame : Game {
 
     }
 
+    void Pause ()
+    {
+        if (Input.GetKeyDown(Key.Q) && !settings.isTimePaused)
+        {
+            pause = new Pause(game.width, game.height, "white.png", menuManager);
+            AddChild(pause);
+
+            TogglePauseTime();
+        } else if (Input.GetKeyDown(Key.Q) && settings.isTimePaused)
+        {
+            pause.Destroy();
+            TogglePauseTime();
+        }
+
+    }
+
     void AddNewCustomer ()
     {
-        if (settings.customers.Count == 0) 
+        if (settings.customers.Count == 0 && !settings.isGameOver) 
         {
             Customers customer = new Customers(settings, slider);
-            AddChild (customer);
             settings.customers.Add(customer);
+            AddChild (customer);
+        }
+    }
+
+    void GameOver () 
+    {
+        if (slider.currentValue <= 5) 
+        {
+            settings.isGameOver = true;
         }
     }
     
@@ -140,7 +158,7 @@ public class MyGame : Game {
 
     void DecreaseProductionSlider ()
     {
-        float speed = 0.0002f;
+        float speed = 0.002f;
         slider.currentValue = Mathf.Lerp (slider.currentValue, 0, speed);
     }
 
@@ -245,7 +263,7 @@ public class MyGame : Game {
     void ToggleSelectionMode()
     {
 
-        if (Input.GetKeyDown(Key.SPACE))
+        if (Input.GetKeyDown(Key.SPACE) || readButton.button2Pressed)
         {
             if (settings.inPotSelection == false && !settings.inSeedBagSelection) // If the pot selection is off
             {

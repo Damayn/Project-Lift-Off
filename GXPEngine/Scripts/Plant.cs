@@ -137,8 +137,6 @@ class Plant : AnimationSprite
     {
         Growing();
 
-        
-
         HandleMouseInput ();
     }
 
@@ -228,32 +226,28 @@ class Plant : AnimationSprite
                 {
                     for (int i = 0; i < settings.customers.Count; i++)
                     {
-                        // Iterate over collected flowers of each customer
-                        for (int j = settings.customers[i].flowersCollected.Count - 1; j >= 0; j--)
+                        foreach (String flower in settings.customers[i].flowersCollected)
                         {
-                            string flowerName = settings.customers[i].flowersCollected[j];
-                            // Remove the file extension from the plant name for comparison
                             string plantNameWithoutExtension = this.name.Split('.')[0];
-                            // Check if the flower name matches (without extension)
-                            if (plantNameWithoutExtension == flowerName)
+
+                            if (plantNameWithoutExtension == flower)
                             {
-                                // Remove the flower name from the customer's list
-                                settings.customers[i].flowersCollected.RemoveAt(j);
-                                Console.WriteLine("Removed flower: " + flowerName);
+                                settings.customers[i].flowersCollected.Remove (flower);
+
+                                Console.WriteLine("Removed flower: " + flower);
+
+                                break;
                             }
-                            Console.WriteLine(settings.customers[i].flowersCollected.Count);
-                            break;
+                            
                         }
                     }
 
                     this.LateDestroy();
                     pot.isSelected = false;
-                    settings.currentProductionValue += this.productionAmoutGiven;
 
                     this.hasBeenClicked = true;
-                }
+                }    
             }
         }
     }
-
 }

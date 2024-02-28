@@ -12,6 +12,10 @@ public class Customers : AnimationSprite
     float timer = 15000;
     int frame = 0;
 
+    int flowerCount = 0;
+    int currnetFlowerAmmout;
+    int x2 = 0;
+
     Random random = new Random();
     GameSettings settings;
     EasyDraw canvas;
@@ -44,8 +48,8 @@ public class Customers : AnimationSprite
         canvas = new EasyDraw(300, 300, false);
         canvas.SetXY (this.x, this.y - 150);
         game.AddChild(canvas);
-        DisplayFlowerCounts();
         
+
         foreach (string flower in flowersCollected)
         {
             Console.WriteLine(flower);
@@ -60,7 +64,7 @@ public class Customers : AnimationSprite
             frame++;
             SetCycle(frame, 1);
 
-            if(frame > 11)
+            if (frame > 11)
             {
                 LateDestroy();
                 productionSlider.currentValue -= 20 * settings.currentLevel;
@@ -80,12 +84,14 @@ public class Customers : AnimationSprite
         {
             productionSlider.currentValue += GetProductionAmount();
             this.Destroy();
-        }   
-        
+        }
+
         if (frame == 0 && flowersCollected.Count == 0)
         {
             SelectFlowers();
         }
+
+        DisplayFlowerCounts();
     }
 
     int GetProductionAmount()
@@ -125,7 +131,7 @@ public class Customers : AnimationSprite
     }
 
     // Method to calculate the value of each flower type based on its index and count
-    private int CalculateFlowerValue(string flowerType, int flowerCount)
+    int CalculateFlowerValue(string flowerType, int flowerCount)
     {
         int baseValue = 0;
 
@@ -351,17 +357,18 @@ public class Customers : AnimationSprite
 
     void DisplayFlowerCounts()
     {
+        canvas.ClearTransparent();
         // Get unique flowers from the flowersCollected list
         var uniqueFlowers = flowersCollected.Distinct();
 
         // Define initial y position for drawing text
-        int x = 0;
+        int x = 10;
 
         // Iterate over each unique flower
         foreach (var flowerName in uniqueFlowers)
         {
             // Count occurrences of the current flower in the flowersCollected list
-            int flowerCount = flowersCollected.Count(flower => flower == flowerName);
+            flowerCount = flowersCollected.Count(flower => flower == flowerName);
 
             // Draw flower image
             // Assuming you have a method to load and draw flower images
@@ -370,13 +377,11 @@ public class Customers : AnimationSprite
 
             // Draw flower count next to the image
             canvas.Fill(Color.White); // Set text color
-            canvas.TextFont("Arial", 14); // Set font and size
-            canvas.Text($"{flowerCount}", x, 20); // Adjust position as needed
+            canvas.TextFont("Helvetica", 14); // Set font and size
+            canvas.Text($"{flowerCount} x", x, 20); // Adjust position as needed
 
             // Increment y position for the next flower
-            x += 40; // Adjust spacing between flower counts
-
-            Console.WriteLine(flowerCount);
+            x += 60; // Adjust spacing between flower counts
         }
     }
 

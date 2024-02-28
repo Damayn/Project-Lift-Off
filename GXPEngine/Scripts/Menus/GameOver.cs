@@ -16,6 +16,18 @@ public class GameOver : GameObject
     public GameOver(MenuManager menuManager, GameSettings settings): base()
     {
 
+        foreach (GameObject gameObject in game.GetChildren())
+        {
+            if (gameObject is Pot || gameObject is Slider || gameObject is Pause || gameObject is Customers || gameObject is Seed || gameObject is Sprite || gameObject is EasyDraw)
+            {
+
+                gameObject.LateDestroy();
+
+                settings.customers.Clear();
+            }
+
+        }
+
         setting = settings;
         this.menuManager = menuManager;
 
@@ -30,9 +42,5 @@ public class GameOver : GameObject
         AddChild(background);
 
         setting.isGameOver = false;
-
     }
-
-
-
 }
