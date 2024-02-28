@@ -25,7 +25,7 @@ public class GameSettings
 
     public float currentProductionValue { get; set; }
 
-    public int currentLevel = 1;
+    public int currentLevel = 13;
 
     public string playerName;
 
