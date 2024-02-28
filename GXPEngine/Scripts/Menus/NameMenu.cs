@@ -80,9 +80,11 @@ class NameMenu : GameObject
         letters.Add(backspaceButton);
 
 
-        Sprite textBox = new Sprite("TextInputBox.png");
+        Sprite textBox = new Sprite("name_box.png");
         textBox.SetOrigin(textBox.width / 2, textBox.height / 2);
-        textBox.SetXY(game.width / 2, game.height / 2);
+        textBox.SetXY(game.width / 2, game.height / 2 - 100);
+        textBox.scaleX = 0.5f;
+        textBox.scaleY = 0.3f;
         this.AddChild(textBox);
 
         // Create an EasyDraw object for drawing the text box
