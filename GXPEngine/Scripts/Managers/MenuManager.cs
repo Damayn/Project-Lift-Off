@@ -7,15 +7,10 @@ public class MenuManager : GameObject
     // Settings reference
     GameSettings settings;
     MyGame gameRef;
-<<<<<<< Updated upstream:GXPEngine/Scripts/Managers/MenuManager.cs
     Sprite background;
     ScoreManager scoreManager;
 
     public MenuManager(GameSettings settings,MyGame gamRef, ScoreManager scoreManager) : base()
-=======
-
-    public MenuManager(GameSettings settings,MyGame gamRef) : base()
->>>>>>> Stashed changes:GXPEngine/Scripts/Menus/MenuManager.cs
     {
         this.settings = settings;
         this.gameRef = gamRef;
