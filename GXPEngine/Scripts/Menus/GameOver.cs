@@ -76,7 +76,7 @@ public class GameOver : GameObject
         canvas.Clear(Color.Transparent);
 
         // Set text font and size
-        canvas.TextFont("Helvetika", 30);
+        canvas.TextFont("Helvetica", 30);
 
         // Draw top scores
         float y = 50;
