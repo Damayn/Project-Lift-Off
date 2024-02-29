@@ -3,9 +3,6 @@ using GXPEngine;
 
 public class BackButton : Button
 {
-
-    Sound press;
-
     MenuManager menuManager;
     GameSettings settings;
 
@@ -15,12 +12,6 @@ public class BackButton : Button
     {
         this.settings = settings;
         this.menuManager = menuManager;
-<<<<<<< Updated upstream
-=======
-
-        press = new Sound("button_press.mp3", false, false);
-   
->>>>>>> Stashed changes
     }
 
     protected override void Update()
@@ -39,13 +30,6 @@ public class BackButton : Button
             //    }
             //}
 
-<<<<<<< Updated upstream
-=======
-            press.Play();
-
-            menuManager.SetMainMenu();
-            LateDestroy();
->>>>>>> Stashed changes
 
             foreach (GameObject child in game.GetChildren())
             {
