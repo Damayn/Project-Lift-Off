@@ -38,6 +38,7 @@ class Plant : AnimationSprite
 
     Sound water;
     Sound harvest;
+    Sound scythe;
 
     public Plant(string fileName, float x, float y, Pot pot, GameSettings settings) : base(fileName, 2, 4)
     {
@@ -64,7 +65,8 @@ class Plant : AnimationSprite
         wiltingChance = GetWiltingChance(fileName);
 
         water = new Sound("Watering.mp3",false,false);
-        harvest = new Sound("Harvesting.mp3",false,false);
+        harvest = new Sound("Growing_Harvestable.mp3",false,false);
+        scythe = new Sound("Harvesting.mp3",false,false);
 
         this.SetXY(x, y);
         this.scale = 3;
@@ -258,6 +260,8 @@ class Plant : AnimationSprite
                             
                         }
                     }
+
+                    scythe.Play();
 
                     this.LateDestroy();
 
