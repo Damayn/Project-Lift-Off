@@ -35,6 +35,8 @@ public class MyGame : Game {
     Sound bagChange;
     SoundChannel changing;
 
+    Sound level;
+
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
         settings = new GameSettings();
@@ -53,6 +55,7 @@ public class MyGame : Game {
         backgroundMusic = new Sound("backgroundMusic.wav", true, true);
         potChange = new Sound("Select_Pot.mp3",false,false);
         bagChange = new Sound("Select_Seed_Packet.mp3",false,false);
+        level = new Sound("Level_Up.mp3",false,false);
 
         play = backgroundMusic.Play();
 
@@ -174,7 +177,10 @@ public class MyGame : Game {
         }
 
         if (slider.currentValue >= slider.maximumValue)
-        { 
+        {
+
+            level.Play();
+
             slider.maximumValue *= 2;
             slider.currentValue = slider.maximumValue / 2;
             settings.currentLevel++;
@@ -262,7 +268,7 @@ public class MyGame : Game {
         }
     }
 
-    void DeleteSeedBags () 
+    void DeleteSeedBags() 
     {
         foreach (Seed seed in seedBags)
         {
