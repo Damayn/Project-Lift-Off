@@ -1,5 +1,7 @@
 ﻿using GXPEngine;
 using System;
+using System.CodeDom;
+using System.ComponentModel;
 
 class Plant : AnimationSprite
 {
@@ -27,7 +29,7 @@ class Plant : AnimationSprite
 
     // Wilting when you dont water the plant withing a certain time of planting it
     int plantTimer;
-    int timeTillWilting = 5000; // 5 seconds
+    int timeTillWilting = 2000;
 
     // Wilting when you dont harvest the plant withing a ceraint time since it has grown
     int grownTimer;
@@ -45,10 +47,25 @@ class Plant : AnimationSprite
     Sound []tahiti = { new Sound("Frog_Harvest_Noise.mp3", false, false), new Sound("Bunny_Harvest_Noise.mp3", false, false), new Sound("Bat_Harvest_Noise.mp3", false, false), new Sound("Eye_Harvest_Noise.mp3", false, false), new Sound("Mushroom_Harvest_Noise.mp3", false, false) };
     SoundChannel magicalPlace;
 
-    public Plant(string fileName, float x, float y, Pot pot, GameSettings settings) : base(fileName, 2, 4)
+    private bool isFrog;
+    private bool growingAnimationDone = false;
+    public bool grownAnimationDone = false;
+
+    private bool wiltingGrownAnimDone = false;
+    private bool wiltingGrowingAnimDone = false;
+
+    private bool reverseWiltingAnim = false;
+
+    private bool hasWilted = false;
+
+    public Plant(string fileName, float x, float y, int cols, int rows, Pot pot, GameSettings settings, bool isFrog) : base(fileName, cols, rows)
     {
+        this.isFrog = isFrog;
+
         Setup(fileName, x, y);
 
+        this.SetScaleXY(0.2f);
+        this.SetOrigin(this.width / 2, this.height);
         this.pot = pot;
 
         this.settings = settings;
@@ -59,8 +76,8 @@ class Plant : AnimationSprite
         this.SetOrigin(width / 2, height);
 
         waterDrop = new Sprite("waterDrop.png");
-        waterDrop.SetScaleXY(0.02f, 0.02f);
-        waterDrop.SetXY(0, -20);
+        waterDrop.SetScaleXY(0.5f, 0.5f);
+        waterDrop.SetXY(80, -1150);
 
         AddChild(waterDrop);
 
@@ -73,7 +90,7 @@ class Plant : AnimationSprite
         harvest = new Sound("Growing_Harvestable.mp3",false,false);
         scythe = new Sound("Harvesting.mp3",false,false);
 
-    this.SetXY(x, y);
+        this.SetXY(x, y);
         this.scale = 3;
 
         plantTimer = Time.time;
@@ -154,44 +171,79 @@ class Plant : AnimationSprite
         HandleMouseInput ();
     }
 
-    void Growing () 
+    void Growing()
     {
+        WiltingWhileGrowing();
+        WiltingIfNotHarvested();
+
         if (isWatered)
         {
-            if (Time.time - timerStart > timeToGrow && !wilting)
+            if (Time.time - timerStart > timeToGrow && !wilting && !isGrown)
             {
 
                 if (isGrown == false)
                 {
-
                     harvest.Play();
-
                 }
-                
+
                 isGrown = true;
                 growingStartTimer = Time.time;
                 grownTimer = Time.time;
             }
+        }
 
-            if (Time.time - animationChangeTimer > timeToGrow / 7 && !wilting)
+        if (isFrog && !isGrown && isWatered)
+        {
+            if (!wilting && !growingAnimationDone)
             {
-                frame++;
-                animationChangeTimer = Time.time;
-
-                if (frame < 7)
+                this.Animate(0.1f);
+                this.SetCycle(0, 8);
+                if (this.currentFrame > 6.5)
                 {
-                    SetCycle(frame, 1);
-                }
-                else
-                {
-                    SetCycle(6, 1);
+                    growingAnimationDone = true;
                 }
             }
+            else if (growingAnimationDone)
+            {
+                this.SetCycle(8, 1);
+            }
         }
-        else
+        else if (isFrog && isGrown && !wilting)
         {
-            SetCycle(0, 1);
+            if (!grownAnimationDone)
+            {
+                this.Animate(0.1f);
+            }
+            this.SetCycle(9, 6);
+
+            if (this.currentFrame > 13)
+            {
+                grownAnimationDone = true;
+            }
         }
+        else if (isFrog && isGrown && wilting && hasWilted)
+        {
+            if (!wiltingGrownAnimDone)
+            {
+                this.Animate(0.1f);
+            }
+            this.SetCycle(15, 5);
+
+            if (this.currentFrame > 18)
+            {
+                wiltingGrownAnimDone = true;
+                this.AddChild(waterDrop);
+                hasWilted = true;
+                isGrown = false;
+            }
+        } else if (isFrog && !isGrown && !hasWilted) 
+        {
+        
+        }
+        //else if (wiltingGrowingAnimDone)
+        //{
+        //    this.SetFrame(20); 
+        //}    
     }
 
     void WiltingWhileGrowing ()
@@ -199,7 +251,6 @@ class Plant : AnimationSprite
         // Can wilting while growing
         if (!isGrown && !wilting && Time.time - growingStartTimer > wiltingTimer)
         {
-
             int randomWiltingChance = random.Next(1, 101); // Random number between 1 and 100      
 
             Console.WriteLine(randomWiltingChance);
@@ -215,13 +266,13 @@ class Plant : AnimationSprite
         }
     }
 
-    void WiltingIfNotWatered ()
-    {
-        if (!isWatered && Time.time - plantTimer > timeTillWilting && !wilting)
-        {
-            wilting = true;
-        }
-    }
+    //void WiltingIfNotWatered ()
+    //{
+    //    if (!isWatered && Time.time - plantTimer > timeTillWilting && !wilting)
+    //    {
+    //        wilting = true;
+    //    }
+    //}
 
     void WiltingIfNotHarvested ()
     {
@@ -233,32 +284,32 @@ class Plant : AnimationSprite
 
     void HandleMouseInput ()
     {
-        if (HitTestPoint(Input.mouseX, Input.mouseY))
+        if (pot.isHovered)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (ReadButton.isMovingVertically)
             {
                 if (!isWatered)
                 {
-
                     water.Play();
 
-                    waterDrop.LateDestroy();
+                    this.RemoveChild(waterDrop);
                     isWatered = true;
                 }
+            }
 
-                if (isGrown )//&& pot.isHovered
+            if (isGrown && pot.isHovered && ReadButton.isMovingHorizontally)
+            {
+                for (int i = 0; i < settings.customers.Count; i++)
                 {
-                    for (int i = 0; i < settings.customers.Count; i++)
+                    foreach (String flower in settings.customers[i].flowersCollected)
                     {
-                        foreach (String flower in settings.customers[i].flowersCollected)
+                        string plantNameWithoutExtension = this.name.Split('.')[0];
+
+                        if (plantNameWithoutExtension == flower)
                         {
-                            string plantNameWithoutExtension = this.name.Split('.')[0];
+                            settings.customers[i].flowersCollected.Remove(flower);
 
-                            if (plantNameWithoutExtension == flower)
-                            {
-                                settings.customers[i].flowersCollected.Remove (flower);
-
-                                Console.WriteLine("Removed flower: " + flower);
+                            Console.WriteLine("Removed flower: " + flower);
 
                                 break;
                             }
@@ -266,50 +317,67 @@ class Plant : AnimationSprite
                         }
                     }
 
-                    mainHarvest = scythe.Play();
+                mainHarvest = scythe.Play();
 
-                    switch (this.name)
-                    {
+                switch (this.name)
+                {
 
-                        case "flower1.png":
+                    case "flower1.png":
 
-                            magicalPlace = tahiti[0].Play();
+                        magicalPlace = tahiti[0].Play();
 
-                            break;
+                        break;
 
-                        case "flower2.png":
+                    case "flower2.png":
 
-                            magicalPlace = tahiti[1].Play();
+                        magicalPlace = tahiti[1].Play();
 
-                            break;
+                        break;
 
-                        case "flower3.png":
+                    case "flower3.png":
 
-                            magicalPlace = tahiti[2].Play();
+                        magicalPlace = tahiti[2].Play();
 
-                            break;
+                        break;
 
-                        case "flower4.png":
+                    case "flower4.png":
 
-                            magicalPlace = tahiti[3].Play();
+                        magicalPlace = tahiti[3].Play();
 
-                            break;
+                        break;
 
-                        case "flower5.png":
+                    case "flower5.png":
 
-                            magicalPlace = tahiti[4].Play();
+                        magicalPlace = tahiti[4].Play();
 
-                            break;
+                        break;
 
-                    }
+                }
 
-                    this.LateDestroy();
+                this.LateDestroy();
 
-                    pot.isSelected = false;
+                pot.isSelected = false;
 
-                    this.hasBeenClicked = true;
-                }    
-            }
+                this.hasBeenClicked = true;
+            } 
+            //else if (!isGrown && hasWilted && ReadButton.button4Pressed)
+            //{
+            //    this.RemoveChild(waterDrop);
+            //    if (!reverseWiltingAnim)
+            //    {
+            //        this.Animate(0.1f);
+            //    }
+            //    this.SetCycle(20, -5);
+
+            //    if (this.currentFrame < 16)
+            //    {
+            //        reverseWiltingAnim = true;
+            //        this.AddChild(waterDrop);
+            //        hasWilted = false;
+            //        wilting = false;
+            //        isGrown = true;
+            //    }
+            //}
         }
     }
 }

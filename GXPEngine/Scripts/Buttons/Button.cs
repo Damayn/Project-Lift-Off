@@ -27,7 +27,7 @@ public class Button : AnimationSprite
             // Set the cycle to the first frame
             this.SetCycle(1);
             // If the button has been clicked
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) || ReadButton.button4Pressed)
             {
                 hasBeenPressed = true;
             }

@@ -39,6 +39,13 @@ public class GameSettings
 
     public List<string> collectedFlowers = new List<string>();
     public List<Customers> customers = new List<Customers>();
+
+
+    public bool selectingState;
+    public bool wateringState;
+    public bool harvestingState;
+    public bool menuState;
+
     public GameSettings()
     {
     

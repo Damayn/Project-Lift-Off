@@ -31,7 +31,7 @@ class Letter : Sprite
         }
 
         // Check if the left mouse button is clicked while the cursor is over the letter
-        if (isHovered && Input.GetMouseButtonDown(0))
+        if (isHovered && (Input.GetMouseButtonDown(0) || ReadButton.button4Pressed))
         {
 
             press.Play();

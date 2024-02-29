@@ -10,7 +10,7 @@ public class Slider : GameObject
     String thumbImg;
     String sliderBackImg;
 
-    private Sprite track;
+    public Sprite track;
     private Sprite trackFront;
     private Sprite trackBack;
     private Sprite slider;
@@ -40,8 +40,8 @@ public class Slider : GameObject
         maximumValue = max;
         this.currentValue = currentValue;
 
-        TrackSetUp(x, y);
         SliderSetUp(x, y);
+        TrackSetUp(x, y);
     }
 
     void Update()

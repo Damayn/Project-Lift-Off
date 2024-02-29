@@ -26,15 +26,15 @@ public class Pause : EasyDraw
 
         MenuButton menuButton = new MenuButton(settings, menuManager);
         menuButton.SetOrigin(menuButton.width / 2, menuButton.height / 2);
-        menuButton.SetXY(game.width / 2, game.height / 2 - menuButton.height /2);
+        menuButton.SetXY(game.width / 2, game.height / 2 - menuButton.height / 2);
         this.AddChild(menuButton);
 
         BackButton backButton = new BackButton(menuManager, settings);
         backButton.SetOrigin(backButton.width / 2, backButton.height / 2);
-        backButton.SetXY(game.width / 2, game.height / 2 + backButton.width /2);
+        backButton.SetXY(game.width / 2, game.height / 2 + backButton.width / 2);
         AddChild(backButton);
 
-        buttons = new Button[] { menuButton , backButton };
+        buttons = new Button[] { menuButton, backButton };
         buttons[currentButtonIndex].isHovered = true;
     }
 

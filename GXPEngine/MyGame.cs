@@ -13,6 +13,7 @@ public class MyGame : Game {
     Slider slider;
     SerialPortManager serialPort;
     ReadButton readButton;
+    ModeMananger modeManager;
 
     private List<Pot> pots = new List<Pot>();
     private List<Seed> seedBags = new List<Seed>();
@@ -47,14 +48,14 @@ public class MyGame : Game {
         settings = new GameSettings();
         scoreManager = new ScoreManager();
         this.AddChild(scoreManager);
-        
+
         menuManager = new MenuManager(settings, this, scoreManager);
         //kills the buttons?
         menuManager.SetMainMenu();
         AddChild(menuManager);
 
-        serialPort = new SerialPortManager ("COM3", 9600);
-        readButton = new ReadButton(serialPort);
+        serialPort = new SerialPortManager("COM3", 9600);
+        readButton = new ReadButton(serialPort,settings);
         this.AddChild(readButton);
 
         backgroundMusic = new Sound("backgroundMusic.wav", true, true);
@@ -70,6 +71,11 @@ public class MyGame : Game {
         ping = warning.Play();
         ping.Mute = true;
 
+
+        modeManager = new ModeMananger(serialPort, settings);
+        this.AddChild (modeManager);
+
+        ReadButton.currentColor = " 200, 33, 63, 0";
     }
 
     public void SetUp () 
@@ -87,19 +93,19 @@ public class MyGame : Game {
 
         AddChild (customerBackground);
 
-        slider = new Slider("productionBarTrack.png", "productionBarSlider.png", 20, 20, 0, 100, 50);
+        slider = new Slider("progressBarOutline.png", "slider.png", 20, 20, 0, 100, 50);
+        float speed = 0.5f;
+        slider.currentValue = Mathf.Lerp(slider.currentValue, slider.maximumValue / 2, speed);
+        AddChild(slider);
 
-        settings.isTimePaused = false;
+        Sprite vine = new Sprite("vine_progress_bar.png");
+        vine.SetOrigin(vine.width / 2, 0);
+        vine.SetXY (slider.x + slider.track.width /2 - 22, slider.y + slider.track.height /2 - 12);
+        this.AddChild(vine);
 
         CreatePots();
 
-        float speed = 0.05f;
-
-        slider.currentValue = Mathf.Lerp(slider.currentValue, slider.maximumValue / 2, speed);
-
-        AddChild(slider);
-
-        Console.WriteLine(settings.customers.Count);
+        settings.isTimePaused = false;
     }
 
     void Update() 
@@ -234,55 +240,49 @@ public class MyGame : Game {
 
     void CreatePots()
     {
-        int potIndex = 0;
+        int numPotsPerRow = 5; // Total number of pots per row
+        float potSpacingX = 285f; // Spacing between pots along the x-axis
+        float scaleIncrement = 0.08f; // Amount to increment scale for each pot
 
-        // Calculate the number of pots per row and spacing
-        int numPotsPerRow = 3;
-        float potSpacingX = 200f;
-        float potSpacingY = 200f;
-
-        // Calculate the total width of the pots
-        float totalPotsWidth = (numPotsPerRow - 1) * potSpacingX;
-
-        // Calculate the starting x position for the first pot in the center of the window
-        float startX = (width - totalPotsWidth) / 2;
+        // Calculate the starting x position for the leftmost pot
+        float startX = width / 2 - ((numPotsPerRow / 2) * potSpacingX);
 
         // Calculate the y position for the pots
-        float startY = height / 2;
+        float startY = height;
 
-        // Create pots using a for loop
-        for (int i = 0; i < 5; i++)
+        // Create pots starting from the leftmost one
+        for (int i = 0; i < numPotsPerRow; i++)
         {
             // Calculate the x position for the current pot
-            float x = startX + (i % numPotsPerRow) * potSpacingX;
+            float currentX = startX + i * potSpacingX;
 
-            // Calculate the y position for the current pot
-            float y = startY + (i / numPotsPerRow) * potSpacingY;
+            // Calculate the scale for the current pot
+            float scale = 0.3f + (i < 2 ? i * scaleIncrement : (4 - i) * scaleIncrement);
 
-            potIndex++;
-
-            // Create and add the pot to the game
-            pot = new Pot(x, y, potIndex, 2, 1);
+            // Create and add the pot
+            Pot pot = new Pot(currentX, startY, i, 2, 1);
+            pot.SetScaleXY(scale);
             pots.Add(pot);
             AddChild(pot);
-        } 
+        }
     }
+
     void CreateSeedBags()
     {
         int seedBagIndex = 0;
 
         // Calculate the number of seed bags per row and spacing
         int numSeedBagsPerRow = 5;
-        float seedBagSpacing = (seedBagSelectionMenu.width / 5);
+        float seedBagSpacing = (seedBagSelectionMenu.width / 5) - 10;
 
         // Calculate the total width of the seed bags
         float totalSeedBagsWidth = (numSeedBagsPerRow - 1) * seedBagSpacing;
 
         // Calculate the starting x position for the first seed bag
-        float startX = seedBagSelectionMenu.x - seedBagSelectionMenu.width / 2 + 5;
+        float startX = seedBagSelectionMenu.x - seedBagSelectionMenu.width / 2 + 25;
 
         // Calculate the starting y position for the first seed bag
-        float startY = seedBagSelectionMenu.y - seedBagSelectionMenu.height / 2 + seedBagSelectionMenu.height / 4;
+        float startY = seedBagSelectionMenu.y - 95;
 
         // Create seed bags using a for loop
         for (int i = 0; i < 5; i++)
@@ -354,7 +354,7 @@ public class MyGame : Game {
             }
 
             // Reset pot and seed bag selection indices
-            currentPotIndex = 0;
+            currentPotIndex = 2;
             currentSeedBagIndex = 0;
         }
     }
@@ -363,23 +363,22 @@ public class MyGame : Game {
     {
         if (settings.inPotSelection) // If in pot selection mode
         {
-            if (Input.GetKeyDown(Key.LEFT))
+            if (Input.GetKeyDown(Key.LEFT) || ReadButton.IsJoystickLeft)
             {
                 MoveToPreviousPot();
             }
-            else if (Input.GetKeyDown(Key.RIGHT))
+            else if (Input.GetKeyDown(Key.RIGHT) || ReadButton.IsJoystickRight)
             {
                 MoveToNextPot();
             }
         }
         else if (settings.inSeedBagSelection) // If in seed bag selection mode
         {
-
-            if (Input.GetKeyDown(Key.LEFT))
+            if (Input.GetKeyDown(Key.LEFT) || ReadButton.IsJoystickLeft)
             {
                 MoveToPreviousSeedBag();
             }
-            else if (Input.GetKeyDown(Key.RIGHT))
+            else if (Input.GetKeyDown(Key.RIGHT) || ReadButton.IsJoystickRight)
             {
                 MoveToNextSeedBag();
             }
@@ -409,18 +408,22 @@ public class MyGame : Game {
     void HandleMouseInput()
     {
         // Check for left mouse button click
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || ReadButton.button4Pressed)
         {
             if (settings.inPotSelection) // If in pot selection mode
             {
+                Console.WriteLine("asd");
                 // Check if the current pot is not already selected
                 if (!pots[currentPotIndex].isSelected)
                 {
+                    Console.WriteLine("asd");
+
                     // Display the seed bag selection menu above the current pot
                     seedBagSelectionMenu = new Sprite("seedBagMenu.png");
-                    seedBagSelectionMenu.SetOrigin(seedBagSelectionMenu.width / 2, seedBagSelectionMenu.height / 2);
+                    //seedBagSelectionMenu.SetScaleXY(2f, 2f);
+                    seedBagSelectionMenu.SetOrigin(seedBagSelectionMenu.width / 2, seedBagSelectionMenu.height / 2 + 30);
+                    seedBagSelectionMenu.SetXY(game.width /2, game.height /2);
                     this.AddChild(seedBagSelectionMenu);
-                    seedBagSelectionMenu.SetXY(pots[currentPotIndex].x, pots[currentPotIndex].y - pots[currentPotIndex].height / 2 - 50);
 
                     // Create seed bags for selection
                     CreateSeedBags();
@@ -462,7 +465,7 @@ public class MyGame : Game {
                 }
 
                 // Switch back to pot selection mode
-                settings.inPotSelection = false;
+                settings.inPotSelection = true;
                 // Turn off seed bag selection mode
                 settings.inSeedBagSelection = false;
             }
@@ -523,18 +526,30 @@ public class MyGame : Game {
     }
 
     void PlantSeedInPot(Seed seed, Pot pot)
-    {
-        // Extract the number from the seed bag's name
-        string seedBagName = seedBags[currentSeedBagIndex].name;
-        int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
+{
+    // Extract the number from the seed bag's name
+    string seedBagName = seedBags[currentSeedBagIndex].name;
+    int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
 
         planting.Play();
 
-        // Create a new plant with the same number as the seed bag
-        Plant plant = new Plant("flower" + seedNumber + ".png", pot.x, pot.y - pot.height /2 - 20, pot, settings);
+    // Calculate the vertical offset based on the pot's size
+    float yOffset = pot.height + 65 + (currentPotIndex * 5.5f);
+
+    // Create a new plant with the same number as the seed bag
+    if (seedNumber == 1)
+    {
+        Plant plant = new Plant("flower" + seedNumber + ".png", pot.x - 70, pot.y - yOffset, 8, 3, pot, settings, true);
         AddChild(plant);
         plants.Add(plant);
     }
+    else
+    {
+        Plant plant = new Plant("flower" + seedNumber + ".png", pot.x - 70, pot.y - yOffset, 4, 1, pot, settings, false);
+        AddChild(plant);
+        plants.Add(plant);
+    }
+}
 
     static void Main() {
 		new MyGame().Start();

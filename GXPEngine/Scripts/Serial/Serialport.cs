@@ -46,7 +46,6 @@ public class SerialPortManager
 
     public float ButtonState(int button)
     {
-        
         if (_lastButtonState != null)
         {
             // Split the sentence by space to remove the identifier
@@ -62,29 +61,36 @@ public class SerialPortManager
                 {
                     float temp;
 
-                    // Extract and return the part specified by the button index
-                    
-                    temp = StringToInt(dataParts[button]);
-                    return temp;
+                    // Extract and parse the part specified by the button index as a float
+                    if (float.TryParse(dataParts[button], out temp))
+                    {
+                        return temp;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Failed to parse float: {dataParts[button]}");
+                        return 0.0f; // Default value or handle error as appropriate
+                    }
                 }
                 else
                 {
                     Console.WriteLine($"Invalid button index: {button}");
-                    return 0.000000f;
+                    return 0.0f;
                 }
             }
             else
             {
                 Console.WriteLine("Button state does not include data.");
-                return 0.000000f;
+                return 0.0f;
             }
         }
         else
         {
             Console.WriteLine("Button state is null.");
-            return 0.000000f;
+            return 0.0f;
         }
     }
+
 
     private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
@@ -107,14 +113,14 @@ public class SerialPortManager
     }
 
 
-    public void Send(string identifier, string message)
+    public void Send(string identifier, string message) 
     {
         if (!validIdentifiers.ContainsKey(identifier))
         {
             throw new ArgumentException($"Invalid identifier are you missing a space?? Example use case 'ButtonStateRequest ' : {identifier}");
         }
 
-        string fullMessage = $"{identifier},{message}";
+        string fullMessage = $"{identifier}" + $"{message}";
         _serialPort.WriteLine(fullMessage);
         Console.WriteLine($"Sent message: {fullMessage}");
     }

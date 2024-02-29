@@ -1,4 +1,5 @@
 ﻿using GXPEngine;
+using System;
 
 class MainMenu : GameObject
 {
@@ -52,7 +53,7 @@ class MainMenu : GameObject
 
     void Update()
     {
-        if (startButton.hasBeenPressed) 
+        if (startButton.hasBeenPressed)
         {
 
             press.Play();
@@ -60,11 +61,12 @@ class MainMenu : GameObject
             startButton.hasBeenPressed = false;
         }
 
-        if (Input.GetKeyDown(Key.UP))
+        if (Input.GetKeyDown(Key.UP) || ReadButton.IsJoystickUp)
         {
             ChangeSelection(-1);
+            
         }
-        else if (Input.GetKeyDown(Key.DOWN))
+        else if (Input.GetKeyDown(Key.DOWN) || ReadButton.IsJoystickDown)
         {
             ChangeSelection(1);
         }

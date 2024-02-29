@@ -20,7 +20,7 @@ public class OptionsMenu : GameObject
         SetUp();
     }
 
-    void SetUp () 
+    void SetUp()
     {
         // creating a back button
         BackButton backButton = new BackButton(menuManager, settings);

@@ -16,7 +16,7 @@ public class Pot : AnimationSprite
     public Pot(float x, float y, int potIndex, int cols, int rows) : base("pot.png", cols, rows)
     {
         // Set the anchor of the pot
-        SetOrigin (width /2, height /2);
+        SetOrigin (width /2, height);
         // Set the position of the pot
         SetXY(x, y);
         // Set the scale of the pot

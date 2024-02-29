@@ -178,13 +178,13 @@ class NameMenu : GameObject
     void Update()
     {
         // Handle arrow key input to cycle through letters
-        if (Input.GetKeyDown(Key.LEFT))
+        if (Input.GetKeyDown(Key.LEFT) || ReadButton.IsJoystickLeft)
         {
             if (currentLetterIndex == 21 && !playButton.isHovered)
             {
                 playButton.isHovered = true;
                 letters[currentLetterIndex].isHovered = false;
-                
+
             }
             else if (playButton.isHovered)
             {
@@ -197,12 +197,12 @@ class NameMenu : GameObject
                 currentLetterIndex = 26;
                 letters[currentLetterIndex].isHovered = true;
                 backButton.isHovered = false;
-            } else if (!backButton.isHovered) 
+            } else if (!backButton.isHovered)
             {
                 CycleThroughLetters(0, -1); // Move left
             }
         }
-        else if (Input.GetKeyDown(Key.RIGHT))
+        else if (Input.GetKeyDown(Key.RIGHT) || ReadButton.IsJoystickRight)
         {
             if (currentLetterIndex == 20)
             {
@@ -235,7 +235,7 @@ class NameMenu : GameObject
             }
 
         }
-        else if (Input.GetKeyDown(Key.UP))
+        else if (Input.GetKeyDown(Key.UP) || ReadButton.IsJoystickUp)
         {
             if ((!playButton.isHovered && !backButton.isHovered))
             {
@@ -252,7 +252,7 @@ class NameMenu : GameObject
                 playButton.isHovered = true;
             }
         }
-        else if (Input.GetKeyDown(Key.DOWN))
+        else if (Input.GetKeyDown(Key.DOWN) || ReadButton.IsJoystickDown)
         {
             if ((!playButton.isHovered && !backButton.isHovered))
             {
