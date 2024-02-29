@@ -22,8 +22,8 @@ public class GameSettings
 
     public String sceneName;
 
-    public string[] people = { "Faces.png", "Rolling.png", "Viking.png", "cat.png", "Bird.png" };
-
+    public string[] people = { "c1_happy-sheet.png" };
+    
     public float currentProductionValue { get; set; }
     public int points = 50;
 

@@ -29,7 +29,7 @@ public class Customers : AnimationSprite
 
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
-    public Customers(GameSettings settings, Slider productionSlider) : base(settings.people[new Random().Next(1, 5)], 5, 2)
+    public Customers(GameSettings settings, Slider productionSlider) : base(settings.people[new Random().Next(1, 5)], 5, 1)
     {
         
         this.settings = settings;
