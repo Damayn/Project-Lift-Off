@@ -29,7 +29,7 @@ public class Customers : AnimationSprite
 
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
-    public Customers(GameSettings settings, Slider productionSlider) : base(settings.people[new Random().Next(1, 5)], 5, 1)
+    public Customers(GameSettings settings, Slider productionSlider) : base(settings.people[0], 5, 1)
     {
         
         this.settings = settings;
@@ -42,9 +42,10 @@ public class Customers : AnimationSprite
 
     void SetUp ()
     {
-        this.SetXY(1150, 150);
-        this.width = 200;
-        this.height = 150;
+        this.SetXY(1150, 180);
+        //this.width = 200;
+        //this.height = 150;
+        this.SetScaleXY(0.35f,0.35f); 
 
         angry = new Sound("Customer_Negative_Feedback.mp3",false,false);
         happy = new Sound("Customer_Positive_Feedback.mp3", false, false);

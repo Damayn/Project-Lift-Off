@@ -78,12 +78,12 @@ public class MyGame : Game {
         AddChild(background);
 
         //hardcoding of background image testing (change it if you want)
-        customerBackground = new Sprite("white.png");
+        customerBackground = new Sprite("bg_temp1.png");
 
-        customerBackground.x = 1150;
-        customerBackground.y = 0;
-        customerBackground.width = 200;
-        customerBackground.height = 300;
+        customerBackground.x = 1040;
+        customerBackground.y = -100;
+        customerBackground.width = 390;
+        customerBackground.height = 720;
 
         AddChild (customerBackground);
 

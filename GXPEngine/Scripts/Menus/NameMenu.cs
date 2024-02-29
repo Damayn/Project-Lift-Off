@@ -32,18 +32,18 @@ class NameMenu : GameObject
         this.gameRef = gameRef;
 
         background = new Sprite("background_menu.png");
-        pad = new Sprite("white.png");
+        pad = new Sprite("bg_temp1.png");
 
         background.width = game.width;
         background.height = game.height;
 
         AddChild(background);
 
-        pad.x = 50;
-        pad.y = 150;
+        pad.x = 0;
+        pad.y = 100;
 
-        pad.width = 300;
-        pad.height = 500;
+        pad.width = 400;
+        pad.height = 650;
 
         AddChild(pad);
 
