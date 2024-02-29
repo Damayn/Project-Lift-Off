@@ -24,6 +24,7 @@ public class Customers : AnimationSprite
 
     Sound angry;
     Sound happy;
+    Sound spawn;
     SoundChannel states;
 
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
@@ -47,6 +48,7 @@ public class Customers : AnimationSprite
 
         angry = new Sound("Customer_Negative_Feedback.mp3",false,false);
         happy = new Sound("Customer_Positive_Feedback.mp3", false, false);
+        spawn = new Sound("New_Order.mp3", false, false);
 
         lastChangeOfFace = Time.time;
         random = new Random();
@@ -62,6 +64,9 @@ public class Customers : AnimationSprite
         {
             Console.WriteLine(flower);
         }
+
+        states = spawn.Play();
+
     }
 
     void Update()
