@@ -37,6 +37,7 @@ class Plant : AnimationSprite
     public bool hasBeenClicked;
 
     Sound water;
+    Sound harvest;
 
     public Plant(string fileName, float x, float y, Pot pot, GameSettings settings) : base(fileName, 2, 4)
     {
@@ -63,6 +64,7 @@ class Plant : AnimationSprite
         wiltingChance = GetWiltingChance(fileName);
 
         water = new Sound("Watering.mp3",false,false);
+        harvest = new Sound("Harvesting.mp3",false,false);
 
         this.SetXY(x, y);
         this.scale = 3;
@@ -249,7 +251,10 @@ class Plant : AnimationSprite
                         }
                     }
 
+                    harvest.Play();
+
                     this.LateDestroy();
+
                     pot.isSelected = false;
 
                     this.hasBeenClicked = true;
