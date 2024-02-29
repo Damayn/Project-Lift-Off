@@ -17,9 +17,15 @@ public class GameOver : GameObject
     ScoreManager scoreManager;
     Button[] buttons;
 
+<<<<<<< Updated upstream
     int currentButtonIndex = 0;
 
     public GameOver (MenuManager menuManager, GameSettings settings, ScoreManager scoreManager) : base()
+=======
+    Sound end;
+
+    public GameOver(MenuManager menuManager, GameSettings settings): base()
+>>>>>>> Stashed changes
     {
         setting = settings;
         this.menuManager = menuManager;
@@ -29,8 +35,9 @@ public class GameOver : GameObject
         canvas.SetXY(100, 100);
         
 
-        background = new Sprite("background_menu.png");
+        end = new Sound("Game_Over.mp3",false,false);
 
+<<<<<<< Updated upstream
         background.width = game.width;
         background.height = game.height;
         AddChild(background);
@@ -94,5 +101,27 @@ public class GameOver : GameObject
         buttons[currentButtonIndex].isHovered = false;
         currentButtonIndex = (currentButtonIndex + delta + buttons.Length) % buttons.Length;
         buttons[currentButtonIndex].isHovered = true;
+=======
+        background = new Sprite("background_menu.png");
+
+        background.width = game.width;  
+        background.height = game.height;
+        AddChild(background);
+
+        BackButton backButton = new BackButton(this.menuManager);
+        backButton.SetXY(game.width / 2, game.height / 2);
+        AddChild(backButton);
+
+        if (setting.play == false)
+        {
+
+            end.Play();
+
+            setting.play = true;
+
+        }
+        
+        setting.isGameOver = false;
+>>>>>>> Stashed changes
     }
 }
