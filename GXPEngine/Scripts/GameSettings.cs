@@ -31,6 +31,8 @@ public class GameSettings
 
     public string playerName;
 
+    public bool play = false;
+
     public List<string> collectedFlowers = new List<string>();
     public List<Customers> customers = new List<Customers>();
     public GameSettings()

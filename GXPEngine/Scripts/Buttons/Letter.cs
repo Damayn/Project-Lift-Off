@@ -8,11 +8,15 @@ class Letter : Sprite
 
     private uint defColor;
 
+    Sound press;
+
     public Letter(string fileName) : base(fileName)
     {
         SetOrigin(width / 2, height / 2); // Set the origin to the center of the letter sprite
 
         defColor = this.color;
+
+        press = new Sound("button_press.mp3", false, false);
     }
 
     void Update()
@@ -29,6 +33,9 @@ class Letter : Sprite
         // Check if the left mouse button is clicked while the cursor is over the letter
         if (isHovered && Input.GetMouseButtonDown(0))
         {
+
+            press.Play();
+
             isClicked = true;
         }
     }

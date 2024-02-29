@@ -3,6 +3,7 @@ using System;
 
 public class Pot : AnimationSprite
 {
+
     // Boolean variable to track if a plant has been planted in the pot
     private bool plantPlanted;
 
@@ -34,9 +35,11 @@ public class Pot : AnimationSprite
 
     public void IsPotHovered ()
     {
+
         if (isHovered)
         {
             SetCycle(1, 1);
+
         }
         else
         {
