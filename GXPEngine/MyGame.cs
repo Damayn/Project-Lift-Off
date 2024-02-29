@@ -111,6 +111,7 @@ public class MyGame : Game {
         else if (settings.isGameOver)
         {
             play.Mute = true;
+            settings.playAgain = false;
             menuManager.SetGameOverMenu();
             if (!scoreSaved)
             {

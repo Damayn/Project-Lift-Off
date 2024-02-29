@@ -18,6 +18,7 @@ public class GameOver : GameObject
     Button[] buttons;
 
     Sound finish;
+    Sound press;
 
     int currentButtonIndex = 0;
 
@@ -29,11 +30,11 @@ public class GameOver : GameObject
 
         canvas = new EasyDraw(300, 300);
         canvas.SetXY(100, 100);
-        
 
         background = new Sprite("background_menu.png");
 
         finish = new Sound("Game_Over.mp3",false,false);
+        press = new Sound("button_press.mp3", false, false);
 
         background.width = game.width;
         background.height = game.height;
@@ -91,6 +92,16 @@ public class GameOver : GameObject
     {
         if (playAgainButton.hasBeenPressed)
         {
+
+            if (setting.playAgain == false)
+            {
+
+                press.Play();
+
+                setting.playAgain = true;
+
+            }
+           
             menuManager.SetMainMenu();
         }
 

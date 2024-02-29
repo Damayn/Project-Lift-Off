@@ -13,6 +13,8 @@ class MainMenu : GameObject
 
     Sprite background;
 
+    Sound press;
+
     int currentButtonIndex = 0;
 
     int distance = 120;
@@ -23,6 +25,7 @@ class MainMenu : GameObject
         this.menuManager = menuManager;
 
         background = new Sprite("background_menu.png");
+        press = new Sound("button_press.mp3",false,false);
 
         startButton = new StartButton(settings);
         startButton.SetXY(game.width / 2, game.height / 2 - distance);
@@ -51,6 +54,8 @@ class MainMenu : GameObject
     {
         if (startButton.hasBeenPressed) 
         {
+
+            press.Play();
             menuManager.SetNameMenu();
             startButton.hasBeenPressed = false;
         }
