@@ -153,6 +153,14 @@ class Plant : AnimationSprite
         {
             if (Time.time - timerStart > timeToGrow && !wilting)
             {
+
+                if (isGrown == false)
+                {
+
+                    harvest.Play();
+
+                }
+                
                 isGrown = true;
                 growingStartTimer = Time.time;
                 grownTimer = Time.time;
@@ -250,8 +258,6 @@ class Plant : AnimationSprite
                             
                         }
                     }
-
-                    harvest.Play();
 
                     this.LateDestroy();
 

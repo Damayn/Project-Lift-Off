@@ -66,6 +66,7 @@ public class MyGame : Game {
         warning = new Sound("ProgressBar_Warning.mp3",true,false);
 
         play = backgroundMusic.Play();
+
         ping = warning.Play();
         ping.Mute = true;
 
