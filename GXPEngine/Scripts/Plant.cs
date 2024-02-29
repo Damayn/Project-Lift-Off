@@ -180,7 +180,6 @@ class Plant : AnimationSprite
 
             int randomWiltingChance = random.Next(1, 101); // Random number between 1 and 100      
 
-
             Console.WriteLine(randomWiltingChance);
             Console.WriteLine(wiltingChance);
 

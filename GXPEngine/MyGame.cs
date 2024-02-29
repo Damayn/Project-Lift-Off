@@ -31,6 +31,10 @@ public class MyGame : Game {
     Sound backgroundMusic;
     SoundChannel play;
 
+    Sound potChange;
+    Sound bagChange;
+    SoundChannel changing;
+
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
         settings = new GameSettings();
@@ -47,6 +51,9 @@ public class MyGame : Game {
         this.AddChild(readButton);
 
         backgroundMusic = new Sound("backgroundMusic.wav", true, true);
+        potChange = new Sound("Select_Pot.mp3",false,false);
+        bagChange = new Sound("Select_Seed_Packet.mp3",false,false);
+
         play = backgroundMusic.Play();
 
     }
@@ -421,25 +428,38 @@ public class MyGame : Game {
     void MoveToPreviousSeedBag()
     {
         currentSeedBagIndex--;
+
+        changing = bagChange.Play();
+
         if (currentSeedBagIndex < 0) currentSeedBagIndex = seedBags.Count - 1;
     }
 
     void MoveToNextSeedBag()
     {
         currentSeedBagIndex++;
+
+        changing = bagChange.Play();
+
         if (currentSeedBagIndex >= seedBags.Count) currentSeedBagIndex = 0;
     }
 
     void MoveToPreviousPot()
     {
         currentPotIndex--;
+
+        changing = potChange.Play();
+
         if (currentPotIndex < 0) currentPotIndex = pots.Count - 1;
     }
 
     void MoveToNextPot()
     {
         currentPotIndex++;
+
+        changing = potChange.Play();
+
         if (currentPotIndex >= pots.Count) currentPotIndex = 0;
+
     }
 
     void ClearSeedBagSelection()
