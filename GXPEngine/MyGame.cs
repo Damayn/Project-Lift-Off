@@ -37,6 +37,7 @@ public class MyGame : Game {
 
     Sound level;
     Sound planting;
+    Sound selection;
 
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
@@ -57,7 +58,8 @@ public class MyGame : Game {
         potChange = new Sound("Select_Pot.mp3",false,false);
         bagChange = new Sound("Select_Seed_Packet.mp3",false,false);
         level = new Sound("Level_Up.mp3",false,false);
-        planting = new Sound("Sowing_Planting Seeds.mp3",false,false); 
+        planting = new Sound("Sowing_Planting Seeds.mp3",false,false);
+        selection = new Sound("Select_Something.mp3",false,false);
 
         play = backgroundMusic.Play();
 
@@ -181,7 +183,7 @@ public class MyGame : Game {
         if (slider.currentValue >= slider.maximumValue)
         {
 
-            //level.Play();
+            level.Play();
 
             slider.maximumValue *= 2;
             slider.currentValue = slider.maximumValue / 2;
@@ -296,6 +298,9 @@ public class MyGame : Game {
 
         if (Input.GetKeyDown(Key.SPACE) || readButton.button1Pressed == true)
         {
+
+            changing = selection.Play();
+
             if (settings.inPotSelection == false && !settings.inSeedBagSelection) // If the pot selection is off
             {
                 // Turn it on
@@ -339,6 +344,7 @@ public class MyGame : Game {
         }
         else if (settings.inSeedBagSelection) // If in seed bag selection mode
         {
+
             if (Input.GetKeyDown(Key.LEFT))
             {
                 MoveToPreviousSeedBag();
