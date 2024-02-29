@@ -179,7 +179,7 @@ public class MyGame : Game {
         if (slider.currentValue >= slider.maximumValue)
         {
 
-            level.Play();
+            //level.Play();
 
             slider.maximumValue *= 2;
             slider.currentValue = slider.maximumValue / 2;

@@ -35,6 +35,9 @@ class Plant : AnimationSprite
     public int productionAmoutGiven;
 
     public bool hasBeenClicked;
+
+    Sound water;
+
     public Plant(string fileName, float x, float y, Pot pot, GameSettings settings) : base(fileName, 2, 4)
     {
         Setup(fileName, x, y);
@@ -58,6 +61,8 @@ class Plant : AnimationSprite
         timeToGrow = GetTimeToGrow(fileName);
         wiltingTimer = GetWiltingCheckTime(fileName);
         wiltingChance = GetWiltingChance(fileName);
+
+        water = new Sound("Watering.mp3",false,false);
 
         this.SetXY(x, y);
         this.scale = 3;
@@ -217,6 +222,9 @@ class Plant : AnimationSprite
             {
                 if (!isWatered)
                 {
+
+                    water.Play();
+
                     waterDrop.LateDestroy();
                     isWatered = true;
                 }
