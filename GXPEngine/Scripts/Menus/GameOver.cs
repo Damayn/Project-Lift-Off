@@ -21,6 +21,9 @@ public class GameOver : GameObject
     Sound press;
 
     int currentButtonIndex = 0;
+    int distance = 300;
+
+    Sprite scoreBackground;
 
     public GameOver (MenuManager menuManager, GameSettings settings, ScoreManager scoreManager) : base()
     {
@@ -28,10 +31,11 @@ public class GameOver : GameObject
         this.menuManager = menuManager;
         this.scoreManager = scoreManager;
 
-        canvas = new EasyDraw(300, 300);
+        canvas = new EasyDraw(1366, 768);
         canvas.SetXY(100, 100);
 
         background = new Sprite("background_menu.png");
+        scoreBackground = new Sprite("bg_temp1.png");
 
         finish = new Sound("Game_Over.mp3",false,false);
         press = new Sound("button_press.mp3", false, false);
@@ -40,12 +44,20 @@ public class GameOver : GameObject
         background.height = game.height;
         AddChild(background);
 
+        scoreBackground.x = 500;
+        scoreBackground.y = 150;
+
+        scoreBackground.width = 350;
+        scoreBackground.height = 400;
+
+        AddChild(scoreBackground);
+
         playAgainButton = new PlayAgainButton();
-        playAgainButton.SetXY(game.width / 2, game.height / 2 - playAgainButton.height / 2);
+        playAgainButton.SetXY(game.width / 2, game.height / 2 + (distance - 100));
         this.AddChild(playAgainButton);
 
         ExitButton exitButton = new ExitButton();
-        exitButton.SetXY(game.width / 2, game.height / 2 + exitButton.height / 2);
+        exitButton.SetXY(game.width /2, game.height / 2 + distance);
         this.AddChild(exitButton);
 
         this.AddChild(canvas);
@@ -78,11 +90,13 @@ public class GameOver : GameObject
         // Set text font and size
         canvas.TextFont("Helvetica", 30);
 
+        canvas.Text("LeaderBoard:",450, 50);
+
         // Draw top scores
-        float y = 50;
+        float y = 170;
         foreach (string score in topScores)
         {
-            canvas.Text(score, 50, y);
+            canvas.Text(score, 500, y);
             y += 50;
         }
 

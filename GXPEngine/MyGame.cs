@@ -172,6 +172,8 @@ public class MyGame : Game {
             Customers customer = new Customers(settings, slider);
             settings.customers.Add(customer);
             AddChild (customer);
+
+
         }
     }
 
@@ -229,7 +231,10 @@ public class MyGame : Game {
 
     void DecreaseProductionSlider ()
     {
-        float speed = 0.0002f;
+        float speed = 0.0100f;
+
+        play.Frequency = 44100 * (speed * 10000);
+
         slider.currentValue = Mathf.Lerp (slider.currentValue, 0, speed);
     }
 

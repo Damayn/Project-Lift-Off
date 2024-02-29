@@ -17,6 +17,8 @@ class Letter : Sprite
         defColor = this.color;
 
         press = new Sound("button_press.mp3", false, false);
+
+        this.SetScaleXY(0.10f, 0.10f);
     }
 
     void Update()
