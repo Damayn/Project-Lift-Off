@@ -28,25 +28,13 @@ public class MyGame : Game {
     ScoreManager scoreManager;
     private bool scoreSaved;
 
-    Sound backgroundMusic;
-    SoundChannel musicSwitch;
-
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
         settings = new GameSettings();
-<<<<<<< Updated upstream
         scoreManager = new ScoreManager();
         this.AddChild(scoreManager);
         
         menuManager = new MenuManager(settings, this, scoreManager);
-=======
-
-        backgroundMusic = new Sound("backgroundMusic.wav",true,true);
-
-        background = new Sprite("gameplayBackground.png");
-        AddChild(background);
-        menuManager = new MenuManager(settings, this);
->>>>>>> Stashed changes
         //kills the buttons?
         menuManager.SetMainMenu();
         AddChild(menuManager);
@@ -54,9 +42,6 @@ public class MyGame : Game {
         serialPort = new SerialPortManager ("COM3", 9600);
         readButton = new ReadButton(serialPort);
         this.AddChild(readButton);
-
-        musicSwitch = backgroundMusic.Play();
-
     }
 
     public void SetUp () 
@@ -93,7 +78,6 @@ public class MyGame : Game {
 	{
         this.targetFps = 60;
 
-<<<<<<< Updated upstream
         if (!settings.isGameOver)
         {
             if (settings.hasGameStarted && settings.hasEnteredName)
@@ -102,17 +86,6 @@ public class MyGame : Game {
                 if (!settings.isTimePaused)
                 {
                     GameOver();
-=======
-        if (settings.hasGameStarted && settings.hasEnteredName && !settings.isGameOver)
-        {
-
-            musicSwitch.Mute = false;
-
-            if (!settings.isTimePaused)
-            {
-                GameOver();
-                Pause();
->>>>>>> Stashed changes
 
                     AddNewCustomer();
 
@@ -166,8 +139,6 @@ public class MyGame : Game {
         if (slider.currentValue <= 5) 
         {
             settings.isGameOver = true;
-            musicSwitch.Mute = true;
-
         }
     }
     
