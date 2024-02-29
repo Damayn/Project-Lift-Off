@@ -28,6 +28,9 @@ public class MyGame : Game {
     ScoreManager scoreManager;
     private bool scoreSaved;
 
+    Sound backgroundMusic;
+    SoundChannel play;
+
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
         settings = new GameSettings();
@@ -42,6 +45,10 @@ public class MyGame : Game {
         serialPort = new SerialPortManager ("COM3", 9600);
         readButton = new ReadButton(serialPort);
         this.AddChild(readButton);
+
+        backgroundMusic = new Sound("backgroundMusic.wav", true, true);
+        play = backgroundMusic.Play();
+
     }
 
     public void SetUp () 
@@ -80,6 +87,10 @@ public class MyGame : Game {
 
         if (!settings.isGameOver)
         {
+
+            play.Mute = false;
+            settings.play = false;
+
             if (settings.hasGameStarted && settings.hasEnteredName)
             {  
                     Pause();
@@ -99,6 +110,7 @@ public class MyGame : Game {
         }
         else if (settings.isGameOver)
         {
+            play.Mute = true;
             menuManager.SetGameOverMenu();
             if (!scoreSaved)
             {

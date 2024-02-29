@@ -8,10 +8,15 @@ public class BackButton : Button
 
     public bool changeScene;
 
+    Sound press;
+
     public BackButton(MenuManager menuManager, GameSettings settings) : base("back.png", 2, 1)
     {
         this.settings = settings;
         this.menuManager = menuManager;
+
+        press = new Sound("button_press.mp3",false,false);
+
     }
 
     protected override void Update()
@@ -29,7 +34,7 @@ public class BackButton : Button
             //        child.LateDestroy();
             //    }
             //}
-
+            press.Play();
 
             foreach (GameObject child in game.GetChildren())
             {

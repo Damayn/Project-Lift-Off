@@ -17,6 +17,8 @@ public class GameOver : GameObject
     ScoreManager scoreManager;
     Button[] buttons;
 
+    Sound finish;
+
     int currentButtonIndex = 0;
 
     public GameOver (MenuManager menuManager, GameSettings settings, ScoreManager scoreManager) : base()
@@ -30,6 +32,8 @@ public class GameOver : GameObject
         
 
         background = new Sprite("background_menu.png");
+
+        finish = new Sound("Game_Over.mp3",false,false);
 
         background.width = game.width;
         background.height = game.height;
@@ -49,6 +53,18 @@ public class GameOver : GameObject
         buttons[currentButtonIndex].isHovered = true;
 
         DrawTopScores();
+
+
+        if (setting.play == false )
+        {
+
+            finish.Play();
+
+            setting.play = true;
+
+        }
+
+
     }
 
     void DrawTopScores()
