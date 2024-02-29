@@ -22,21 +22,19 @@ public class MyGame : Game {
     int currentPotIndex = 0;
     int currentSeedBagIndex = 0;
 
-    private bool potHasPotBeenCreated = false;
-
     private Sprite seedBagSelectionMenu;
     private Sprite customerBackground;
 
-    private bool sliderSetToHalfItsValue;
-    float currentValue;
+    ScoreManager scoreManager;
+    private bool scoreSaved;
 
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
         settings = new GameSettings();
-
-        background = new Sprite("gameplayBackground.png");
-        AddChild(background);
-        menuManager = new MenuManager(settings, this);
+        scoreManager = new ScoreManager();
+        this.AddChild(scoreManager);
+        
+        menuManager = new MenuManager(settings, this, scoreManager);
         //kills the buttons?
         menuManager.SetMainMenu();
         AddChild(menuManager);
@@ -47,10 +45,12 @@ public class MyGame : Game {
     }
 
     public void SetUp () 
-	{   
+	{
+        background = new Sprite("gameplayBackground.png");
+        AddChild(background);
+
         //hardcoding of background image testing (change it if you want)
         customerBackground = new Sprite("white.png");
-        
 
         customerBackground.x = 1150;
         customerBackground.y = 0;
@@ -78,41 +78,45 @@ public class MyGame : Game {
 	{
         this.targetFps = 60;
 
-        if (settings.hasGameStarted && settings.hasEnteredName && !settings.isGameOver)
-        {  
-            if (!settings.isTimePaused)
-            {
-                GameOver();
-                Pause();
+        if (!settings.isGameOver)
+        {
+            if (settings.hasGameStarted && settings.hasEnteredName)
+            {  
+                    Pause();
+                if (!settings.isTimePaused)
+                {
+                    GameOver();
 
-                AddNewCustomer();
+                    AddNewCustomer();
 
-                UpdateProductionSlider();
+                    UpdateProductionSlider();
 
-                SelectionMechanic();
+                    SelectionMechanic();
 
-                DecreaseProductionSlider();
-
-                
-               
+                    DecreaseProductionSlider();
+                }
             }
         }
         else if (settings.isGameOver)
         {
             menuManager.SetGameOverMenu();
+            if (!scoreSaved)
+            {
+                scoreManager.SaveScore(settings.playerName, settings.points);
+                scoreSaved = true;
+            }
         }
-
     }
 
     void Pause ()
     {
-        if (Input.GetKeyDown(Key.Q) && !settings.isTimePaused)
+        if ((Input.GetKeyDown(Key.Q) || readButton.button3Pressed) && !settings.isTimePaused)
         {
-            pause = new Pause(game.width, game.height, "white.png", menuManager);
+            pause = new Pause(game.width, game.height, "white.png", menuManager, settings);
             AddChild(pause);
 
             TogglePauseTime();
-        } else if (Input.GetKeyDown(Key.Q) && settings.isTimePaused)
+        } else if ((Input.GetKeyDown(Key.Q) || readButton.button3Pressed)  && settings.isTimePaused)
         {
             pause.Destroy();
             TogglePauseTime();
@@ -159,7 +163,7 @@ public class MyGame : Game {
 
     void DecreaseProductionSlider ()
     {
-        float speed = 0.002f;
+        float speed = 0.0002f;
         slider.currentValue = Mathf.Lerp (slider.currentValue, 0, speed);
     }
 
@@ -201,9 +205,7 @@ public class MyGame : Game {
             pot = new Pot(x, y, potIndex, 2, 1);
             pots.Add(pot);
             AddChild(pot);
-        }
-
-        potHasPotBeenCreated = true;
+        } 
     }
     void CreateSeedBags()
     {
@@ -264,7 +266,7 @@ public class MyGame : Game {
     void ToggleSelectionMode()
     {
 
-        if (Input.GetKeyDown(Key.SPACE) || readButton.button2Pressed)
+        if (Input.GetKeyDown(Key.SPACE) || readButton.button1Pressed == true)
         {
             if (settings.inPotSelection == false && !settings.inSeedBagSelection) // If the pot selection is off
             {

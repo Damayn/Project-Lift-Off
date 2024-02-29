@@ -9,6 +9,7 @@ public class SerialPortManager
     public string sentence { get; private set; }
     private string _lastButtonState;
     private Dictionary<string, string> validIdentifiers;
+
     public SerialPortManager(string portName, int baudRate)
     {
         _serialPort = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
@@ -34,7 +35,7 @@ public class SerialPortManager
         {
             Console.WriteLine($"Error opening serial port {_serialPort.PortName}: {ex.Message}");
         }
-       
+
     }
 
     public void Close()
@@ -42,6 +43,7 @@ public class SerialPortManager
         _serialPort.Close();
 
     }
+
     public float ButtonState(int button)
     {
         

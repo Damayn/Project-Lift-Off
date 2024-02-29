@@ -1,47 +1,87 @@
 ﻿using GXPEngine;
 using System;
-using System.IO.Ports;
 
 class ReadButton : GameObject
 {
     SerialPortManager serialPort;
 
-    float button1;
-    float button2;
-    float button3;
+    float prevButton1State;
+    float prevButton2State;
+    float prevButton3State;
 
-    public bool button1Pressed;
-    public bool button2Pressed;
-    public bool button3Pressed;
+    float prevAccelerationX;
+    float prevAccelerationY;
+    float prevAccelerationZ;
 
-    public ReadButton (SerialPortManager serialPort) : base ()
+    public bool button1Pressed = false;
+    public bool button2Pressed = false;
+    public bool button3Pressed = false;
+
+    public ReadButton(SerialPortManager serialPort) : base()
     {
         this.serialPort = serialPort;
-
-        serialPort.Open (); 
+        serialPort.Open();
     }
 
-    void Update () 
+    void Update()
     {
-        GetButtonValue ();
-        
-        if (button1 == 0)
+        // Check button presses
+        CheckButtonPress(8, ref prevButton1State, ref button1Pressed);
+        CheckButtonPress(9, ref prevButton2State, ref button2Pressed);
+        CheckButtonPress(10, ref prevButton3State, ref button3Pressed);
+
+        // Check for horizontal movement
+        CheckHorizontalMovement();
+    }
+
+    void CheckButtonPress(int buttonIndex, ref float prevButtonState, ref bool buttonPressed)
+    {
+        float currentButtonState = serialPort.ButtonState(buttonIndex);
+
+        // Check if the button was not pressed previously and is pressed now
+        if (prevButtonState != 0 && currentButtonState == 0)
         {
-            button1Pressed = true;
-        } else if (button2 == 0)
+            buttonPressed = true;
+            Console.WriteLine("Button pressed");
+
+            // Set the previous state to 0 to prevent further detections until button is released
+            prevButtonState = 0;
+        }
+        else
         {
-            button2Pressed = true;
-        } else if (button3 == 0)
-        {  
-            button3Pressed = true;
+            buttonPressed = false;
+
+            // Update the previous button state only if the button is not pressed
+            if (currentButtonState != 0)
+            {
+                prevButtonState = currentButtonState;
+            }
+        }
+    }
+
+    void CheckHorizontalMovement()
+    {
+        // Get accelerometer data
+        float accelerationX = serialPort.ButtonState (7);
+        //float accelerationY = serialPort.AccelerometerY;
+        //float accelerationZ = serialPort.AccelerometerZ;
+
+        // Calculate the change in acceleration along the X-axis
+        float deltaX = Math.Abs(accelerationX - prevAccelerationX);
+
+        // Set a threshold for detecting horizontal movement
+        float threshold = 1.0f;
+
+        // Check if the change in acceleration along the X-axis exceeds the threshold
+        if (deltaX > threshold)
+        {
+            // Horizontal movement detected
+            Console.WriteLine("Horizontal movement detected!");
         }
 
-    }
-
-    void GetButtonValue () 
-    {
-        button1 = serialPort.ButtonState(1);
-        button2 = serialPort.ButtonState(5) ;
-        button3 = serialPort.ButtonState(9);
+        // Update previous acceleration values for next frame
+        prevAccelerationX = accelerationX;
+        //prevAccelerationY = accelerationY;
+        //prevAccelerationZ = accelerationZ;
     }
 }

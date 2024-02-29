@@ -7,14 +7,14 @@ public class MenuManager : GameObject
     // Settings reference
     GameSettings settings;
     MyGame gameRef;
-
     Sprite background;
+    ScoreManager scoreManager;
 
-    public MenuManager(GameSettings settings,MyGame gamRef) : base()
+    public MenuManager(GameSettings settings,MyGame gamRef, ScoreManager scoreManager) : base()
     {
         this.settings = settings;
         this.gameRef = gamRef;
-
+        this.scoreManager = scoreManager;
     }
 
     public void SetCurrentMenu(GameObject menu)
@@ -34,7 +34,7 @@ public class MenuManager : GameObject
         foreach (GameObject child in game.GetChildren())
         {
 
-            if (child is OptionsMenu)
+            if (child is OptionsMenu || child is GameOver)
             {
 
                 child.LateDestroy();
@@ -48,18 +48,20 @@ public class MenuManager : GameObject
 
                     gameObject.LateDestroy();
 
-                        settings.customers.Clear();
+                    settings.customers.Clear();
                 }
 
             }
 
         }
+
+        settings.ResetSettings();
     }
 
     public void SetOptionsMenu()
     {
         // Sets the current menu to options menu
-        SetCurrentMenu(new OptionsMenu(this));
+        SetCurrentMenu(new OptionsMenu(this, settings));
 
         // Deletes the main menu
         foreach (GameObject child in game.GetChildren())
@@ -85,15 +87,21 @@ public class MenuManager : GameObject
             if (child is MainMenu)
             {
                 child.LateDestroy();
-            }    
+            }
         }
     }
     public void SetGameOverMenu()
     {
-        // If the game is over
-        if (settings.isGameOver)
-        { 
-            SetCurrentMenu(new GameOver(this, settings));
+        SetCurrentMenu(new GameOver(this, settings, scoreManager));
+
+        foreach (GameObject gameObject in game.GetChildren())
+        {
+            if (gameObject is Pot || gameObject is Slider || gameObject is Pause || gameObject is Customers || gameObject is Seed || gameObject is EasyDraw)
+            {
+                gameObject.LateDestroy();
+                settings.customers.Clear();
+            }
+
         }
     }
 }

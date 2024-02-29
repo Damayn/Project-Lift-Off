@@ -15,7 +15,7 @@ class MainMenu : GameObject
 
     int currentButtonIndex = 0;
 
-    int distance = 100;
+    int distance = 120;
 
     public MainMenu(GameSettings settings, MenuManager menuManager) : base()
     {
@@ -52,6 +52,7 @@ class MainMenu : GameObject
         if (startButton.hasBeenPressed) 
         {
             menuManager.SetNameMenu();
+            startButton.hasBeenPressed = false;
         }
 
         if (Input.GetKeyDown(Key.UP))

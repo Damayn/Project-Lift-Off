@@ -1,6 +1,7 @@
 ﻿using GXPEngine;
 using System;
 using System.Collections.Generic;
+using System.Runtime;
 
 
 public class GameSettings
@@ -24,8 +25,9 @@ public class GameSettings
     public string[] people = { "Faces.png", "Rolling.png", "Viking.png", "cat.png", "Bird.png" };
 
     public float currentProductionValue { get; set; }
+    public int points = 50;
 
-    public int currentLevel = 13;
+    public int currentLevel = 1;
 
     public string playerName;
 
@@ -36,9 +38,18 @@ public class GameSettings
     
     }
 
-    void Update () 
+    public void ResetSettings () 
     {
-        
+        hasGameStarted = false;
+        hasAName = false;
+        hasEnteredName = false;
+        isGameOver = false;
+        isTimePaused = false;
+        currentLevel = 1;
+        playerName = "";
+        currentProductionValue = 0;
+
+        customers.Clear();
     }
 
 }

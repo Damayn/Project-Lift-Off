@@ -12,15 +12,4 @@ public class StartButton : Button
         this.settings = settings;
 
     }
-
-    protected override void Update()
-    {
-        if (hasBeenPressed)
-        {
-            settings.hasGameStarted = true;
-            settings.isGameOver = false;
-        }
-
-        base.Update();
-    }
 }

@@ -222,7 +222,7 @@ class Plant : AnimationSprite
                     isWatered = true;
                 }
 
-                if (isGrown)
+                if (isGrown )//&& pot.isHovered
                 {
                     for (int i = 0; i < settings.customers.Count; i++)
                     {

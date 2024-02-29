@@ -82,26 +82,25 @@ class NameMenu : GameObject
 
         Sprite textBox = new Sprite("name_box.png");
         textBox.SetOrigin(textBox.width / 2, textBox.height / 2);
-        textBox.SetXY(game.width / 2, game.height / 2 - 100);
+        textBox.SetXY(game.width / 2, game.height / 2 - 30);
         textBox.scaleX = 0.5f;
         textBox.scaleY = 0.3f;
         this.AddChild(textBox);
 
         // Create an EasyDraw object for drawing the text box
         easyDraw = new EasyDraw(384, 64);
-        easyDraw.SetXY(textBox.x - textBox.width / 2, textBox.y - textBox.height / 2); // Position it below the letters
+        easyDraw.SetXY(textBox.x - textBox.width / 2, textBox.y - 20); // Position it below the letters
         this.AddChild(easyDraw);
 
         playButton = new PlayButton(settings, gameRef);
-        playButton.SetXY(textBox.x, textBox.y + 150);
+        playButton.SetXY(textBox.x, textBox.y + 140);
         this.AddChild(playButton);
 
-        backButton = new BackButton(menuManager);
+        backButton = new BackButton(menuManager, settings);
         backButton.SetXY(playButton.x, playButton.y + 100);
         this.AddChild(backButton);
 
         UpdateSelection(); // Highlight the initial selected letter
-        
     }
 
     private void UpdateSelection()
@@ -159,10 +158,10 @@ class NameMenu : GameObject
         }
 
         // Clear and redraw the text box with the updated entered text
-        easyDraw.TextFont("Helvetica", 36); // Set font
+        easyDraw.TextFont("NimbusSanL-BolIta", 36); // Set font
         easyDraw.ClearTransparent(); // Clear the text box
-        easyDraw.Fill(Color.Blue); // Set text color to black
-        easyDraw.Text(enteredText, 5, easyDraw.height / 2 + 32); // Draw the entered text
+        easyDraw.Fill(Color.Black); // Set text color to black
+        easyDraw.Text(enteredText, 5, easyDraw.height / 2 + 22); // Draw the entered text
     }
 
     void Update()
@@ -292,5 +291,7 @@ class NameMenu : GameObject
                 letter.isClicked = false; // Reset click status
             }
         }
+
+        settings.playerName = this.enteredText;
     }
 }

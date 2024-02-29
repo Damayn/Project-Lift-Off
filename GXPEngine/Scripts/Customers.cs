@@ -58,7 +58,7 @@ public class Customers : AnimationSprite
 
     void Update()
     {
-        if (Time.time - lastChangeOfFace > timer) // time.time being the time since the app started in miliseconds and timer being whatever you want for example 15 seconds (15000ms)
+        if (Time.time - lastChangeOfFace > timer && !settings.isTimePaused) // time.time being the time since the app started in miliseconds and timer being whatever you want for example 15 seconds (15000ms)
         {
             lastChangeOfFace = Time.time;
             frame++;
@@ -83,6 +83,7 @@ public class Customers : AnimationSprite
         if (flowersCollected.Count <= 0 && frame != 0)
         {
             productionSlider.currentValue += GetProductionAmount();
+            settings.points += GetProductionAmount();
             this.Destroy();
         }
 
@@ -236,13 +237,13 @@ public class Customers : AnimationSprite
                 case 0:
                     return 40 + (settings.currentLevel - 10);
                 case 1:
-                    return 80 + 5 * (settings.currentLevel - 10);
+                    return 80 + 2 * (settings.currentLevel - 5);
                 case 2:
-                    return 80 + 5 * (settings.currentLevel - 10);
+                    return 80 + 2 * (settings.currentLevel - 5);
                 case 3:
-                    return 50 + 5 * (settings.currentLevel - 10);
+                    return 50 + 2 * (settings.currentLevel - 5);
                 case 4:
-                    return 50 + 5 * (settings.currentLevel - 10);
+                    return 50 + 2 * (settings.currentLevel - 5);
                 default:
                     return 0;
             }
