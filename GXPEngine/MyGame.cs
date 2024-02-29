@@ -36,6 +36,7 @@ public class MyGame : Game {
     SoundChannel changing;
 
     Sound level;
+    Sound planting;
 
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
@@ -56,6 +57,7 @@ public class MyGame : Game {
         potChange = new Sound("Select_Pot.mp3",false,false);
         bagChange = new Sound("Select_Seed_Packet.mp3",false,false);
         level = new Sound("Level_Up.mp3",false,false);
+        planting = new Sound("Sowing_Planting Seeds.mp3",false,false); 
 
         play = backgroundMusic.Play();
 
@@ -489,6 +491,8 @@ public class MyGame : Game {
         // Extract the number from the seed bag's name
         string seedBagName = seedBags[currentSeedBagIndex].name;
         int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
+
+        planting.Play();
 
         // Create a new plant with the same number as the seed bag
         Plant plant = new Plant("flower" + seedNumber + ".png", pot.x, pot.y - pot.height /2 - 20, pot, settings);
