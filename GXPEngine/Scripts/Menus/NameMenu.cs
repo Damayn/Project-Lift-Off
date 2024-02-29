@@ -23,6 +23,8 @@ class NameMenu : GameObject
 
     Sprite background;
 
+    Sprite pad;
+
     public NameMenu(GameSettings settings, MenuManager menuManager, MyGame gameRef) : base()
     {
         this.settings = settings;
@@ -30,11 +32,20 @@ class NameMenu : GameObject
         this.gameRef = gameRef;
 
         background = new Sprite("background_menu.png");
+        pad = new Sprite("white.png");
 
         background.width = game.width;
         background.height = game.height;
 
         AddChild(background);
+
+        pad.x = 50;
+        pad.y = 150;
+
+        pad.width = 300;
+        pad.height = 500;
+
+        AddChild(pad);
 
         // Define starting positions
         int startX = 100;
