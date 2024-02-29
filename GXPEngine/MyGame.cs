@@ -132,6 +132,7 @@ public class MyGame : Game {
         else if (settings.isGameOver)
         {
             play.Mute = true;
+            ping.Mute = true;
             settings.playAgain = false;
             menuManager.SetGameOverMenu();
             if (!scoreSaved)
@@ -174,11 +175,12 @@ public class MyGame : Game {
         if (slider.currentValue <= 5) 
         {
             settings.isGameOver = true;
+
         }
-        else if (slider.currentValue <= 10)
+        else if (slider.currentValue <= 10 )
         {
 
-            if (settings.barWarning == false)
+            if (settings.barWarning == false )
             {
 
                 ping.Mute = false;
