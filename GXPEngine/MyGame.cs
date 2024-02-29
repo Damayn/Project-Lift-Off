@@ -39,6 +39,9 @@ public class MyGame : Game {
     Sound planting;
     Sound selection;
 
+    Sound warning;
+    SoundChannel ping;
+
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
         settings = new GameSettings();
@@ -60,8 +63,11 @@ public class MyGame : Game {
         level = new Sound("Level_Up.mp3",false,false);
         planting = new Sound("Sowing_Planting Seeds.mp3",false,false);
         selection = new Sound("Select_Something.mp3",false,false);
+        warning = new Sound("ProgressBar_Warning.mp3",true,false);
 
         play = backgroundMusic.Play();
+        ping = warning.Play();
+        ping.Mute = true;
 
     }
 
@@ -163,10 +169,31 @@ public class MyGame : Game {
 
     void GameOver () 
     {
+
         if (slider.currentValue <= 5) 
         {
             settings.isGameOver = true;
         }
+        else if (slider.currentValue <= 10)
+        {
+
+            if (settings.barWarning == false)
+            {
+
+                ping.Mute = false;
+
+                settings.barWarning = true;
+
+            }
+
+        }
+        else if (slider.currentValue > 10)
+        {
+
+            ping.Mute = true;
+
+        }
+
     }
     
     void UpdateProductionSlider()
