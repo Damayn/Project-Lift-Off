@@ -22,6 +22,10 @@ public class Customers : AnimationSprite
     ScreenShake screenShake;
     Slider productionSlider;
 
+    Sound angry;
+    Sound happy;
+    SoundChannel states;
+
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
     public Customers(GameSettings settings, Slider productionSlider) : base(settings.people[new Random().Next(1, 5)], 5, 2)
@@ -41,6 +45,9 @@ public class Customers : AnimationSprite
         this.width = 200;
         this.height = 150;
 
+        angry = new Sound("Customer_Negative_Feedback.mp3",false,false);
+        happy = new Sound("Customer_Positive_Feedback.mp3", false, false);
+
         lastChangeOfFace = Time.time;
         random = new Random();
         SelectFlowers();
@@ -48,7 +55,8 @@ public class Customers : AnimationSprite
         canvas = new EasyDraw(300, 300, false);
         canvas.SetXY (this.x, this.y - 150);
         game.AddChild(canvas);
-        
+
+        settings.scream = false;
 
         foreach (string flower in flowersCollected)
         {
@@ -78,13 +86,32 @@ public class Customers : AnimationSprite
             //screenShake = new ScreenShake();
             //screenShake.ShakeScreen(1000f, 2f);
             //AddChild(screenShake);
+            if (settings.scream == false)
+            {
 
+                states = angry.Play();
+
+                settings.scream = true;
+
+            }
+            
         }
         if (flowersCollected.Count <= 0 && frame != 0)
-        {
+        { 
+
+            if (settings.scream == false)
+            {
+
+                states = happy.Play();
+
+                settings.scream = true;
+
+            }
+
             productionSlider.currentValue += GetProductionAmount();
             settings.points += GetProductionAmount();
             this.Destroy();
+
         }
 
         if (frame == 0 && flowersCollected.Count == 0)

@@ -34,6 +34,8 @@ public class GameSettings
     public bool play = false;
     public bool playAgain = false;
 
+    public bool scream = false;
+
     public List<string> collectedFlowers = new List<string>();
     public List<Customers> customers = new List<Customers>();
     public GameSettings()
