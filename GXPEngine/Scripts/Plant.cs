@@ -40,6 +40,15 @@ class Plant : AnimationSprite
     Sound harvest;
     Sound scythe;
 
+    SoundChannel mainHarvest;
+
+    Sound tahiti1; 
+    Sound tahiti2;
+    Sound tahiti3;
+    Sound tahiti4;
+    Sound tahiti5;
+    SoundChannel magicalPlace;
+
     public Plant(string fileName, float x, float y, Pot pot, GameSettings settings) : base(fileName, 2, 4)
     {
         Setup(fileName, x, y);
@@ -68,7 +77,13 @@ class Plant : AnimationSprite
         harvest = new Sound("Growing_Harvestable.mp3",false,false);
         scythe = new Sound("Harvesting.mp3",false,false);
 
-        this.SetXY(x, y);
+        tahiti1 = new Sound("Frog_Harvest_Noise.mp3", false, false);   
+        tahiti2 = new Sound("Bunny_Harvest_Noise.mp3", false, false);
+        tahiti3 = new Sound("Bat_Harvest_Noise.mp3", false, false);
+        tahiti4 = new Sound("Eye_Harvest_Noise.mp3", false, false);
+        tahiti5 = new Sound("Mushroom_Harvest_Noise.mp3", false, false);
+
+    this.SetXY(x, y);
         this.scale = 3;
 
         plantTimer = Time.time;
@@ -261,7 +276,42 @@ class Plant : AnimationSprite
                         }
                     }
 
-                    scythe.Play();
+                    mainHarvest = scythe.Play();
+
+                    switch (this.name)
+                    {
+
+                        case "flower1.png":
+
+                            magicalPlace = tahiti1.Play();
+
+                            break;
+
+                        case "flower2.png":
+
+                            magicalPlace = tahiti2.Play();
+
+                            break;
+
+                        case "flower3.png":
+
+                            magicalPlace = tahiti3.Play();
+
+                            break;
+
+                        case "flower4.png":
+
+                            magicalPlace = tahiti4.Play();
+
+                            break;
+
+                        case "flower5.png":
+
+                            magicalPlace = tahiti5.Play();
+
+                            break;
+
+                    }
 
                     this.LateDestroy();
 
