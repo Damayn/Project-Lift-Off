@@ -50,7 +50,6 @@ public class MenuManager : GameObject
 
                     settings.customers.Clear();
                 }
-
             }
 
         }

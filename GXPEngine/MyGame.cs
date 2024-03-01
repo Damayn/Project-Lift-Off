@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO.Ports;
-using GXPEngine;                
+using GXPEngine;
+using GXPEngine.Core;
 
 public class MyGame : Game {
 	GameSettings settings;
@@ -42,6 +44,8 @@ public class MyGame : Game {
 
     Sound warning;
     SoundChannel ping;
+
+    EasyDraw canvas;
 
     public MyGame() : base(1366, 768, false, false, -1, -1, false)
     {
@@ -106,6 +110,10 @@ public class MyGame : Game {
         CreatePots();
 
         settings.isTimePaused = false;
+
+        canvas = new EasyDraw(300, 300, false);
+        canvas.SetXY( slider.x, slider.y + 60);
+        AddChild(canvas);
     }
 
     void Update() 
@@ -121,11 +129,16 @@ public class MyGame : Game {
             if (settings.hasGameStarted && settings.hasEnteredName)
             {  
                     Pause();
+
                 if (!settings.isTimePaused)
                 {
+                    
+
                     GameOver();
 
                     AddNewCustomer();
+
+                    LevelText();
 
                     UpdateProductionSlider();
 
@@ -149,15 +162,23 @@ public class MyGame : Game {
         }
     }
 
+    void LevelText ()
+    {
+        canvas.ClearTransparent ();
+        canvas.Fill(Color.White); // Set text color
+        canvas.TextFont("Helvetika", 28); // Set font and size
+        canvas.Text("Level: " + GameSettings.currentLevel, 100,100); // Adjust position as needed
+    }
+
     void Pause ()
     {
-        if ((Input.GetKeyDown(Key.Q) || readButton.button3Pressed) && !settings.isTimePaused)
+        if ((Input.GetKeyDown(Key.Q) || ReadButton.button3Pressed) && !settings.isTimePaused)
         {
             pause = new Pause(game.width, game.height, "white.png", menuManager, settings);
             AddChild(pause);
 
             TogglePauseTime();
-        } else if ((Input.GetKeyDown(Key.Q) || readButton.button3Pressed)  && settings.isTimePaused)
+        } else if ((Input.GetKeyDown(Key.Q) || ReadButton.button3Pressed)  && settings.isTimePaused)
         {
             pause.Destroy();
             TogglePauseTime();
@@ -167,13 +188,13 @@ public class MyGame : Game {
 
     void AddNewCustomer ()
     {
-        if (settings.customers.Count == 0 && !settings.isGameOver) 
+        if (settings.customers.Count == 0 && !settings.isGameOver)
         {
-            Customers customer = new Customers(settings, slider);
+            Console.WriteLine("asd");
+
+            Customers customer = new Customers(settings, slider, customerBackground);
             settings.customers.Add(customer);
-            AddChild (customer);
-
-
+            AddChild(customer);
         }
     }
 
@@ -225,15 +246,13 @@ public class MyGame : Game {
 
             slider.maximumValue *= 2;
             slider.currentValue = slider.maximumValue / 2;
-            settings.currentLevel++;
+            GameSettings.currentLevel++;
         }
     }
 
     void DecreaseProductionSlider ()
     {
-        float speed = 0.0002f * Time.time / 1000000;
-
-        play.Frequency = 44100 * (speed * 10000);
+        float speed = 0.0002f;
 
         slider.currentValue = Mathf.Lerp (slider.currentValue, 0, speed);
     }
@@ -331,7 +350,7 @@ public class MyGame : Game {
     void ToggleSelectionMode()
     {
 
-        if (Input.GetKeyDown(Key.SPACE) || readButton.button1Pressed == true)
+        if (Input.GetKeyDown(Key.SPACE) || ReadButton.button1Pressed == true)
         {
 
             changing = selection.Play();
@@ -417,11 +436,9 @@ public class MyGame : Game {
         {
             if (settings.inPotSelection) // If in pot selection mode
             {
-                Console.WriteLine("asd");
                 // Check if the current pot is not already selected
                 if (!pots[currentPotIndex].isSelected)
                 {
-                    Console.WriteLine("asd");
 
                     // Display the seed bag selection menu above the current pot
                     seedBagSelectionMenu = new Sprite("seedBagMenu.png");
@@ -536,26 +553,265 @@ public class MyGame : Game {
         string seedBagName = seedBags[currentSeedBagIndex].name;
         int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
 
-            planting.Play();
+        planting.Play();
 
         // Calculate the vertical offset based on the pot's size
-        float yOffsetFrog = pot.height + 65 + (currentPotIndex * 5.5f);
-        float yOffset = pot.height /2 + 100 - (currentPotIndex * 10f);
+        //float yOffsetFrog = pot.height + 65 + (currentPotIndex * 5.5f);
+        //float yOffset = pot.height / 2 + 100 - (currentPotIndex * 10f);
 
-        // Create a new plant with the same number as the seed bag
+
+        float x = 0;
+        float y = 0;
+
+        // Define a Vector2 variable to hold the position
+        Vector2 plantPosition = new Vector2(0, 0);
+
+
         if (seedNumber == 1)
         {
-            Plant plant = new Plant("flower" + seedNumber + ".png", pot.x - 70, pot.y - yOffsetFrog, 8, 3, pot, settings, true);
+            Plant plant = new Plant("flower" + seedNumber + ".png", GetPlantPosition(pot, seedNumber).x, GetPlantPosition(pot, seedNumber).y, 8, 3, pot, settings, true);
             AddChild(plant);
             plants.Add(plant);
+
+            Console.WriteLine(plantPosition.x);
         }
         else
         {
-            Plant plant = new Plant("flower" + seedNumber + ".png", pot.x + 25, pot.y - yOffset, 4, 1, pot, settings, false);
+            Plant plant = new Plant("flower" + seedNumber + ".png", GetPlantPosition(pot, seedNumber).x, GetPlantPosition(pot, seedNumber).y, 4, 1, pot, settings, false);
             AddChild(plant);
             plants.Add(plant);
         }
+
+        //if (currentPotIndex == 0)
+        //{
+        //    switch (seedNumber)
+        //    {
+        //        case 1:
+        //            plantPosition = new Vector2(pot.x, pot.y);
+        //            return;
+        //        case 2:
+        //            return;
+        //        case 3:
+        //            return;
+        //        case 4:
+        //            return;
+        //        default:
+        //            return;
+        //    }
+        //}
+        //else if (currentPotIndex == 1)
+        //{
+        //    switch (seedNumber)
+        //    {
+        //        case 0:
+        //            return;
+        //        case 1:
+        //            return;
+        //        case 2:
+        //            return;
+        //        case 3:
+        //            return;
+        //        case 4:
+        //            return;
+        //        default:
+        //            return;
+        //    }
+        //}
+        //else if (currentPotIndex == 2)
+        //{
+        //    switch (seedNumber)
+        //    {
+        //        case 0:
+        //            return;
+        //        case 1:
+        //            return;
+        //        case 2:
+        //            return;
+        //        case 3:
+        //            return;
+        //        case 4:
+        //            return;
+        //        default:
+        //            return;
+        //    }
+        //}
+        //else if (currentPotIndex == 3)
+        //{
+        //    switch (seedNumber)
+        //    {
+        //        case 0:
+        //            return;
+        //        case 1:
+        //            return;
+        //        case 2:
+        //            return;
+        //        case 3:
+        //            return;
+        //        case 4:
+        //            return;
+        //        default:
+        //            return;
+        //    }
+        //}
+        //else if (currentPotIndex == 4)
+        //{
+        //    switch (seedNumber)
+        //    {
+        //        case 0:
+        //            return;
+        //        case 1:
+        //            return;
+        //        case 2:
+        //            return;
+        //        case 3:
+        //            return;
+        //        case 4:
+        //            return;
+        //        default:
+        //            return;
+        //    }
+        //}
+
+
+
     }
+
+    private Vector2 GetPlantPosition(Pot pot, int seedNumber)
+    {
+        Vector2 plantPosition = new Vector2(0, 0); // Default position
+
+        // Determine position based on pot index and seed number
+        if (pot != null)
+        {
+            switch (currentPotIndex)
+            {
+                case 0:
+                    switch (seedNumber)
+                    {
+                        case 1:
+                            plantPosition = new Vector2(pot.x - 75, pot.y - 300);
+                            break;
+                        case 2:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 160);
+                            break;
+                        case 3:
+                            plantPosition = new Vector2(pot.x + 25, pot.y - 160);
+                            break;
+                        case 4:
+                            plantPosition = new Vector2(pot.x + 40, pot.y - 160);
+                            break;
+                        case 5:
+                            plantPosition = new Vector2(pot.x, pot.y - 160);
+                            break;
+                        default:
+                            // Define default position
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (seedNumber)
+                    {
+                        case 1:
+                            plantPosition = new Vector2(pot.x - 75, pot.y - 350);
+                            break;
+                        case 2:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 205);
+                            break;
+                        case 3:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 205);
+                            break;
+                        case 4:
+                            plantPosition = new Vector2(pot.x + 40, pot.y - 205);
+                            break;
+                        case 5:
+                            plantPosition = new Vector2(pot.x, pot.y - 205);
+                            break;
+                        default:
+                            // Define default position
+                            break;
+                    }
+                    break;
+
+                case 2:
+                    switch (seedNumber)
+                    {
+                        case 1:
+                            plantPosition = new Vector2(pot.x - 75, pot.y - 400);
+                            break;
+                        case 2:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 255);
+                            break;
+                        case 3:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 255);
+                            break;
+                        case 4:
+                            plantPosition = new Vector2(pot.x + 40, pot.y - 255);
+                            break;
+                        case 5:
+                            plantPosition = new Vector2(pot.x, pot.y - 255);
+                            break;
+                        default:
+                            // Define default position
+                            break;
+                    }
+                    break;
+
+                case 3:
+                    switch (seedNumber)
+                    {
+                        case 1:
+                            plantPosition = new Vector2(pot.x - 75, pot.y - 350);
+                            break;
+                        case 2:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 205);
+                            break;
+                        case 3:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 205);
+                            break;
+                        case 4:
+                            plantPosition = new Vector2(pot.x + 40, pot.y - 205);
+                            break;
+                        case 5:
+                            plantPosition = new Vector2(pot.x, pot.y - 205);
+                            break;
+                        default:
+                            // Define default position
+                            break;
+                    }
+                    break;
+
+                case 4:
+                    switch (seedNumber)
+                    {
+                        case 1:
+                            plantPosition = new Vector2(pot.x - 75, pot.y - 310);
+                            break;
+                        case 2:
+                            plantPosition = new Vector2(pot.x + 20, pot.y - 165);
+                            break;
+                        case 3:
+                            plantPosition = new Vector2(pot.x + 25, pot.y - 160);
+                            break;
+                        case 4:
+                            plantPosition = new Vector2(pot.x + 40, pot.y - 160);
+                            break;
+                        case 5:
+                            plantPosition = new Vector2(pot.x, pot.y - 165);
+                            break;
+                        default:
+                            // Define default position
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return plantPosition;
+    }
+
 
     static void Main() {
 		new MyGame().Start();

@@ -29,7 +29,10 @@ class Plant : AnimationSprite
 
     // Wilting when you dont water the plant withing a certain time of planting it
     int plantTimer;
-    int timeTillWilting = 2000;
+    int timeTillWilting = 10000;
+
+    private float timeSinceWilting;
+    private float timeTillDestroy;
 
     // Wilting when you dont harvest the plant withing a ceraint time since it has grown
     int grownTimer;
@@ -54,8 +57,7 @@ class Plant : AnimationSprite
     private bool wiltingGrownAnimDone = false;
     private bool wiltingGrowingAnimDone = false;
 
-    private float timeSinceWilting;
-    private float timeTillDestroy = 3000;
+    private bool waterDropAdded = false;
 
     private bool hasWilted = false;
 
@@ -244,7 +246,17 @@ class Plant : AnimationSprite
             if (!wiltingGrownAnimDone)
             {
                 this.Animate(0.1f);
+            } else
+            {
+                timeSinceWilting = Time.time;
+                Console.WriteLine(timeSinceWilting);
             }
+            
+            //if (wiltingGrownAnimDone)
+            //{
+            //    timeSinceWilting = Time.time;
+            //}
+
             this.SetCycle(15, 5);
 
             if (this.currentFrame > 18)
@@ -253,8 +265,7 @@ class Plant : AnimationSprite
                 this.AddChild(waterDrop);
                 hasWilted = true;
                 isGrown = false;
-
-                timeSinceWilting = Time.time;
+                Console.WriteLine(hasWilted);
             }
         }
         else if (isFrog && !isGrown && !hasWilted && wilting)
@@ -262,22 +273,30 @@ class Plant : AnimationSprite
             if (!wiltingGrowingAnimDone)
             {
                 this.Animate(0.1f);
+            } else
+            {
+                timeSinceWilting = Time.time;
+                Console.WriteLine(timeSinceWilting);
             }
+            
+            //if (wiltingGrowingAnimDone)
+            //{
+            //    timeSinceWilting = Time.time;
+            //}
+
             this.SetCycle(16, 4);
 
             if (this.currentFrame > 18)
             {
                 wiltingGrowingAnimDone = true;
-                timeSinceWilting = Time.time;
+                
                 hasWilted = true;
                 isGrown = false;
             }
-        } 
-        
-        if (!isFrog && !isGrown && isWatered && !wilting && !hasWilted)
+        } else if (!isFrog && !isGrown && isWatered && !wilting && !hasWilted)
         {
             this.SetFrame(1);
-            Console.WriteLine("asd");
+            
         }
         else if (!isFrog && isGrown && !wilting && !hasWilted) 
         {
@@ -285,14 +304,36 @@ class Plant : AnimationSprite
         } else if ((!isFrog && !isGrown && !hasWilted && wilting) || (!isFrog && isGrown && !hasWilted && wilting))
         {
             this.SetFrame(3);
+            Console.WriteLine(hasWilted);
+            hasWilted = true;
         }
 
-        //if (hasWilted && Time.time - timeSinceWilting > timeTillDestroy)
+        //if (hasWilted && (Time.time - timeSinceWilting > timeTillDestroy))
         //{
         //    this.LateDestroy();
-        //} else if (isFrog && !isGrown && isWatered && hasWilted && !wilting)
+        //    pot.isSelected = false;
+        //}
+
+        if (wilting && !waterDropAdded)
+        {
+            waterDrop = new Sprite("waterDrop.png");
+            if (isFrog)
+            {
+                waterDrop.SetScaleXY(1f);
+                waterDrop.SetXY(this.x + 450, this.y - 550);
+            }
+            else
+            {
+                waterDrop.SetScaleXY(0.2f, 0.2f);
+                waterDrop.SetXY(this.x + 50, this.y - 350);
+            }
+            this.AddChild(waterDrop);
+            waterDropAdded = true;
+        }
+
+        //if (hasWilted)
         //{
-        //    this.SetFrame(16);
+        //    timeSinceWilting = Time.time;
         //}
     }
 
@@ -336,7 +377,7 @@ class Plant : AnimationSprite
     {
         if (pot.isHovered)
         {
-            if (Input.GetMouseButtonDown(1))//ReadButton.isMovingVertically)
+            if ((Input.GetMouseButtonDown(1) || ReadButton.isMovingVertically) && settings.wateringState)
             {
                 if (!isWatered)
                 {
@@ -347,7 +388,7 @@ class Plant : AnimationSprite
                 }
             }
 
-            if (isGrown && pot.isHovered && Input.GetMouseButtonDown(1) )//(ReadButton.isMovingHorizontally || Input.GetMouseButtonDown(0)))
+            if (isGrown && pot.isHovered && settings.harvestingState && (Input.GetMouseButtonDown(1) || (ReadButton.isMovingHorizontally)))
             {
                 for (int i = 0; i < settings.customers.Count; i++)
                 {
@@ -410,12 +451,13 @@ class Plant : AnimationSprite
 
                 this.hasBeenClicked = true;
             }
-            else if (!isGrown && hasWilted && Input.GetMouseButtonDown(1)) //(ReadButton.isMovingVertically || Input.GetMouseButtonDown(0)))
+            else if (!isGrown && hasWilted && ReadButton.isMovingHorizontally && settings.wateringState) //(ReadButton.isMovingVertically || Input.GetMouseButtonDown(0)))
             {
                 water.Play();
+
                 this.RemoveChild(waterDrop);
 
-                hasWilted = true;
+                hasWilted = false;
                 wilting = false;
 
                 if (isFrog)

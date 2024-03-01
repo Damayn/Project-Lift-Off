@@ -20,9 +20,9 @@ class ReadButton : GameObject
     public static bool isMovingVertically = false;
     public static bool isMovingHorizontally = false;
 
-    public bool button1Pressed = false;
-    public bool button2Pressed = false;
-    public bool button3Pressed = false;
+    public static bool button1Pressed = false;
+    public static bool button2Pressed = false;
+    public static bool button3Pressed = false;
     public static bool button4Pressed = false;
 
     public static float joystickX = 0f;

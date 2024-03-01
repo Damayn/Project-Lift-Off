@@ -23,15 +23,58 @@ class ModeMananger : GameObject
         SetMenuMode();
 
 
-        if (settings.inPotSelection || settings.inSeedBagSelection)
+        if (settings.hasGameStarted && settings.hasAName && settings.hasEnteredName)
         {
-            ReadButton.currentColor = " 139, 128, 0, 0";
+            ToggleWateringAndHarvestingState();
         }
+
+        if (settings.wateringState)
+        {
+            ReadButton.currentColor = " 70 , 130, 180, 0";
+        }
+        // Check if in harvesting state
+        else if (settings.harvestingState)
+        {
+            ReadButton.currentColor = " 255 , 0, 0, 0";
+        }
+        // Check if in menu state
         else if (settings.menuState)
         {
             ReadButton.currentColor = " 200, 33, 63, 0";
         }
 
+
+
+        if (!settings.menuState && settings.hasGameStarted && settings.hasEnteredName)
+        {
+            
+        }
+    }
+
+    void ToggleWateringAndHarvestingState ()
+    {
+        if (Input.GetKeyDown(Key.Y) || ReadButton.button2Pressed) // Change Key.Y to your desired button
+        {
+            // Toggle between watering and harvesting states
+            if (settings.wateringState)
+            {
+                settings.wateringState = false;
+                settings.harvestingState = true;
+            }
+            else
+            {
+                settings.wateringState = true;
+                settings.harvestingState = false;
+            }
+
+            Console.WriteLine(settings.wateringState);
+            Console.WriteLine(settings.harvestingState);
+        } 
+        //else
+        //{
+        //    settings.wateringState = false;
+        //    settings.harvestingState = false;
+        //}
     }
 
     void SetMenuMode()

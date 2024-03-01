@@ -9,7 +9,7 @@ public class Customers : AnimationSprite
     string[] flowers = { "flower1", "flower2", "flower3", "flower4", "flower5" };
 
     float lastChangeOfFace;
-    float timer = 15000;
+    float timer = 25000;
     int frame = 0;
 
     int flowerCount = 0;
@@ -21,6 +21,7 @@ public class Customers : AnimationSprite
     EasyDraw canvas;
     ScreenShake screenShake;
     Slider productionSlider;
+    Sprite customerBackground;
 
     Sound angry;
     Sound happy;
@@ -29,10 +30,11 @@ public class Customers : AnimationSprite
 
     public List<string> flowersCollected = new List<string>(); // Array to store collected flowers
 
-    public Customers(GameSettings settings, Slider productionSlider) : base(settings.people[0], 5, 1)
+    public Customers(GameSettings settings, Slider productionSlider, Sprite customerBackground) : base(settings.people[0], 5, 1)
     {
-        
+        Console.WriteLine (GameSettings.currentLevel);
         this.settings = settings;
+        this.customerBackground = customerBackground;
 
         ScreenShake screenShake = new ScreenShake();
         this.productionSlider = productionSlider;
@@ -42,10 +44,15 @@ public class Customers : AnimationSprite
 
     void SetUp ()
     {
-        this.SetXY(1150, 180);
+        this.SetScaleXY(0.3f, 0.3f);
+        this.SetXY(1150, customerBackground.y );
         //this.width = 200;
         //this.height = 150;
-        this.SetScaleXY(0.35f,0.35f); 
+        
+        canvas = new EasyDraw(300, 300, false);
+        canvas.SetXY (customerBackground.x + 60, customerBackground.y + 110);
+        game.AddChild(canvas);
+
 
         angry = new Sound("Customer_Negative_Feedback.mp3",false,false);
         happy = new Sound("Customer_Positive_Feedback.mp3", false, false);
@@ -54,10 +61,6 @@ public class Customers : AnimationSprite
         lastChangeOfFace = Time.time;
         random = new Random();
         SelectFlowers();
-
-        canvas = new EasyDraw(300, 300, false);
-        canvas.SetXY (this.x, this.y - 150);
-        game.AddChild(canvas);
 
         settings.scream = false;
 
@@ -77,10 +80,12 @@ public class Customers : AnimationSprite
             frame++;
             SetCycle(frame, 1);
 
-            if (frame > 11)
+            if (frame > 4)
             {
                 LateDestroy();
-                productionSlider.currentValue -= 20 * settings.currentLevel;
+                canvas.LateDestroy();
+                settings.customers.Clear();
+                productionSlider.currentValue -= 20 * GameSettings.currentLevel;
             }
 
         }
@@ -93,11 +98,9 @@ public class Customers : AnimationSprite
             //AddChild(screenShake);
             if (settings.scream == false)
             {
-
                 states = angry.Play();
 
                 settings.scream = true;
-
             }
             
         }
@@ -116,7 +119,6 @@ public class Customers : AnimationSprite
             productionSlider.currentValue += GetProductionAmount();
             settings.points += GetProductionAmount();
             this.Destroy();
-
         }
 
         if (frame == 0 && flowersCollected.Count == 0)
@@ -147,18 +149,18 @@ public class Customers : AnimationSprite
                 break;
         }
 
-        // Iterate over each unique flower in the flowersCollected list
-        foreach (var uniqueFlower in flowersCollected.Distinct())
-        {
-            // Get the count of the current flower type in the flowersCollected list
-            int flowerCount = flowersCollected.Count(flower => flower == uniqueFlower);
+        //// Iterate over each unique flower in the flowersCollected list
+        //foreach (var uniqueFlower in flowersCollected.Distinct())
+        //{
+        //    // Get the count of the current flower type in the flowersCollected list
+        //    int flowerCount = flowersCollected.Count(flower => flower == uniqueFlower);
 
-            // Determine the value for the current flower type based on its index and count
-            int flowerValue = CalculateFlowerValue(uniqueFlower, flowerCount);
+        //    // Determine the value for the current flower type based on its index and count
+        //    int flowerValue = CalculateFlowerValue(uniqueFlower, flowerCount);
 
-            // Add the value of the current flower type to the production amount
-            productionAmount += flowerValue;
-        }
+        //    // Add the value of the current flower type to the production amount
+        //    productionAmount += flowerValue;
+        //}
 
         return productionAmount;
     }
@@ -239,8 +241,9 @@ public class Customers : AnimationSprite
     // Still has to be worked on. Right now for level 1 it is a guarantee that you will get the first flower and for level 2 trough level 10 there should be an increase in the chances but i have to add that
     float CalculateFlowerChance(int flowerIndex)
     {
-        if (settings.currentLevel == 1)
+        if (GameSettings.currentLevel == 1)
         {
+            Console.WriteLine("kill me"); 
             switch (flowerIndex)
             {
                 case 0: // Corrected flower index
@@ -248,52 +251,52 @@ public class Customers : AnimationSprite
                 default:
                     return 0;
             }
-        } else if (settings.currentLevel >= 2 && settings.currentLevel <= 10)
+        } else if (GameSettings.currentLevel >= 2 && GameSettings.currentLevel <= 10)
         {
+             Console.WriteLine("kill me");
             switch (flowerIndex)
             {
-                case 0:
-                    return 80;
+                
                 case 1:
-                    return 40 + 3 * settings.currentLevel;
+                    return 40 + GameSettings.currentLevel;
                 case 2:
-                    return 0 + 3 * settings.currentLevel;
+                    return 30 + 3 * GameSettings.currentLevel;
                 default:
                     return 0;
             }
         }
-        else if (settings.currentLevel >= 11 && settings.currentLevel <= 20)
+        else if (GameSettings.currentLevel >= 11 && GameSettings.currentLevel <= 20)
         {
             switch (flowerIndex)
             {
                 case 0:
-                    return 40 + (settings.currentLevel - 10);
+                    return 40 + (GameSettings.currentLevel - 10);
                 case 1:
-                    return 80 + 2 * (settings.currentLevel - 5);
+                    return 80 + 2 * (GameSettings.currentLevel - 5);
                 case 2:
-                    return 80 + 2 * (settings.currentLevel - 5);
+                    return 80 + 2 * (GameSettings.currentLevel - 5);
                 case 3:
-                    return 50 + 2 * (settings.currentLevel - 5);
+                    return 50 + 2 * (GameSettings.currentLevel - 5);
                 case 4:
-                    return 50 + 2 * (settings.currentLevel - 5);
+                    return 50 + 2 * (GameSettings.currentLevel - 5);
                 default:
                     return 0;
             }
         }
-        else if (settings.currentLevel >= 21 && settings.currentLevel <= 30)
+        else if (GameSettings.currentLevel >= 21 && GameSettings.currentLevel <= 30)
         {
             switch (flowerIndex)
             {
                 case 0:
-                    return 10 + 5 * (settings.currentLevel - 15);
+                    return 10 + 5 * (GameSettings.currentLevel - 15);
                 case 1:
-                    return 45 + 5 * (settings.currentLevel - 15);
+                    return 45 + 5 * (GameSettings.currentLevel - 15);
                 case 2:
-                    return 60 + 5 * (settings.currentLevel - 15);
+                    return 60 + 5 * (GameSettings.currentLevel - 15);
                 case 3:
-                    return 70 + 5 * (settings.currentLevel - 15);
+                    return 70 + 5 * (GameSettings.currentLevel - 15);
                 case 4:
-                    return 70 + 5 * (settings.currentLevel - 15);
+                    return 70 + 5 * (GameSettings.currentLevel - 15);
                 default:
                     return 0;
             }
@@ -304,10 +307,10 @@ public class Customers : AnimationSprite
     float CalculateAdditionalFlowerChance(int flowerIndex)
     {
         // Implement logic to calculate the chance for additional flowers based on level
-        if (settings.currentLevel == 1)
+        if (GameSettings.currentLevel == 1)
         {
             // Start with a base chance (adjust as needed)
-            float baseChance = 100;
+            float baseChance = 60;
 
             // Decrease the chance by 10 for each additional flower
             float additionalFlowerChance = baseChance - (10 * flowersCollected.Count);
@@ -315,7 +318,7 @@ public class Customers : AnimationSprite
             // Ensure the chance doesn't go below 0
             return Math.Max(additionalFlowerChance, 0);
         }
-        else if (settings.currentLevel >= 2 && settings.currentLevel <= 10)
+        else if (GameSettings.currentLevel >= 2 && GameSettings.currentLevel <= 10)
         {
             // Define base chances for each flower
             float[] baseChances = { 50, 40, 30, 20, 10 };
@@ -324,7 +327,7 @@ public class Customers : AnimationSprite
             float baseChance = baseChances[flowerIndex];
 
             // Increase the base chance based on the current level
-            baseChance += (settings.currentLevel - 1) * 5;
+            baseChance += (GameSettings.currentLevel - 1) * 5;
 
             // Get the count of the current flower type that has already been collected
             int flowerTypeCount = flowersCollected.Count(flower => flower == flowers[flowerIndex]);
@@ -338,7 +341,7 @@ public class Customers : AnimationSprite
             // Ensure the chance doesn't go below 0
             return Math.Max(additionalFlowerChance, 0);
         }
-        else if (settings.currentLevel >= 11 && settings.currentLevel <= 20)
+        else if (GameSettings.currentLevel >= 11 && GameSettings.currentLevel <= 20)
         {
             // Define base chances for each flower
             float[] baseChances = { 40, 40, 65, 30, 15 };
@@ -347,7 +350,7 @@ public class Customers : AnimationSprite
             float baseChance = baseChances[flowerIndex];
 
             // Increase the base chance based on the current level
-            baseChance += (settings.currentLevel - 11) * 5;
+            baseChance += (GameSettings.currentLevel - 11) * 5;
 
             // Get the count of the current flower type that has already been collected
             int flowerTypeCount = flowersCollected.Count(flower => flower == flowers[flowerIndex]);
@@ -361,7 +364,7 @@ public class Customers : AnimationSprite
             // Ensure the chance doesn't go below 0
             return Math.Max(additionalFlowerChance, 0);
         }
-        else if (settings.currentLevel >= 21 && settings.currentLevel <= 30)
+        else if (GameSettings.currentLevel >= 21 && GameSettings.currentLevel <= 30)
         {
             // Define base chances for each flower
             float[] baseChances = { 40, 40, 50, 60, 60 };
@@ -370,7 +373,7 @@ public class Customers : AnimationSprite
             float baseChance = baseChances[flowerIndex];
 
             // Increase the base chance based on the current level
-            baseChance += (settings.currentLevel - 21) * 5;
+            baseChance += (GameSettings.currentLevel - 21) * 5;
 
             // Get the count of the current flower type that has already been collected
             int flowerTypeCount = flowersCollected.Count(flower => flower == flowers[flowerIndex]);
@@ -395,8 +398,8 @@ public class Customers : AnimationSprite
         var uniqueFlowers = flowersCollected.Distinct();
 
         // Define initial y position for drawing text
-        int x = 10;
-        y = 40;
+        int x = 0;
+        y = 35;
 
         // Iterate over each unique flower
         foreach (var flowerName in uniqueFlowers)
@@ -415,7 +418,7 @@ public class Customers : AnimationSprite
             canvas.Text($"{flowerCount} x", x, y); // Adjust position as needed
 
             // Increment y position for the next flower
-            y += 60; // Adjust spacing between flower counts
+            y += 50; // Adjust spacing between flower counts
         }
     }
 
