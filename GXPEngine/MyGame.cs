@@ -531,30 +531,31 @@ public class MyGame : Game {
     }
 
     void PlantSeedInPot(Seed seed, Pot pot)
-{
-    // Extract the number from the seed bag's name
-    string seedBagName = seedBags[currentSeedBagIndex].name;
-    int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
-
-        planting.Play();
-
-    // Calculate the vertical offset based on the pot's size
-    float yOffset = pot.height + 65 + (currentPotIndex * 5.5f);
-
-    // Create a new plant with the same number as the seed bag
-    if (seedNumber == 1)
     {
-        Plant plant = new Plant("flower" + seedNumber + ".png", pot.x - 70, pot.y - yOffset, 8, 3, pot, settings, true);
-        AddChild(plant);
-        plants.Add(plant);
+        // Extract the number from the seed bag's name
+        string seedBagName = seedBags[currentSeedBagIndex].name;
+        int seedNumber = int.Parse(seedBagName.Substring(seedBagName.IndexOf("SeedBag") + 8, 1));
+
+            planting.Play();
+
+        // Calculate the vertical offset based on the pot's size
+        float yOffsetFrog = pot.height + 65 + (currentPotIndex * 5.5f);
+        float yOffset = pot.height /2 + 100 - (currentPotIndex * 10f);
+
+        // Create a new plant with the same number as the seed bag
+        if (seedNumber == 1)
+        {
+            Plant plant = new Plant("flower" + seedNumber + ".png", pot.x - 70, pot.y - yOffsetFrog, 8, 3, pot, settings, true);
+            AddChild(plant);
+            plants.Add(plant);
+        }
+        else
+        {
+            Plant plant = new Plant("flower" + seedNumber + ".png", pot.x + 25, pot.y - yOffset, 4, 1, pot, settings, false);
+            AddChild(plant);
+            plants.Add(plant);
+        }
     }
-    else
-    {
-        Plant plant = new Plant("flower" + seedNumber + ".png", pot.x - 70, pot.y - yOffset, 4, 1, pot, settings, false);
-        AddChild(plant);
-        plants.Add(plant);
-    }
-}
 
     static void Main() {
 		new MyGame().Start();

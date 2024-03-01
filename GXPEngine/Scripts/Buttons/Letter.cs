@@ -18,7 +18,13 @@ class Letter : Sprite
 
         press = new Sound("button_press.mp3", false, false);
 
-        this.SetScaleXY(0.10f, 0.10f);
+        if (this.name != "Backspace.png")
+        {
+            this.SetScaleXY(0.2f, 0.2f);
+        } else
+        {
+            this.SetScaleXY(1.6f);
+        }
     }
 
     void Update()

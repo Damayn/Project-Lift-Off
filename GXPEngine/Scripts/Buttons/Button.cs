@@ -35,6 +35,7 @@ public class Button : AnimationSprite
         else
         {
             this.SetCycle(0);
+            hasBeenPressed = false;
         }
     }
 }

@@ -49,7 +49,7 @@ class NameMenu : GameObject
 
         // Define starting positions
         int startX = 100;
-        int startY = 200;
+        int startY = 215;
 
         for (int row = 0; row < numRows; row++)
         {
@@ -89,7 +89,6 @@ class NameMenu : GameObject
         backspaceButton.SetXY(backspacePosX, backspacePosY);
         AddChild(backspaceButton);
         letters.Add(backspaceButton);
-
 
         Sprite textBox = new Sprite("name_box.png");
         textBox.SetOrigin(textBox.width / 2, textBox.height / 2);
