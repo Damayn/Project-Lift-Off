@@ -336,18 +336,18 @@ class Plant : AnimationSprite
     {
         if (pot.isHovered)
         {
-            if (ReadButton.isMovingVertically)
+            if (Input.GetMouseButtonDown(1))//ReadButton.isMovingVertically)
             {
                 if (!isWatered)
                 {
                     water.Play();
 
-                    game.RemoveChild(waterDrop);
+                    this.RemoveChild(waterDrop);
                     isWatered = true;
                 }
             }
 
-            if (isGrown && pot.isHovered && (ReadButton.isMovingHorizontally || Input.GetMouseButtonDown(0)))
+            if (isGrown && pot.isHovered && Input.GetMouseButtonDown(1) )//(ReadButton.isMovingHorizontally || Input.GetMouseButtonDown(0)))
             {
                 for (int i = 0; i < settings.customers.Count; i++)
                 {
@@ -410,10 +410,10 @@ class Plant : AnimationSprite
 
                 this.hasBeenClicked = true;
             }
-            else if (!isGrown && hasWilted && (ReadButton.isMovingVertically || Input.GetMouseButtonDown(0)))
+            else if (!isGrown && hasWilted && Input.GetMouseButtonDown(1)) //(ReadButton.isMovingVertically || Input.GetMouseButtonDown(0)))
             {
                 water.Play();
-                game.RemoveChild(waterDrop);
+                this.RemoveChild(waterDrop);
 
                 hasWilted = true;
                 wilting = false;

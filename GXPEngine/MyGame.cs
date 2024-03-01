@@ -231,7 +231,7 @@ public class MyGame : Game {
 
     void DecreaseProductionSlider ()
     {
-        float speed = 0.0100f;
+        float speed = 0.0002f * Time.time / 1000000;
 
         play.Frequency = 44100 * (speed * 10000);
 
