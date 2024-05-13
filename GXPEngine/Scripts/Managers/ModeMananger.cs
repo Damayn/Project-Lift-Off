@@ -30,12 +30,12 @@ class ModeMananger : GameObject
 
         if (settings.wateringState)
         {
-            ReadButton.currentColor = " 70 , 130, 180, 0";
+            ReadButton.currentColor = " 35 , 65, 90, 0";
         }
         // Check if in harvesting state
         else if (settings.harvestingState)
         {
-            ReadButton.currentColor = " 255 , 0, 0, 0";
+            ReadButton.currentColor = " 200 , 0, 0, 0";
         }
         // Check if in menu state
         else if (settings.menuState)
@@ -53,7 +53,7 @@ class ModeMananger : GameObject
 
     void ToggleWateringAndHarvestingState ()
     {
-        if (Input.GetKeyDown(Key.Y) || ReadButton.button2Pressed) // Change Key.Y to your desired button
+        if (Input.GetKeyDown(Key.Y) || ReadButton.button3Pressed) // Change Key.Y to your desired button
         {
             // Toggle between watering and harvesting states
             if (settings.wateringState)

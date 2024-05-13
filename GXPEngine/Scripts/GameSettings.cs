@@ -27,7 +27,7 @@ public class GameSettings
     public float currentProductionValue { get; set; }
     public int points = 50;
 
-    public static int currentLevel = 10;
+    public static int currentLevel = 1;
 
     public string playerName;
 

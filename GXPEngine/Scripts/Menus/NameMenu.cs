@@ -25,6 +25,8 @@ class NameMenu : GameObject
 
     Sprite pad;
 
+    Sprite enterName;
+
     public NameMenu(GameSettings settings, MenuManager menuManager, MyGame gameRef) : base()
     {
         this.settings = settings;
@@ -33,6 +35,9 @@ class NameMenu : GameObject
 
         background = new Sprite("background_menu.png");
         pad = new Sprite("bg_temp1.png");
+
+        
+       
 
         background.width = game.width;
         background.height = game.height;
@@ -109,6 +114,11 @@ class NameMenu : GameObject
         backButton = new BackButton(menuManager, settings);
         backButton.SetXY(playButton.x, playButton.y + 100);
         this.AddChild(backButton);
+
+        enterName = new Sprite("enter_name.png");
+        enterName.SetOrigin(enterName.width / 2, enterName.height / 2);
+        enterName.SetXY(textBox.x, textBox.y - 20);
+        AddChild (enterName);
 
         UpdateSelection(); // Highlight the initial selected letter
     }

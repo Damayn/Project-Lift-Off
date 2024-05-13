@@ -46,9 +46,9 @@ class ReadButton : GameObject
 
     public ReadButton(SerialPortManager serialPort, GameSettings settings) : base()
     {
-        this.serialPort = serialPort;
+        //this.serialPort = serialPort;
         this.settings = settings;
-        serialPort.Open();
+        //serialPort.Open();
     }
 
     void Update()

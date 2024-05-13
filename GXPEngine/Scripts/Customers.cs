@@ -9,7 +9,7 @@ public class Customers : AnimationSprite
     string[] flowers = { "flower1", "flower2", "flower3", "flower4", "flower5" };
 
     float lastChangeOfFace;
-    float timer = 25000;
+    float timer = 15000;
     int frame = 0;
 
     int flowerCount = 0;
@@ -85,7 +85,7 @@ public class Customers : AnimationSprite
                 LateDestroy();
                 canvas.LateDestroy();
                 settings.customers.Clear();
-                productionSlider.currentValue -= 20 * GameSettings.currentLevel;
+                productionSlider.currentValue -= productionSlider.maximumValue / 4 * GameSettings.currentLevel;
             }
 
         }
@@ -131,16 +131,25 @@ public class Customers : AnimationSprite
 
     int GetProductionAmount()
     {
-        int productionAmount = 0;
+        float productionAmount = 0;
 
         // Determine the base production amount based on the frame
         switch (frame)
         {
             case 0: // Adjust based on your frame logic
-                productionAmount = 5; // Example value for frame 0
+                productionAmount = productionSlider.maximumValue /2 ; // Example value for frame 0
                 break;
             case 1: // Adjust based on your frame logic
-                productionAmount = 10; // Example value for frame 1
+                productionAmount = (int)productionSlider.maximumValue / 2.4f; // Example value for frame 1
+                break;
+            case 2:
+                productionAmount = (int)productionSlider.maximumValue / 2.8f;
+                break;
+            case 3:
+                productionAmount = (int)productionSlider.maximumValue / 2.8f;
+                break;
+            case 4:
+                productionAmount = (int)productionSlider.maximumValue / 3.2f;
                 break;
             // Add more cases as needed for different frames
             default:
@@ -162,7 +171,7 @@ public class Customers : AnimationSprite
         //    productionAmount += flowerValue;
         //}
 
-        return productionAmount;
+        return (int)productionAmount;
     }
 
     // Method to calculate the value of each flower type based on its index and count
@@ -248,6 +257,12 @@ public class Customers : AnimationSprite
             {
                 case 0: // Corrected flower index
                     return 100;
+                case 1: // Corrected flower index
+                    return 100;
+                case 2: // Corrected flower index
+                    return 100;
+                case 3: // Corrected flower index
+                    return 100;
                 default:
                     return 0;
             }
@@ -258,9 +273,13 @@ public class Customers : AnimationSprite
             {
                 
                 case 1:
-                    return 40 + GameSettings.currentLevel;
+                    return 10 + 3 * GameSettings.currentLevel;
                 case 2:
-                    return 30 + 3 * GameSettings.currentLevel;
+                    return 5 + 3 * GameSettings.currentLevel;
+                case 3: 
+                    return 3 * GameSettings.currentLevel;
+                case 4:
+                    return GameSettings.currentLevel;
                 default:
                     return 0;
             }
@@ -272,13 +291,13 @@ public class Customers : AnimationSprite
                 case 0:
                     return 40 + (GameSettings.currentLevel - 10);
                 case 1:
-                    return 80 + 2 * (GameSettings.currentLevel - 5);
+                    return 50 + 2 * (GameSettings.currentLevel - 5);
                 case 2:
-                    return 80 + 2 * (GameSettings.currentLevel - 5);
+                    return 65 + 2 * (GameSettings.currentLevel - 5);
                 case 3:
-                    return 50 + 2 * (GameSettings.currentLevel - 5);
+                    return 70 + 2 * (GameSettings.currentLevel - 5);
                 case 4:
-                    return 50 + 2 * (GameSettings.currentLevel - 5);
+                    return 10 + 2 * (GameSettings.currentLevel - 5);
                 default:
                     return 0;
             }
@@ -290,13 +309,13 @@ public class Customers : AnimationSprite
                 case 0:
                     return 10 + 5 * (GameSettings.currentLevel - 15);
                 case 1:
-                    return 45 + 5 * (GameSettings.currentLevel - 15);
+                    return 40 + 5 * (GameSettings.currentLevel - 15);
                 case 2:
                     return 60 + 5 * (GameSettings.currentLevel - 15);
                 case 3:
-                    return 70 + 5 * (GameSettings.currentLevel - 15);
+                    return 55 + 5 * (GameSettings.currentLevel - 15);
                 case 4:
-                    return 70 + 5 * (GameSettings.currentLevel - 15);
+                    return 50 + 5 * (GameSettings.currentLevel - 15);
                 default:
                     return 0;
             }
@@ -344,13 +363,13 @@ public class Customers : AnimationSprite
         else if (GameSettings.currentLevel >= 11 && GameSettings.currentLevel <= 20)
         {
             // Define base chances for each flower
-            float[] baseChances = { 40, 40, 65, 30, 15 };
+            float[] baseChances = { 30, 40, 50, 30, 15 };
 
             // Get the base chance for the current flower
             float baseChance = baseChances[flowerIndex];
 
             // Increase the base chance based on the current level
-            baseChance += (GameSettings.currentLevel - 11) * 5;
+            baseChance += GameSettings.currentLevel;
 
             // Get the count of the current flower type that has already been collected
             int flowerTypeCount = flowersCollected.Count(flower => flower == flowers[flowerIndex]);

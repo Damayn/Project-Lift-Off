@@ -20,24 +20,30 @@ class MainMenu : GameObject
 
     int distance = 120;
 
+    Sprite nameSprite;
+
     public MainMenu(GameSettings settings, MenuManager menuManager) : base()
     {
+        nameSprite = new Sprite("Name.png");
+
+        nameSprite.SetXY(game.width / 2, game.height / 2 - (int)(distance * 1.5));
+        nameSprite.SetOrigin (nameSprite.width /2, nameSprite.height / 2);
+        nameSprite.SetScaleXY(0.5f, 0.5f);
+
+
         this.settings = settings;
         this.menuManager = menuManager;
 
         background = new Sprite("background_menu.png");
-        press = new Sound("button_press.mp3",false,false);
+        press = new Sound("button_press.mp3", false, false);
 
         startButton = new StartButton(settings);
-        startButton.SetXY(game.width / 2, game.height / 2 - distance);
-
-        optionsButton = new OptionsButton(menuManager);
-        optionsButton.SetXY(game.width / 2, game.height / 2);
+        startButton.SetXY(game.width / 2, game.height / 2);
 
         backButton = new ExitButton();
         backButton.SetXY(game.width / 2, game.height / 2 + distance);
 
-        buttons = new Button[] { startButton, optionsButton, backButton };
+        buttons = new Button[] { startButton, backButton };
         buttons[currentButtonIndex].isHovered = true;
 
         AddChild(background);
@@ -49,6 +55,8 @@ class MainMenu : GameObject
 
         background.height = game.height;
         background.width = game.width;
+
+        this.AddChild(nameSprite);
     }
 
     void Update()

@@ -84,7 +84,7 @@ public class MyGame : Game {
 
     public void SetUp () 
 	{
-        background = new Sprite("gameplayBackground.png");
+        background = new Sprite("background_menu.png");
         AddChild(background);
 
         //hardcoding of background image testing (change it if you want)
@@ -135,7 +135,6 @@ public class MyGame : Game {
                     
 
                     GameOver();
-
                     AddNewCustomer();
 
                     LevelText();
@@ -165,20 +164,20 @@ public class MyGame : Game {
     void LevelText ()
     {
         canvas.ClearTransparent ();
-        canvas.Fill(Color.White); // Set text color
+        canvas.Fill(Color.Black); // Set text color
         canvas.TextFont("Helvetika", 28); // Set font and size
-        canvas.Text("Level: " + GameSettings.currentLevel, 100,100); // Adjust position as needed
+        canvas.Text("Level: " + GameSettings.currentLevel, 20,100); // Adjust position as needed
     }
 
     void Pause ()
     {
-        if ((Input.GetKeyDown(Key.Q) || ReadButton.button3Pressed) && !settings.isTimePaused)
+        if ((Input.GetKeyDown(Key.Q) || ReadButton.button2Pressed) && !settings.isTimePaused)
         {
             pause = new Pause(game.width, game.height, "white.png", menuManager, settings);
             AddChild(pause);
 
             TogglePauseTime();
-        } else if ((Input.GetKeyDown(Key.Q) || ReadButton.button3Pressed)  && settings.isTimePaused)
+        } else if ((Input.GetKeyDown(Key.Q) || ReadButton.button2Pressed)  && settings.isTimePaused)
         {
             pause.Destroy();
             TogglePauseTime();
